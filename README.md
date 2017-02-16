@@ -1,4 +1,7 @@
-# PdfSharp.Xamarin
+# PdfSharpCore
+
+**PdfSharpCore** is a partial port of [PdfSharp.Xamarin](https://github.com/roceh/PdfSharp.Xamarin/) for .NET Standard
+
 **PdfSharp.Xamarin** is a partial port of [PdfSharp](http://www.pdfsharp.net/) for iOS and Android using Xamarin, it allows for creation and modification of PDF files.
 
 Currently all images created via XGraphics are converted to jpegs with 70% quality.
