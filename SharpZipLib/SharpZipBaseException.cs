@@ -35,10 +35,6 @@
 
 using System;
 
-#if !NETCF_1_0 && !NETCF_2_0
-using System.Runtime.Serialization;
-#endif
-
 namespace PdfSharp.SharpZipLib
 {
     /// <summary>
@@ -47,9 +43,6 @@ namespace PdfSharp.SharpZipLib
     /// </summary>
     /// <remarks>NOTE: Not all exceptions thrown will be derived from this class.
     /// A variety of other exceptions are possible for example <see cref="ArgumentNullException"></see></remarks>
-#if !NETCF_1_0 && !NETCF_2_0
-    [Serializable]
-#endif
     internal class SharpZipBaseException : ApplicationException
     {
 #if false//!NETCF_1_0 && !NETCF_2_0
