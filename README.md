@@ -6,12 +6,6 @@
 
 Currently all images created via XGraphics are converted to jpegs with 70% quality.
 
-## Supported Platforms
-
-- Xamarin Android
-- Xamarin iOS
-- Xamarin.Forms
-
 ## Example
 
 ```cs
