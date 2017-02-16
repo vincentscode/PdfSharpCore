@@ -172,11 +172,7 @@ namespace PdfSharp.Drawing
             Initialize();
         }
 #endif
-
-#if __ANDROID__
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XGlyphTypeface"/> class by a font source.
-        /// </summary>
+        
         public XGlyphTypeface(string key, XFontSource fontSource)
         {
             string familyName = fontSource.Fontface.name.Name;
@@ -191,7 +187,6 @@ namespace PdfSharp.Drawing
 
             Initialize();
         }
-#endif
 
         public static XGlyphTypeface GetOrCreateFrom(string familyName, FontResolvingOptions fontResolvingOptions)
         {
@@ -273,9 +268,7 @@ namespace PdfSharp.Drawing
 #if __IOS__
             glyphTypeface = new XGlyphTypeface(typefaceKey, fontSource);
 #endif
-#if __ANDROID__
             glyphTypeface = new XGlyphTypeface(typefaceKey, fontSource);
-#endif
             GlyphTypefaceCache.AddGlyphTypeface(glyphTypeface);
 
             return glyphTypeface;
