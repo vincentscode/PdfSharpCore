@@ -51,6 +51,8 @@ using PdfSharp.Drawing.Internal;
 using PdfSharp.Internal;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf.Advanced;
+using ImageSharp;
+using ImageSharp.Formats;
 
 #if __IOS__
 using UIKit;
@@ -232,6 +234,7 @@ namespace PdfSharp.Drawing
 #if __ANDROID__
             _androidImage = Android.Graphics.BitmapFactory.DecodeFile(_path);
 #endif
+            _image = new Image(_path);
 
 #if true_
             float vres = image.VerticalResolution;
@@ -244,6 +247,15 @@ namespace PdfSharp.Drawing
             int width = image.Width;
 #endif
             Initialize();
+        }
+
+        XImage(Image<Color> image)
+        {
+            _path = "*" + Guid.NewGuid().ToString("B");
+            _image = image;
+
+            Initialize();
+
         }
 
         XImage(Stream stream)
@@ -296,6 +308,7 @@ namespace PdfSharp.Drawing
 #if __ANDROID__
             _androidImage = Android.Graphics.BitmapFactory.DecodeStream(stream);
 #endif
+            _image = new Image(stream);
 
 #if true_
             float vres = image.VerticalResolution;
@@ -718,6 +731,37 @@ namespace PdfSharp.Drawing
 #if __ANDROID__
             _format = XImageFormat.Jpeg;
 #endif
+            if (_image != null)
+            {
+                switch (_image.CurrentImageFormat.Extension.ToLower())
+                {
+                    case "png":
+                        _format = XImageFormat.Png;
+                        break;
+
+                    case "jpg":
+                    case "jpeg":
+                        _format = XImageFormat.Jpeg;
+                        break;
+
+                    case "gif":
+                        _format = XImageFormat.Gif;
+                        break;
+
+                    case "tiff":
+                        _format = XImageFormat.Tiff;
+                        break;
+
+                    case "ico":
+                        _format = XImageFormat.Icon;
+                        break;
+
+                    default:
+                        throw new ArgumentException(string.Format("Unknown image type[{0}]", _image.CurrentImageFormat.Extension));
+                }
+            }
+
+
         }
 
 #if __IOS__
@@ -753,6 +797,21 @@ namespace PdfSharp.Drawing
             return ms;
         }
 #endif
+
+        public MemoryStream AsJpeg()
+        {
+            if (_image == null)
+            {
+                return null;
+            }
+            var ms = new MemoryStream();
+
+
+
+            _image.Save(ms, new JpegFormat());
+
+            return ms;
+        }
 
 #if WPF
         /// <summary>
@@ -1157,7 +1216,7 @@ namespace PdfSharp.Drawing
                 return _androidImage.Width * 72 / 96.0;
 #endif
 #if PORTABLE
-                return 0;
+                return _image.Width * 72 / 96.0;
 #endif
             }
         }
@@ -1217,7 +1276,7 @@ namespace PdfSharp.Drawing
                 return _androidImage.Height * 72 / 96.0;
 #endif
 #if PORTABLE
-                return 0;
+                return _image.Height * 72 / 96.0;
 #endif
             }
         }
@@ -1272,7 +1331,7 @@ namespace PdfSharp.Drawing
                 return _androidImage.Width;
 #endif
 #if PORTABLE
-                return 0;
+                return _image.Width;
 #endif
             }
         }
@@ -1327,7 +1386,7 @@ namespace PdfSharp.Drawing
                 return _androidImage.Height;
 #endif
 #if PORTABLE
-                return 0;
+                return _image.Height;
 #endif
             }
         }
@@ -1646,6 +1705,11 @@ namespace PdfSharp.Drawing
             _associatedGraphics = null;
         }
 
+        public static XImage FromImage(Image<Color> image)
+        {
+            return new XImage(image);
+        }
+
         internal XGraphics AssociatedGraphics
         {
             get { return _associatedGraphics; }
@@ -1691,5 +1755,6 @@ namespace PdfSharp.Drawing
         /// if this image is used more than once.
         /// </summary>
         internal PdfImageTable.ImageSelector _selector;
+        private Image<Color> _image;
     }
 }

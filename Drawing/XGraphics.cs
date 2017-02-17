@@ -648,9 +648,9 @@ namespace PdfSharp.Drawing  // #??? aufräumen
         }
 #endif
 
-            /// <summary>
-            /// Creates a new instance of the XGraphics class from a PdfSharp.Pdf.PdfPage object.
-            /// </summary>
+        /// <summary>
+        /// Creates a new instance of the XGraphics class from a PdfSharp.Pdf.PdfPage object.
+        /// </summary>
         public static XGraphics FromPdfPage(PdfPage page)
         {
             return new XGraphics(page, XGraphicsPdfPageOptions.Append, XGraphicsUnit.Point, XPageDirection.Downwards);
@@ -3751,12 +3751,9 @@ namespace PdfSharp.Drawing  // #??? aufräumen
             XSize size = FontHelper.MeasureString(text, font, XStringFormats.Default);
             return size;
 #endif
-#if __IOS__ || __ANDROID__
+#if __IOS__ || __ANDROID__ || PORTABLE
             XSize size = FontHelper.MeasureString(text, font, XStringFormats.Default);
             return size;
-#endif
-#if PORTABLE
-            return new XSize(0, 0);
 #endif
         }
 
@@ -4264,7 +4261,7 @@ namespace PdfSharp.Drawing  // #??? aufräumen
                 _gsStack.Push(iState);
             }
 #endif
-#if __ANDROID__  || __IOS__           
+#if __ANDROID__  || __IOS__         || PORTABLE   
             xState = new XGraphicsState();
             InternalGraphicsState iState = new InternalGraphicsState(this, xState);
             iState.Transform = _transform;
@@ -4315,7 +4312,7 @@ namespace PdfSharp.Drawing  // #??? aufräumen
             }
 #endif
 
-#if __ANDROID__ || __IOS__
+#if __ANDROID__ || __IOS__ || PORTABLE
             _gsStack.Restore(state.InternalState);
             _transform = state.InternalState.Transform;
 #endif
@@ -4468,11 +4465,11 @@ namespace PdfSharp.Drawing  // #??? aufräumen
             get { return _gsStack.Count; }
         }
 
-#endregion
+        #endregion
 
         // --------------------------------------------------------------------------------------------
 
-#region Properties
+        #region Properties
 
         /// <summary>
         /// Gets or sets the smoothing mode.
@@ -4544,11 +4541,11 @@ namespace PdfSharp.Drawing  // #??? aufräumen
         //public Matrix Transform { get; set; }
         //public GdiRectF VisibleClipBounds { get; }
 
-#endregion
+        #endregion
 
         // --------------------------------------------------------------------------------------------
 
-#region Transformation
+        #region Transformation
 
         /// <summary>
         /// Applies the specified translation operation to the transformation matrix of this object by 
@@ -4797,11 +4794,11 @@ namespace PdfSharp.Drawing  // #??? aufräumen
         //{
         //}
 
-#endregion
+        #endregion
 
         // --------------------------------------------------------------------------------------------
 
-#region Clipping
+        #region Clipping
 
 #if GDI
         /// <summary>
@@ -4896,11 +4893,11 @@ namespace PdfSharp.Drawing  // #??? aufräumen
         //public void IntersectClip(Region region);
         //public void ExcludeClip(Region region);
 
-#endregion
+        #endregion
 
         // --------------------------------------------------------------------------------------------
 
-#region Miscellaneous
+        #region Miscellaneous
 
         /// <summary>
         /// Writes a comment to the output stream. Comments have no effect on the rendering of the output.
@@ -4938,11 +4935,11 @@ namespace PdfSharp.Drawing  // #??? aufräumen
         }
         SpaceTransformer _transformer;
 
-#endregion
+        #endregion
 
         // --------------------------------------------------------------------------------------------
 
-#region Internal Helper Functions
+        #region Internal Helper Functions
 
 #if GDI
         /// <summary>
@@ -5084,7 +5081,7 @@ namespace PdfSharp.Drawing  // #??? aufräumen
         }
 #endif
 
-#endregion
+        #endregion
 
         ///// <summary>
         ///// Testcode

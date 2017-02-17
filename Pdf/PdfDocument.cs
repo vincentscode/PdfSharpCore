@@ -258,7 +258,10 @@ namespace PdfSharp.Pdf
                 Save(stream);
             }
 #elif PORTABLE
-            // do nothing
+            using (Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                Save(stream);
+            }
 #else
             var task = SaveAsync(path, true);
 

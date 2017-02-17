@@ -273,7 +273,7 @@ namespace PdfSharp
         public const string Technology = "-android";
 #endif
 #if PORTABLE
-        public const string Technology = "-pcl";
+        public const string Technology = "-netstandard";
 #endif
     }
 }

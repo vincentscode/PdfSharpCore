@@ -353,6 +353,10 @@ namespace PdfSharp.Pdf.Advanced
             memory = _image.AsJpeg();
             ownMemory = true;
 #endif
+
+            memory = _image.AsJpeg();
+            ownMemory = true;
+
             // THHO4THHO Use ImageImporterJPEG here to avoid redundant code.
 
             if (imageBits == null)
@@ -485,7 +489,7 @@ namespace PdfSharp.Pdf.Advanced
             }
 #endif
 
-#if __IOS__ || __ANDROID__
+#if __IOS__ || __ANDROID__ || PORTABLE
             Elements[Keys.ColorSpace] = new PdfName("/DeviceRGB");
 #endif
         }

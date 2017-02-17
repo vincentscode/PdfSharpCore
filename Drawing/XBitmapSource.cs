@@ -94,7 +94,7 @@ namespace PdfSharp.Drawing
                 return _androidImage.Width;
 #endif
 #if PORTABLE
-                return 0;
+                return PixelWidth;
 #endif
             }
         }
@@ -133,7 +133,7 @@ namespace PdfSharp.Drawing
                 return _androidImage.Height;
 #endif
 #if PORTABLE
-                return 0;
+                return PixelHeight;
 #endif
             }
         }

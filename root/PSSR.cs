@@ -378,7 +378,7 @@ namespace PdfSharp
         [Conditional("DEBUG")]
         public static void TestResourceMessages()
         {
-#if !SILVERLIGHT && !__IOS__ && !__ANDROID__
+#if !SILVERLIGHT && !__IOS__ && !__ANDROID__ && !PORTABLE
             string[] names = Enum.GetNames(typeof(PSMsgID));
             foreach (string name in names)
             {

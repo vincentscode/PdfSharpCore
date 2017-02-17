@@ -666,65 +666,7 @@ namespace PdfSharp.Drawing
             return value; 
 #endif
 #if PORTABLE
-            return 0;
-#endif
-        }
-
-        /// <summary>
-        /// Returns the line spacing, in the current unit of a specified Graphics object, of this font.
-        /// The line spacing is the vertical distance between the base lines of two consecutive lines of
-        /// text. Thus, the line spacing includes the blank space between lines along with the height of
-        /// </summary>
-        [Obsolete("Use GetHeight() without parameter.")]
-        public double GetHeight(XGraphics graphics)
-        {
-#if true
-            throw new InvalidOperationException("Honestly: Use GetHeight() without parameter!");
-#else
-#if CORE || NETFX_CORE
-            double value = CellSpace * _emSize / UnitsPerEm;
             return value;
-#endif
-#if GDI && !WPF
-            if (graphics._gfx != null)  // #MediumTrust
-            {
-                double value = Font.GetHeight(graphics._gfx);
-                Debug.Assert(value == Font.GetHeight(graphics._gfx.DpiY));
-                double value2 = CellSpace * _emSize / UnitsPerEm;
-                Debug.Assert(value - value2 < 1e-3, "??");
-                return Font.GetHeight(graphics._gfx);
-            }
-            return CellSpace * _emSize / UnitsPerEm;
-#endif
-#if WPF && !GDI
-            double value = CellSpace * _emSize / UnitsPerEm;
-            return value;
-#endif
-#if GDI && WPF  // Testing only
-            if (graphics.TargetContext == XGraphicTargetContext.GDI)
-            {
-#if DEBUG
-                double value = Font.GetHeight(graphics._gfx);
-
-                // 2355*(0.3/2048)*96 = 33.11719 
-                double myValue = CellSpace * (_emSize / (96 * UnitsPerEm)) * 96;
-                myValue = CellSpace * _emSize / UnitsPerEm;
-                //Debug.Assert(value == myValue, "??");
-                //Debug.Assert(value - myValue < 1e-3, "??");
-#endif
-                return Font.GetHeight(graphics._gfx);
-            }
-
-            if (graphics.TargetContext == XGraphicTargetContext.WPF)
-            {
-                double value = CellSpace * _emSize / UnitsPerEm;
-                return value;
-            }
-            // ReSharper disable HeuristicUnreachableCode
-            Debug.Fail("Either GDI or WPF.");
-            return 0;
-            // ReSharper restore HeuristicUnreachableCode
-#endif
 #endif
         }
 

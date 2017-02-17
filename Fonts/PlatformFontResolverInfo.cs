@@ -111,5 +111,7 @@ namespace PdfSharp.Fonts
             //_gdiFont = gdiFont;
         }
 #endif
+
+
     }
 }
