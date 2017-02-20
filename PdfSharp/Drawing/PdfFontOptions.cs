@@ -49,35 +49,9 @@ namespace PdfSharp.Drawing
         /// <summary>
         /// Initializes a new instance of the <see cref="XPdfFontOptions"/> class.
         /// </summary>
-        [Obsolete("Must not specify an embedding option anymore.")]
-        public XPdfFontOptions(PdfFontEncoding encoding, PdfFontEmbedding embedding)
-        {
-            _fontEncoding = encoding;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XPdfFontOptions"/> class.
-        /// </summary>
         public XPdfFontOptions(PdfFontEncoding encoding)
         {
             _fontEncoding = encoding;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XPdfFontOptions"/> class.
-        /// </summary>
-        [Obsolete("Must not specify an embedding option anymore.")]
-        public XPdfFontOptions(PdfFontEmbedding embedding)
-        {
-            _fontEncoding = PdfFontEncoding.WinAnsi;
-        }
-
-        /// <summary>
-        /// Gets a value indicating the font embedding.
-        /// </summary>
-        public PdfFontEmbedding FontEmbedding
-        {
-            get { return PdfFontEmbedding.Always; }
         }
 
         /// <summary>

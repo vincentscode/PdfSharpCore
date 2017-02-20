@@ -50,5 +50,7 @@ namespace PdfSharp.Fonts
         /// </summary>
         /// <param name="faceName">A face name previously retrieved by ResolveTypeface.</param>
         byte[] GetFont(string faceName);
+
+        string DefaultFontName { get; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MigraDoc.DocumentObjectModel;
+using MigraDoc.Rendering;
 using PdfSharp.Drawing;
 using PdfSharp.Fonts;
 using PdfSharp.Pdf;
@@ -28,6 +29,8 @@ namespace Example
 
             }*/
 
+            GlobalFontSettings.FontResolver = new FontResolver();
+
             var pdf = new PdfDocument();
             var doc = new Document();
             var sec = doc.AddSection();
@@ -51,11 +54,21 @@ namespace Example
             row.Cells[0].AddParagraph("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
             row.Cells[1].AddParagraph("dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd");
 
-           
+            PdfDocumentRenderer renderer = new PdfDocumentRenderer()
+            {
+                Document = doc,
+                PdfDocument = pdf
+            };
+            renderer.RenderDocument();
+
+            using (var stream = File.OpenWrite("test.pdf"))
+                pdf.Save(stream);
         }
     }
     class FontResolver : IFontResolver
     {
+        public string DefaultFontName => "Tinos";
+
         public byte[] GetFont(string faceName)
         {
             using (var ms = new MemoryStream())

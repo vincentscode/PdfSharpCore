@@ -1,11 +1,12 @@
-#region PDFsharp - A .NET library for processing PDF
+#region MigraDoc - Creating Documents on the Fly
 //
 // Authors:
-//   Stefan Lange
+//   Klaus Potzesny (mailto:Klaus.Potzesny@pdfsharp.com)
 //
-// Copyright (c) 2005-2016 empira Software GmbH, Cologne Area (Germany)
+// Copyright (c) 2001-2009 empira Software GmbH, Cologne (Germany)
 //
 // http://www.pdfsharp.com
+// http://www.migradoc.com
 // http://sourceforge.net/projects/pdfsharp
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -29,35 +30,13 @@
 
 using System;
 
-namespace PdfSharp.Pdf
+namespace MigraDoc.Rendering
 {
-    /// <summary>
-    /// Specifies the embedding options of an XFont when converted into PDF.
-    /// Font embedding is not optional anymore. So Always is the only option.
-    /// </summary>
-    public enum PdfFontEmbedding
-    {
-        /// <summary>
-        /// All fonts are embedded.
-        /// </summary>
-        Always,
-
-        /// <summary>
-        /// Fonts are not embedded. This is not an option anymore.
-        /// </summary>
-        [Obsolete("Fonts must always be embedded.")]
-        None,
-
-        /// <summary>
-        /// Unicode fonts are embedded, WinAnsi fonts are not embedded.
-        /// </summary>
-        [Obsolete("Fonts must always be embedded.")]
-        Default,
-
-        /// <summary>
-        /// Not yet implemented.
-        /// </summary>
-        [Obsolete("Fonts must always be embedded.")]
-        Automatic,
-    }
+  internal enum VerticalReference
+  {
+    PreviousElement = 0, //Default
+    AreaBoundary,
+    PageMargin,
+    Page
+  }
 }

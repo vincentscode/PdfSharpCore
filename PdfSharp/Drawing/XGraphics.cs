@@ -427,6 +427,44 @@ namespace PdfSharp.Drawing  // #??? aufräumen
 
             Initialize();
         }
+        XGraphics(XSize size, XGraphicsUnit pageUnit, XPageDirection pageDirection)
+        {
+            if (size == null)
+                throw new ArgumentNullException("size");
+            
+
+            _gsStack = new GraphicsStateStack(this);
+            _pageSizePoints = new XSize(size.Width, size.Height);
+            switch (pageUnit)
+            {
+                case XGraphicsUnit.Point:
+                    _pageSize = new XSize(size.Width, size.Height);
+                    break;
+
+                case XGraphicsUnit.Inch:
+                    _pageSize = new XSize(XUnit.FromPoint(size.Width).Inch, XUnit.FromPoint(size.Height).Inch);
+                    break;
+
+                case XGraphicsUnit.Millimeter:
+                    _pageSize = new XSize(XUnit.FromPoint(size.Width).Millimeter, XUnit.FromPoint(size.Height).Millimeter);
+                    break;
+
+                case XGraphicsUnit.Centimeter:
+                    _pageSize = new XSize(XUnit.FromPoint(size.Width).Centimeter, XUnit.FromPoint(size.Height).Centimeter);
+                    break;
+
+                case XGraphicsUnit.Presentation:
+                    _pageSize = new XSize(XUnit.FromPoint(size.Width).Presentation, XUnit.FromPoint(size.Height).Presentation);
+                    break;
+
+                default:
+                    throw new NotImplementedException("unit");
+            }
+            _pageUnit = pageUnit;
+            _pageDirection = pageDirection;
+
+            Initialize();
+        }
 
         /// <summary>
         /// Initializes a new instance of the XGraphics class used for drawing on a form.
@@ -586,7 +624,7 @@ namespace PdfSharp.Drawing  // #??? aufräumen
             return null;
 #endif
 #if PORTABLE // IOS_ANDROID_TODO
-            return null;
+            return new XGraphics(size, pageUnit, pageDirection);
 #endif
         }
 

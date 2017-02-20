@@ -1,11 +1,12 @@
-#region PDFsharp - A .NET library for processing PDF
+#region MigraDoc - Creating Documents on the Fly
 //
 // Authors:
-//   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
+//   Klaus Potzesny (mailto:Klaus.Potzesny@pdfsharp.com)
 //
-// Copyright (c) 2005-2009 empira Software GmbH, Cologne (Germany)
+// Copyright (c) 2001-2009 empira Software GmbH, Cologne (Germany)
 //
 // http://www.pdfsharp.com
+// http://www.migradoc.com
 // http://sourceforge.net/projects/pdfsharp
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -27,18 +28,15 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace MigraDoc.DocumentObjectModel
+using System;
+
+namespace MigraDoc.Rendering
 {
-  using MigraDoc;
-  internal class VersionInfo
+  /// <summary>
+  /// Formatting information for textframes.
+  /// </summary>
+  internal class TextFrameFormatInfo : ShapeFormatInfo
   {
-    public const string Title = "MigraDoc.DocumentObjectModel.dll";
-    public const string Description = "";
-    public const string Version = ProductVersionInfo.Version;
-    public const string Company = ProductVersionInfo.Company;
-    public const string Product = ProductVersionInfo.Product;
-    public const string Copyright = ProductVersionInfo.Copyright;
-    public const string Trademark = ProductVersionInfo.Trademark;
-    public const string Culture = "";
+    internal FormattedTextFrame formattedTextFrame;
   }
 }
