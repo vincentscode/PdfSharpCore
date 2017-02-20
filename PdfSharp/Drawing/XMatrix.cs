@@ -174,24 +174,6 @@ namespace Edf.Drawing
         }
 
         /// <summary>
-        /// Appends the specified matrix to this matrix. 
-        /// </summary>
-        [Obsolete("Use Append.")]
-        public void Multiply(XMatrix matrix)
-        {
-            Append(matrix);
-        }
-
-        /// <summary>
-        /// Prepends the specified matrix to this matrix. 
-        /// </summary>
-        [Obsolete("Use Prepend.")]
-        public void MultiplyPrepend(XMatrix matrix)
-        {
-            Prepend(matrix);
-        }
-
-        /// <summary>
         /// Multiplies this matrix with the specified matrix.
         /// </summary>
         public void Multiply(XMatrix matrix, XMatrixOrder order)

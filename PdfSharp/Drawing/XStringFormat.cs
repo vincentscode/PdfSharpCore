@@ -145,53 +145,6 @@ namespace PdfSharp.Drawing
         }
         XLineAlignment _lineAlignment;
 
-        //public StringTrimming Trimming { get; set; }
-
-        /// <summary>
-        /// Gets a new XStringFormat object that aligns the text left on the base line.
-        /// </summary>
-        [Obsolete("Use XStringFormats.Default. (Note plural in class name.)")]
-        public static XStringFormat Default
-        {
-            get { return XStringFormats.Default; }
-        }
-
-        /// <summary>
-        /// Gets a new XStringFormat object that aligns the text top left of the layout rectangle.
-        /// </summary>
-        [Obsolete("Use XStringFormats.Default. (Note plural in class name.)")]
-        public static XStringFormat TopLeft
-        {
-            get { return XStringFormats.TopLeft; }
-        }
-
-        /// <summary>
-        /// Gets a new XStringFormat object that centers the text in the middle of the layout rectangle.
-        /// </summary>
-        [Obsolete("Use XStringFormats.Center. (Note plural in class name.)")]
-        public static XStringFormat Center
-        {
-            get { return XStringFormats.Center; }
-        }
-
-        /// <summary>
-        /// Gets a new XStringFormat object that centers the text at the top of the layout rectangle.
-        /// </summary>
-        [Obsolete("Use XStringFormats.TopCenter. (Note plural in class name.)")]
-        public static XStringFormat TopCenter
-        {
-            get { return XStringFormats.TopCenter; }
-        }
-
-        /// <summary>
-        /// Gets a new XStringFormat object that centers the text at the bottom of the layout rectangle.
-        /// </summary>
-        [Obsolete("Use XStringFormats.BottomCenter. (Note plural in class name.)")]
-        public static XStringFormat BottomCenter
-        {
-            get { return XStringFormats.BottomCenter; }
-        }
-
 #if GDI
         //#if UseGdiObjects
         internal StringFormat RealizeGdiStringFormat()

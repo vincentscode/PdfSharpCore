@@ -286,28 +286,6 @@ namespace PdfSharp.Drawing
 
         }
 
-        /// <summary>
-        /// Returns an array that contains all the FontFamily objects associated with the current graphics context.
-        /// </summary>
-        [Obsolete("Use platform API directly.")]
-        public static XFontFamily[] Families
-        {
-            get
-            {
-                throw new InvalidOperationException("Obsolete and not implemted any more.");
-            }
-        }
-
-        /// <summary>
-        /// Returns an array that contains all the FontFamily objects available for the specified 
-        /// graphics context.
-        /// </summary>
-        [Obsolete("Use platform API directly.")]
-        public static XFontFamily[] GetFamilies(XGraphics graphics)
-        {
-            throw new InvalidOperationException("Obsolete and not implemted any more.");
-        }
-
 #if GDI
         /// <summary>
         /// Gets the underlying GDI+ font family object.

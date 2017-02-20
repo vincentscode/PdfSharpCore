@@ -335,15 +335,6 @@ namespace Edf.Drawing
         }
 
         /// <summary>
-        /// Subtracts a size from a point.
-        /// </summary>
-        [Obsolete("Use XVector instead of XSize as second parameter.")]
-        public static XPoint operator -(XPoint point, XSize size) // TODO: make obsolete
-        {
-            return new XPoint(point._x - size.Width, point._y - size.Height);
-        }
-
-        /// <summary>
         /// Subtracts a point from a point.
         /// </summary>
         public static XVector Subtract(XPoint point1, XPoint point2)

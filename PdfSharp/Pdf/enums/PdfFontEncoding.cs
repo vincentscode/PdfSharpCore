@@ -52,13 +52,7 @@ namespace PdfSharp.Pdf
         /// <summary>
         /// Cause a font to use Unicode encoding to encode text rendered with this font.
         /// </summary>
-        Unicode = 1,
-
-        /// <summary>
-        /// Unicode encoding.
-        /// </summary>
-        [Obsolete("Use WinAnsi or Unicode")]
-        Automatic = 1,  // Force Unicode when used.
+        Unicode = 1
 
         // Implementation note: PdfFontEncoding uses incorrect terms.
         // WinAnsi correspond to WinAnsiEncoding, while Unicode uses glyph indices.

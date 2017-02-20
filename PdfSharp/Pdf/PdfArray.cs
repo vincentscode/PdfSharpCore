@@ -340,22 +340,6 @@ namespace PdfSharp.Pdf
             }
 
             /// <summary>
-            /// Returns the indirect object if the value at the specified index is a PdfReference.
-            /// </summary>
-            [Obsolete("Use GetObject, GetDictionary, GetArray, or GetReference")]
-            public PdfObject GetIndirectObject(int index)
-            {
-                if (index < 0 || index >= Count)
-                    throw new ArgumentOutOfRangeException("index", index, PSSR.IndexOutOfRange);
-
-                PdfReference reference = this[index] as PdfReference;
-                if (reference != null)
-                    return reference.Value;
-
-                return null;
-            }
-
-            /// <summary>
             /// Gets the PdfObject with the specified index, or null, if no such object exists. If the index refers to
             /// a reference, the referenced PdfObject is returned.
             /// </summary>

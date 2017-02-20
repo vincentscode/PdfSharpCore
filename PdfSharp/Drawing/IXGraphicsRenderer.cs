@@ -46,12 +46,6 @@ namespace PdfSharp.Drawing
 
         #region Drawing
 
-        ///// <summary>
-        ///// Fills the entire drawing surface with the specified color.
-        ///// </summary>
-        //[Obsolete("Will be removed.")]
-        //void Clear(XColor color);
-
         /// <summary>
         /// Draws a straight line.
         /// </summary>

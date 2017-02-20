@@ -185,15 +185,6 @@ namespace PdfSharp.Pdf.Advanced
         }
 
         /// <summary>
-        /// Gets all indirect objects ordered by their object identifier.
-        /// </summary>
-        [Obsolete("Use GetAllObjects.")]  // Properties should not return arrays
-        public PdfObject[] AllObjects
-        {
-            get { return GetAllObjects(); }
-        }
-
-        /// <summary>
         /// Creates the indirect object of the specified type, adds it to the document, and
         /// returns the object.
         /// </summary>

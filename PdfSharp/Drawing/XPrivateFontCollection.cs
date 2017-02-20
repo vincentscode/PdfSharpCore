@@ -122,18 +122,6 @@ namespace PdfSharp.Drawing
         }
 #endif
 
-        /// <summary>
-        /// Adds the specified font data to the global PrivateFontCollection.
-        /// Family name and style are automatically retrieved from the font.
-        /// </summary>
-        [Obsolete("Use Add(Stream stream)")]
-        public static void AddFont(string filename)
-        {
-            throw new NotImplementedException();
-            //XGlyphTypeface glyphTypeface = new XGlyphTypeface(filename);
-            //Global.AddGlyphTypeface(glyphTypeface);
-        }
-
 #if GDI
         /// <summary>
         /// Adds the specified font data to the global PrivateFontCollection.
@@ -229,18 +217,6 @@ namespace PdfSharp.Drawing
             }
         }
 #endif
-
-        /// <summary>
-        /// Adds the specified font data to the global PrivateFontCollection.
-        /// Family name and style are automatically retrieved from the font.
-        /// </summary>
-        [Obsolete("Use Add(Stream stream)")]
-        public static void AddFont(Stream stream, string facename)
-        {
-            throw new NotImplementedException();
-            //XGlyphTypeface glyphTypeface = new XGlyphTypeface(stream, facename);
-            //Global.AddGlyphTypeface(glyphTypeface);
-        }
 
         //        /// <summary>
         //        /// Adds XGlyphTypeface to internal collection.

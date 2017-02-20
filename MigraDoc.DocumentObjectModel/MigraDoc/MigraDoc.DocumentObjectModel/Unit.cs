@@ -191,13 +191,6 @@ namespace MigraDoc.DocumentObjectModel
             }
         }
 
-        [Obsolete("Use Point")]
-        public double Pt
-        {
-            get { return Point; }
-            set { Point = value; }
-        }
-
         /// <summary>
         /// Gets or sets the value in centimeter.
         /// </summary>
@@ -236,13 +229,6 @@ namespace MigraDoc.DocumentObjectModel
                 this.type = UnitType.Centimeter;
                 this.initialized = true;
             }
-        }
-
-        [Obsolete("Use Centimeter")]
-        public double Cm
-        {
-            get { return Centimeter; }
-            set { Centimeter = value; }
         }
 
         /// <summary>
@@ -285,13 +271,6 @@ namespace MigraDoc.DocumentObjectModel
             }
         }
 
-        [Obsolete("Use Inch")]
-        public double In
-        {
-            get { return Inch; }
-            set { Inch = value; }
-        }
-
         /// <summary>
         /// Gets or sets the value in millimeter.
         /// </summary>
@@ -332,13 +311,6 @@ namespace MigraDoc.DocumentObjectModel
             }
         }
 
-        [Obsolete("Use Millimeter")]
-        public double Mm
-        {
-            get { return Millimeter; }
-            set { Millimeter = value; }
-        }
-
         /// <summary>
         /// Gets or sets the value in pica.
         /// </summary>
@@ -377,13 +349,6 @@ namespace MigraDoc.DocumentObjectModel
                 this.type = UnitType.Pica;
                 this.initialized = true;
             }
-        }
-
-        [Obsolete("Use Pica")]
-        public double Pc
-        {
-            get { return Pica; }
-            set { Pica = value; }
         }
         #endregion
 
@@ -483,12 +448,6 @@ namespace MigraDoc.DocumentObjectModel
             return unit;
         }
 
-        [Obsolete("Use FromCentimer")]
-        public static Unit FromCm(double value)
-        {
-            return FromCentimeter(value);
-        }
-
         /// <summary>
         /// Returns an Unit object. Sets type to millimeter.
         /// </summary>
@@ -498,15 +457,6 @@ namespace MigraDoc.DocumentObjectModel
             unit.value = (float)value;
             unit.type = UnitType.Millimeter;
             return unit;
-        }
-
-        /// <summary>
-        /// Returns an Unit object. Sets type to millimeter.
-        /// </summary>
-        [Obsolete("Use FromMillimeter")]
-        public static Unit FromMm(double value)
-        {
-            return FromMillimeter(value);
         }
 
         /// <summary>

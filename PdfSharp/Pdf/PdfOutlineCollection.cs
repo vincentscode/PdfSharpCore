@@ -51,19 +51,6 @@ namespace PdfSharp.Pdf
         }
 
         /// <summary>
-        /// Indicates whether the outline collection has at least one entry.
-        /// </summary>
-        [Obsolete("Use 'Count > 0' - HasOutline will throw exception.")]
-        public bool HasOutline  // DELETE: 15-10-01
-        {
-            get
-            {
-                //return Count > 0;
-                throw new InvalidOperationException("Use 'Count > 0'");
-            }
-        }
-
-        /// <summary>
         /// Removes the first occurrence of a specific item from the collection.
         /// </summary>
         public bool Remove(PdfOutline item)

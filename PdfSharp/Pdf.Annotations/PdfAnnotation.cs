@@ -69,16 +69,6 @@ namespace PdfSharp.Pdf.Annotations
         }
 
         /// <summary>
-        /// Removes an annotation from the document
-        /// <seealso cref="PdfAnnotations.Remove(PdfAnnotation)"/>
-        /// </summary>
-        [Obsolete("Use 'Parent.Remove(this)'")]
-        public void Delete()
-        {
-            Parent.Remove(this);
-        }
-
-        /// <summary>
         /// Gets or sets the annotation flags of this instance.
         /// </summary>
         public PdfAnnotationFlags Flags
