@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ImageSharp" Version="1.0.0-alpha2-00075" />
-    <PackageReference Include="ImageSharp.Formats.Jpeg" Version="1.0.0-alpha2-00075" />
-    <PackageReference Include="ImageSharp.Processing" Version="1.0.0-alpha2-00063" />
+    <PackageReference Include="ImageSharp" Version="1.0.0-alpha2-00090" />
+    <PackageReference Include="ImageSharp.Formats.Jpeg" Version="1.0.0-alpha2-00090" />
+    <PackageReference Include="ImageSharp.Processing" Version="1.0.0-alpha2-00078" />
   </ItemGroup>
 
 </Project>

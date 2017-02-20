@@ -943,11 +943,6 @@ namespace PdfSharp.Drawing  // #??? aufräumen
         PdfFontEncoding _muh;
 
         /// <summary>
-        /// A value indicating whether GDI+ or WPF is used as context.
-        /// </summary>
-        internal XGraphicTargetContext TargetContext;
-
-        /// <summary>
         /// Gets or sets the unit of measure used for page coordinates.
         /// CURRENTLY ONLY POINT IS IMPLEMENTED.
         /// </summary>
