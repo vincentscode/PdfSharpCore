@@ -35,6 +35,7 @@ using MigraDoc.DocumentObjectModel;
 using PdfSharp.Drawing;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.Rendering.MigraDoc.Rendering.Resources;
+using PdfSharp.Fonts;
 
 namespace MigraDoc.Rendering
 {
@@ -153,7 +154,7 @@ namespace MigraDoc.Rendering
             }
 
             // Create stub font
-            XFont font = new XFont("Courier New", 8);
+            XFont font = new XFont(GlobalFontSettings.FontResolver.DefaultFontName, 8);
             this.gfx.DrawString(failureString, font, XBrushes.Red, destRect, XStringFormats.Center);
         }
 

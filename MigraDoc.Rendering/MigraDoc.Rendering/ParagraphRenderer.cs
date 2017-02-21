@@ -40,6 +40,7 @@ using MigraDoc.DocumentObjectModel.IO;
 using MigraDoc.DocumentObjectModel.Fields;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.Rendering.MigraDoc.Rendering.Resources;
+using PdfSharp.Fonts;
 
 namespace MigraDoc.Rendering
 {
@@ -1290,17 +1291,17 @@ namespace MigraDoc.Rendering
                     {
                         case ListType.BulletList1:
                             symbol = "·";
-                            font = new XFont("Symbol", size, style);
+                            font = new XFont(GlobalFontSettings.FontResolver.DefaultFontName, size, style);
                             break;
 
                         case ListType.BulletList2:
                             symbol = "o";
-                            font = new XFont("Courier New", size, style);
+                            font = new XFont(GlobalFontSettings.FontResolver.DefaultFontName, size, style);
                             break;
 
                         case ListType.BulletList3:
                             symbol = "§";
-                            font = new XFont("Wingdings", size, style);
+                            font = new XFont(GlobalFontSettings.FontResolver.DefaultFontName, size, style);
                             break;
 
                         case ListType.NumberList1:

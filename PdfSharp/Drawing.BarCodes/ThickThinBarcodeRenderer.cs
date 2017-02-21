@@ -27,6 +27,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using PdfSharp.Fonts;
 using System;
 
 namespace PdfSharp.Drawing.BarCodes
@@ -147,7 +148,7 @@ namespace PdfSharp.Drawing.BarCodes
         internal void RenderText(BarCodeRenderInfo info)
         {
             if (info.Font == null)
-                info.Font = new XFont("Courier New", Size.Height / 6);
+                info.Font = new XFont(GlobalFontSettings.FontResolver.DefaultFontName, Size.Height / 6);
             XPoint center = info.Position + CalcDistance(Anchor, AnchorType.TopLeft, Size);
 
             switch (TextLocation)
