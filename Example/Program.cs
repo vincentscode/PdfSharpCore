@@ -42,16 +42,19 @@ namespace Example
             table.Borders.Top.Width = 0.5;
             table.Borders.Right.Width = 0.5;
             table.Borders.Bottom.Width = 0.5;
-            table.AddColumn(100);
-            table.AddColumn(100);
+            table.AddColumn("10cm");
+            table.AddColumn("10cm");
             table.AddRow();
             table.AddRow();
 
             var row = table.AddRow();
-            row.Cells[0].AddParagraph("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            var paragraph = row.Cells[0].AddParagraph();
+            paragraph.Format.SpaceAfter = "5cm";
+            paragraph.AddText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             row.Cells[1].AddParagraph("bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb");
             row = table.AddRow();
-            row.Cells[0].AddParagraph("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
+            paragraph = row.Cells[0].AddParagraph();
+            paragraph.AddText("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
             row.Cells[1].AddParagraph("dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd dddd");
 
             PdfDocumentRenderer renderer = new PdfDocumentRenderer()
