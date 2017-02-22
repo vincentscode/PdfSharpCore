@@ -169,7 +169,14 @@ namespace MigraDoc.Rendering
                 XImage xImage = null;
                 try
                 {
-                    xImage = XImage.FromImage(formatInfo.ImageSouce.Image);
+                    if (formatInfo.ImageSouce != null)
+                    {
+                        xImage = XImage.FromImage(formatInfo.ImageSouce.Image);
+                    }
+                    else
+                    {
+                        xImage = XImage.FromFile(this.imageFilePath);
+                    }
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -203,8 +210,18 @@ namespace MigraDoc.Rendering
                     bool scaleHeightSet = !this.image.IsNull("ScaleHeight");
                     bool scaleWidthSet = !this.image.IsNull("ScaleWidth");
 
-                    if (lockRatio && !(scaleHeightSet && scaleWidthSet))
+                    if (lockRatio)
                     {
+                        if(usrWidthSet && usrHeightSet)
+                        {
+                            if(inherentHeight / usrHeight > inherentWidth / usrWidth)
+                            {
+                                usrWidthSet = false;
+                            } else
+                            {
+                                usrHeightSet = false;
+                            }
+                        }
                         if (usrWidthSet && !usrHeightSet)
                         {
                             resultHeight = inherentHeight / inherentWidth * usrWidth;
@@ -219,12 +236,12 @@ namespace MigraDoc.Rendering
                             resultWidth = inherentWidth;
                         }
 
-                        if (scaleHeightSet)
+                        if (scaleHeightSet || scaleHeightSet && scaleWidthSet && scaleHeight < scaleWidth)
                         {
                             resultHeight = resultHeight * scaleHeight;
                             resultWidth = resultWidth * scaleHeight;
                         }
-                        if (scaleWidthSet)
+                        else if (scaleWidthSet || scaleHeightSet && scaleWidthSet && scaleHeight > scaleWidth)
                         {
                             resultHeight = resultHeight * scaleWidth;
                             resultWidth = resultWidth * scaleWidth;
