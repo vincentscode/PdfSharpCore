@@ -125,6 +125,24 @@ namespace MigraDoc.DocumentObjectModel.MigraDoc.DocumentObjectModel.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image[Path={0}].
+        /// </summary>
+        internal static string ImagePathString {
+            get {
+                return ResourceManager.GetString("ImagePathString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image[{0}].
+        /// </summary>
+        internal static string ImageTypeString {
+            get {
+                return ResourceManager.GetString("ImageTypeString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inserting null into a collection is not allowed..
         /// </summary>
         internal static string InsertNullNotAllowed {

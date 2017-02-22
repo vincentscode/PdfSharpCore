@@ -35,6 +35,7 @@ using MigraDoc.DocumentObjectModel.IO;
 using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.DocumentObjectModel.Visitors;
+using MigraDoc.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
 
 namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 {
@@ -120,9 +121,9 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// <summary>
     /// Adds a new Image to the text area.
     /// </summary>
-    public Image AddImage(string fileName)
+    public Image AddImage(ImageSource imageSource)
     {
-      return this.Elements.AddImage(fileName);
+      return this.Elements.AddImage(imageSource);
     }
 
     /// <summary>

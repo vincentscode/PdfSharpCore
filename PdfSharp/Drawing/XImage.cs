@@ -30,38 +30,10 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using PdfSharp.Pdf;
-#if CORE
-using System.Drawing;
-#endif
-#if GDI
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-#endif
-#if WPF
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-#endif
-#if NETFX_CORE || UWP
-using Windows.UI.Xaml.Media.Imaging;
-#endif
-using PdfSharp.Drawing.Internal;
-using PdfSharp.Internal;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf.Advanced;
 using ImageSharp;
 using ImageSharp.Formats;
-
-#if __IOS__
-using UIKit;
-using Foundation;
-#endif
-
-// WPFHACK
-#pragma warning disable 0169
-#pragma warning disable 0649
 
 namespace PdfSharp.Drawing
 {
@@ -101,151 +73,10 @@ namespace PdfSharp.Drawing
         protected XImage()
         { }
 
-#if GDI || CORE || WPF
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XImage"/> class from an image read by ImageImporter.
-        /// </summary>
-        /// <param name="image">The image.</param>
-        /// <exception cref="System.ArgumentNullException">image</exception>
-        XImage(ImportedImage image)
-        {
-            if (image == null)
-                throw new ArgumentNullException("image");
-
-            _importedImage = image;
-            Initialize();
-        }
-#endif
-
-#if GDI
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XImage"/> class from a GDI+ image.
-        /// </summary>
-        XImage(Image image)
-        {
-            _gdiImage = image;
-#if WPF  // Is defined in hybrid build.
-            _wpfImage = ImageHelper.CreateBitmapSource(image);
-#endif
-            Initialize();
-        }
-#endif
-
-#if WPF
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XImage"/> class from a WPF image.
-        /// </summary>
-        XImage(BitmapSource image)
-        {
-            _wpfImage = image;
-            Initialize();
-        }
-#endif
-
-#if WPF
-        XImage(Uri uri)
-        {
-            //var uriSource = new Uri(@"/WpfApplication1;component/Untitled.png", UriKind.Relative); foo.Source = new BitmapImage(uriSource);
-
-            _wpfImage = BitmapFromUri(uri);
-
-            //throw new NotImplementedException("XImage from Uri.");
-            // WPF
-            //Image finalImage = new Image();
-            //finalImage.Width = 80;
-            //...BitmapImage logo = new BitmapImage()
-            //logo.BeginInit();logo.UriSource = new Uri("pack://application:,,,/ApplicationName;component/Resources/logo.png");
-            //logo.EndInit();
-            //...finalImage.Source = logo;
-        }
-
-        /// <summary>
-        /// Creates an BitmapImage from URI. Sets BitmapCacheOption.OnLoad for WPF to prevent image file from being locked.
-        /// </summary>
-        public static BitmapImage BitmapFromUri(Uri uri)
-        {
-#if !SILVERLIGHT
-            // Using new BitmapImage(uri) will leave a lock on the file, leading to problems with temporary image files in server environments.
-            // We use BitmapCacheOption.OnLoad to prevent this lock.
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = uri;
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            return bitmap;
-#else
-            return new BitmapImage(uri);
-#endif
-        }
-#endif
-
-#if NETFX_CORE
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XImage"/> class from a WinRT image.
-        /// </summary>
-        XImage(BitmapSource image)
-        {
-            _wrtImage = image;
-            Initialize();
-        }
-#endif
-
         // Useful stuff here: http://stackoverflow.com/questions/350027/setting-wpf-image-source-in-code
         XImage(string path)
         {
-#if !NETFX_CORE && !UWP && !PORTABLE
-            path = Path.GetFullPath(path);
-            if (!File.Exists(path))
-                throw new FileNotFoundException(PSSR.FileNotFound(path));
-            //throw new FileNotFoundException(PSSR.FileNotFound(path), path);
-#endif
-            _path = path;
-
-            //FileStream file = new FileStream(filename, FileMode.Open);
-            //BitsLength = (int)file.Length;
-            //Bits = new byte[BitsLength];
-            //file.Read(Bits, 0, BitsLength);
-            //file.Close();
-#if CORE_WITH_GDI || GDI
-            try
-            {
-                Lock.EnterGdiPlus();
-                _gdiImage = Image.FromFile(path);
-            }
-            finally { Lock.ExitGdiPlus(); }
-#endif
-#if WPF && !SILVERLIGHT
-            //BitmapSource.Create()
-            // BUG: BitmapImage locks the file
-            //_wpfImage = new BitmapImage(new Uri(path));  // AGHACK
-            // Suggested change from forum to prevent locking.
-            _wpfImage = BitmapFromUri(new Uri(path));
-#endif
-#if WPF && SILVERLIGHT
-            //BitmapSource.Create()
-            // BUG: BitmapImage locks the file
-            //_wpfImage = new BitmapImage(new Uri(path));  // AGHACK
-            //Debug-Break.Break();
-#endif
-
-#if __IOS__
-            _iosImage = UIImage.FromFile(path);
-#endif
-#if __ANDROID__
-            _androidImage = Android.Graphics.BitmapFactory.DecodeFile(_path);
-#endif
             _image = new Image(_path);
-
-#if true_
-            float vres = image.VerticalResolution;
-            float hres = image.HorizontalResolution;
-            SizeF size = image.PhysicalDimension;
-            int flags = image.Flags;
-            Size sz = image.Size;
-            GraphicsUnit units = GraphicsUnit.Millimeter;
-            RectangleF rect = image.GetBounds(ref units);
-            int width = image.Width;
-#endif
             Initialize();
         }
 
@@ -262,108 +93,10 @@ namespace PdfSharp.Drawing
         {
             // Create a dummy unique path.
             _path = "*" + Guid.NewGuid().ToString("B");
-
-            // TODO: Create a fingerprint of the bytes in the stream to identify identical images.
-            // TODO: Merge code for CORE_WITH_GDI and GDI.
-#if CORE_WITH_GDI
-            // Create a GDI+ image.
-            try
-            {
-                Lock.EnterGdiPlus();
-                _gdiImage = Image.FromStream(stream);
-            }
-            finally { Lock.ExitGdiPlus(); }
-#endif
-#if GDI
-            // Create a GDI+ image.
-            try
-            {
-                Lock.EnterGdiPlus();
-                _gdiImage = Image.FromStream(stream);
-            }
-            finally { Lock.ExitGdiPlus(); }
-#endif
-#if WPF && !SILVERLIGHT
-            // Create a WPF BitmapImage.
-            BitmapImage bmi = new BitmapImage();
-            bmi.BeginInit();
-            bmi.StreamSource = stream;
-            bmi.EndInit();
-            _wpfImage = bmi;
-#endif
-#if SILVERLIGHT
-            int length = (int)stream.Length;
-            stream.Seek(0, SeekOrigin.Begin);
-            //_bytes = new byte[length];
-            //stream.Read(_bytes, 0, length);
-            //stream.Seek(0, SeekOrigin.Begin);
-
-            // Create a Silverlight BitmapImage.
-            _wpfImage = new BitmapImage();
-            _wpfImage.SetSource(stream);
-#endif
-#if __IOS__
-            _iosImage = UIImage.LoadFromData(NSData.FromStream(stream));
-#endif
-#if __ANDROID__
-            _androidImage = Android.Graphics.BitmapFactory.DecodeStream(stream);
-#endif
             _image = new Image(stream);
-
-#if true_
-            float vres = image.VerticalResolution;
-            float hres = image.HorizontalResolution;
-            SizeF size = image.PhysicalDimension;
-            int flags = image.Flags;
-            Size sz = image.Size;
-            GraphicsUnit units = GraphicsUnit.Millimeter;
-            RectangleF rect = image.GetBounds(ref units);
-            int width = image.Width;
-#endif
-            // Must assign _stream before Initialize().
             _stream = stream;
             Initialize();
         }
-
-#if GDI //|| CORE
-#if UseGdiObjects
-        /// <summary>
-        /// Implicit conversion from Image to XImage.
-        /// </summary>
-        public static implicit operator XImage(Image image)
-        {
-            return new XImage(image);
-        }
-#endif
-
-        /// <summary>
-        /// Conversion from Image to XImage.
-        /// </summary>
-        public static XImage FromGdiPlusImage(Image image)
-        {
-            return new XImage(image);
-        }
-#endif
-
-#if WPF
-        /// <summary>
-        /// Conversion from BitmapSource to XImage.
-        /// </summary>
-        public static XImage FromBitmapSource(BitmapSource image)
-        {
-            return new XImage(image);
-        }
-#endif
-
-#if NETFX_CORE
-        /// <summary>
-        /// Conversion from BitmapSource to XImage.
-        /// </summary>
-        public static XImage FromBitmapSource(BitmapSource image)
-        {
-            return new XImage(image);
-        }
-#endif
 
         /// <summary>
         /// Creates an image from the specified file.
@@ -391,78 +124,6 @@ namespace PdfSharp.Drawing
             //  return new XPdfForm(path);
             return new XImage(stream);
         }
-
-#if DEBUG
-#if CORE || GDI || WPF
-        /// <summary>
-        /// Creates an image from the specified file.
-        /// </summary>
-        /// <param name="path">The path to a BMP, PNG, GIF, JPEG, TIFF, or PDF file.</param>
-        /// <param name="platformIndependent">Uses an platform-independent implementation if set to true.
-        /// The platform-dependent implementation, if available, will support more image formats.</param>
-        /// <param name="document">The document used to obtain the options.</param>
-        internal static XImage FromFile(string path, bool platformIndependent, PdfDocument document)
-        {
-            if (!platformIndependent)
-                return FromFile(path);
-
-            // TODO: Check PDF file.
-
-            ImageImporter ii = ImageImporter.GetImageImporter();
-            ImportedImage i = ii.ImportImage(path, document);
-
-            if (i == null)
-                throw new InvalidOperationException("Unsupported image format.");
-
-            XImage image = new XImage(i);
-            image._path = path;
-            return image;
-        }
-
-        /// <summary>
-        /// Creates an image from the specified stream.<br/>
-        /// Silverlight supports PNG and JPEF only.
-        /// </summary>
-        /// <param name="stream">The stream containing a BMP, PNG, GIF, JPEG, TIFF, or PDF file.</param>
-        /// <param name="platformIndependent">Uses an platform-independent implementation if set to true.
-        /// The platform-dependent implementation, if available, will support more image formats.</param>
-        /// <param name="document">The document used to obtain the options.</param>
-        internal static XImage FromStream(Stream stream, bool platformIndependent, PdfDocument document)
-        {
-            if (!platformIndependent)
-                return FromStream(stream);
-
-            // TODO: Check PDF file.
-
-            ImageImporter ii = ImageImporter.GetImageImporter();
-            ImportedImage i = ii.ImportImage(stream, document);
-
-            if (i == null)
-                throw new InvalidOperationException("Unsupported image format.");
-
-            XImage image = new XImage(i);
-            image._stream = stream;
-            return image;
-        }
-#endif
-#endif
-
-#if DEBUG
-#if CORE || GDI || WPF
-        /// <summary>
-        /// Creates an image.
-        /// </summary>
-        /// <param name="image">The imported image.</param>
-        [Obsolete("THHO4THHO Internal test code.")]
-        internal static XImage FromImportedImage(ImportedImage image)
-        {
-            if (image == null)
-                throw new ArgumentNullException("image");
-
-            return new XImage(image);
-        }
-#endif
-#endif
 
         /// <summary>
         /// Tests if a file exist. Supports PDF files with page number suffix.
@@ -492,245 +153,6 @@ namespace PdfSharp.Drawing
 
         internal void Initialize()
         {
-#if CORE || GDI || WPF
-            if (_importedImage != null)
-            {
-                ImportedImageJpeg iiJpeg = _importedImage as ImportedImageJpeg;
-                // In PDF there are two formats: JPEG and PDF bitmap.
-                if (iiJpeg != null)
-                    _format = XImageFormat.Jpeg;
-                else
-                    _format = XImageFormat.Png;
-                return;
-            }
-#endif
-
-#if CORE_WITH_GDI
-            if (_gdiImage != null)
-            {
-                // ImageFormat has no overridden Equals function.
-                string guid;
-                try
-                {
-                    Lock.EnterGdiPlus();
-                    guid = _gdiImage.RawFormat.Guid.ToString("B").ToUpper();
-                }
-                finally
-                {
-                    Lock.ExitGdiPlus();
-                }
-
-                switch (guid)
-                {
-                    case "{B96B3CAA-0728-11D3-9D7B-0000F81EF32E}":  // memoryBMP
-                    case "{B96B3CAB-0728-11D3-9D7B-0000F81EF32E}":  // bmp
-                    case "{B96B3CAF-0728-11D3-9D7B-0000F81EF32E}":  // png
-                        _format = XImageFormat.Png;
-                        break;
-
-                    case "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}":  // jpeg
-                        _format = XImageFormat.Jpeg;
-                        break;
-
-                    case "{B96B3CB0-0728-11D3-9D7B-0000F81EF32E}":  // gif
-                        _format = XImageFormat.Gif;
-                        break;
-
-                    case "{B96B3CB1-0728-11D3-9D7B-0000F81EF32E}":  // tiff
-                        _format = XImageFormat.Tiff;
-                        break;
-
-                    case "{B96B3CB5-0728-11D3-9D7B-0000F81EF32E}":  // icon
-                        _format = XImageFormat.Icon;
-                        break;
-
-                    case "{B96B3CAC-0728-11D3-9D7B-0000F81EF32E}":  // emf
-                    case "{B96B3CAD-0728-11D3-9D7B-0000F81EF32E}":  // wmf
-                    case "{B96B3CB2-0728-11D3-9D7B-0000F81EF32E}":  // exif
-                    case "{B96B3CB3-0728-11D3-9D7B-0000F81EF32E}":  // photoCD
-                    case "{B96B3CB4-0728-11D3-9D7B-0000F81EF32E}":  // flashPIX
-
-                    default:
-                        throw new InvalidOperationException("Unsupported image format.");
-                }
-                return;
-            }
-#endif
-#if GDI
-            if (_gdiImage != null)
-            {
-                // ImageFormat has no overridden Equals function.
-                string guid;
-                try
-                {
-                    Lock.EnterGdiPlus();
-                    guid = _gdiImage.RawFormat.Guid.ToString("B").ToUpper();
-                }
-                finally { Lock.ExitGdiPlus(); }
-
-                switch (guid)
-                {
-                    case "{B96B3CAA-0728-11D3-9D7B-0000F81EF32E}":  // memoryBMP
-                    case "{B96B3CAB-0728-11D3-9D7B-0000F81EF32E}":  // bmp
-                    case "{B96B3CAF-0728-11D3-9D7B-0000F81EF32E}":  // png
-                        _format = XImageFormat.Png;
-                        break;
-
-                    case "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}":  // jpeg
-                        _format = XImageFormat.Jpeg;
-                        break;
-
-                    case "{B96B3CB0-0728-11D3-9D7B-0000F81EF32E}":  // gif
-                        _format = XImageFormat.Gif;
-                        break;
-
-                    case "{B96B3CB1-0728-11D3-9D7B-0000F81EF32E}":  // tiff
-                        _format = XImageFormat.Tiff;
-                        break;
-
-                    case "{B96B3CB5-0728-11D3-9D7B-0000F81EF32E}":  // icon
-                        _format = XImageFormat.Icon;
-                        break;
-
-                    case "{B96B3CAC-0728-11D3-9D7B-0000F81EF32E}":  // emf
-                    case "{B96B3CAD-0728-11D3-9D7B-0000F81EF32E}":  // wmf
-                    case "{B96B3CB2-0728-11D3-9D7B-0000F81EF32E}":  // exif
-                    case "{B96B3CB3-0728-11D3-9D7B-0000F81EF32E}":  // photoCD
-                    case "{B96B3CB4-0728-11D3-9D7B-0000F81EF32E}":  // flashPIX
-
-                    default:
-                        throw new InvalidOperationException("Unsupported image format.");
-                }
-                return;
-            }
-#endif
-#if WPF
-#if !SILVERLIGHT
-            if (_wpfImage != null)
-            {
-                //string filename = GetImageFilename(_wpfImage);
-                // WPF treats all images as images.
-                // We give JPEG images a special treatment.
-                // Test if it's a JPEG.
-                bool isJpeg = IsJpeg; // TestJpeg(filename);
-                if (isJpeg)
-                {
-                    _format = XImageFormat.Jpeg;
-                    return;
-                }
-
-                string pixelFormat = _wpfImage.Format.ToString();
-                switch (pixelFormat)
-                {
-                    case "Bgr32":
-                    case "Bgra32":
-                    case "Pbgra32":
-                        _format = XImageFormat.Png;
-                        break;
-
-                    //case "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}":  // jpeg
-                    //  format = XImageFormat.Jpeg;
-                    //  break;
-
-                    //case "{B96B3CB0-0728-11D3-9D7B-0000F81EF32E}":  // gif
-                    case "BlackWhite":
-                    case "Indexed1":
-                    case "Indexed4":
-                    case "Indexed8":
-                    case "Gray8":
-                        _format = XImageFormat.Gif;
-                        break;
-
-                    //case "{B96B3CB1-0728-11D3-9D7B-0000F81EF32E}":  // tiff
-                    //  format = XImageFormat.Tiff;
-                    //  break;
-
-                    //case "{B96B3CB5-0728-11D3-9D7B-0000F81EF32E}":  // icon
-                    //  format = XImageFormat.Icon;
-                    //  break;
-
-                    //case "{B96B3CAC-0728-11D3-9D7B-0000F81EF32E}":  // emf
-                    //case "{B96B3CAD-0728-11D3-9D7B-0000F81EF32E}":  // wmf
-                    //case "{B96B3CB2-0728-11D3-9D7B-0000F81EF32E}":  // exif
-                    //case "{B96B3CB3-0728-11D3-9D7B-0000F81EF32E}":  // photoCD
-                    //case "{B96B3CB4-0728-11D3-9D7B-0000F81EF32E}":  // flashPIX
-
-                    default:
-                        Debug.Assert(false, "Unknown pixel format: " + pixelFormat);
-                        _format = XImageFormat.Gif;
-                        break;// throw new InvalidOperationException("Unsupported image format.");
-                }
-            }
-#else
-            if (_wpfImage != null)
-            {
-                // TODO improve implementation for Silverlight.
-
-                //string pixelFormat = "jpg"; //_wpfImage...Format.ToString();
-                //string filename = GetImageFilename(_wpfImage);
-                // WPF treats all images as images.
-                // We give JPEG images a special treatment.
-                // Test if it's a JPEG:
-                bool isJpeg = true; // IsJpeg; // TestJpeg(filename);
-                if (isJpeg)
-                {
-                    _format = XImageFormat.Jpeg;
-                    return;
-                }
-
-                /*
-                switch (pixelFormat)
-                {
-                    case "Bgr32":
-                    case "Bgra32":
-                    case "Pbgra32":
-                        _format = XImageFormat.Png;
-                        break;
-
-                    //case "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}":  // jpeg
-                    //  format = XImageFormat.Jpeg;
-                    //  break;
-
-                    //case "{B96B3CB0-0728-11D3-9D7B-0000F81EF32E}":  // gif
-                    case "BlackWhite":
-                    case "Indexed1":
-                    case "Indexed4":
-                    case "Indexed8":
-                    case "Gray8":
-                        _format = XImageFormat.Gif;
-                        break;
-
-                    //case "{B96B3CB1-0728-11D3-9D7B-0000F81EF32E}":  // tiff
-                    //  format = XImageFormat.Tiff;
-                    //  break;
-
-                    //case "{B96B3CB5-0728-11D3-9D7B-0000F81EF32E}":  // icon
-                    //  format = XImageFormat.Icon;
-                    //  break;
-
-                    //case "{B96B3CAC-0728-11D3-9D7B-0000F81EF32E}":  // emf
-                    //case "{B96B3CAD-0728-11D3-9D7B-0000F81EF32E}":  // wmf
-                    //case "{B96B3CB2-0728-11D3-9D7B-0000F81EF32E}":  // exif
-                    //case "{B96B3CB3-0728-11D3-9D7B-0000F81EF32E}":  // photoCD
-                    //case "{B96B3CB4-0728-11D3-9D7B-0000F81EF32E}":  // flashPIX
-
-                    default:
-                        Debug.Assert(false, "Unknown pixel format: " + pixelFormat);
-                        _format = XImageFormat.Gif;
-                        break;// throw new InvalidOperationException("Unsupported image format.");
-                }
-                 */
-            }
-#endif
-#endif
-
-#if __IOS__
-            _format = XImageFormat.Jpeg;
-#endif
-
-#if __ANDROID__
-            _format = XImageFormat.Jpeg;
-#endif
             if (_image != null)
             {
                 switch (_image.CurrentImageFormat.Extension.ToLower())
@@ -777,39 +199,13 @@ namespace PdfSharp.Drawing
             return ms;
         }
 #endif
-
-#if __ANDROID__
+        
         public MemoryStream AsJpeg()
         {
             var ms = new MemoryStream();
-
-            using (Android.Graphics.Bitmap imageWithBG = Android.Graphics.Bitmap.CreateBitmap(_androidImage.Width, _androidImage.Height, _androidImage.GetConfig()))
-            {
-                imageWithBG.EraseColor(Android.Graphics.Color.White);  // set its background to white, or whatever color you want
-                Android.Graphics.Canvas canvas = new Android.Graphics.Canvas(imageWithBG);  // create a canvas to draw on the new image
-                canvas.DrawBitmap(_androidImage, 0f, 0f, null); // draw old image on the background
-
-                imageWithBG.Compress(Android.Graphics.Bitmap.CompressFormat.Jpeg, 70, ms);
-
-                imageWithBG.Recycle();
-            }
-
-            return ms;
-        }
-#endif
-
-        public MemoryStream AsJpeg()
-        {
-            if (_image == null)
-            {
-                return null;
-            }
-            var ms = new MemoryStream();
-
-
-
-            _image.Save(ms, new JpegFormat());
-
+            _image.AutoOrient();
+            _image.SaveAsJpeg(ms);
+            ms.Position = 0;
             return ms;
         }
 
@@ -1347,7 +743,7 @@ namespace PdfSharp.Drawing
                 return 96;
 #endif
 #if PORTABLE
-                return 0;
+                return 96;
 #endif
             }
         }
@@ -1402,7 +798,7 @@ namespace PdfSharp.Drawing
                 return 96;
 #endif
 #if PORTABLE
-                return 0;
+                return 96;
 #endif
             }
         }

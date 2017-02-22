@@ -138,6 +138,12 @@
   <data name="IdentifierExpected" xml:space="preserve">
     <value>Identifier expected: '{0}'.</value>
   </data>
+  <data name="ImagePathString" xml:space="preserve">
+    <value>Image[Path={0}]</value>
+  </data>
+  <data name="ImageTypeString" xml:space="preserve">
+    <value>Image[{0}]</value>
+  </data>
   <data name="InsertNullNotAllowed" xml:space="preserve">
     <value>Inserting null into a collection is not allowed.</value>
   </data>

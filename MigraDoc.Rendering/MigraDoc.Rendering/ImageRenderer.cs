@@ -36,6 +36,7 @@ using PdfSharp.Drawing;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.Rendering.MigraDoc.Rendering.Resources;
 using PdfSharp.Fonts;
+using static MigraDoc.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource;
 
 namespace MigraDoc.Rendering
 {
@@ -61,17 +62,24 @@ namespace MigraDoc.Rendering
 
         internal override void Format(Area area, FormatInfo previousFormatInfo)
         {
-            this.imageFilePath = image.GetFilePath(this.documentRenderer.WorkingDirectory);
-            //if (!File.Exists(this.imageFilePath))
-            if (!XImage.ExistsFile(this.imageFilePath))
-            {
-                this.failure = ImageFailure.FileNotFound;
-
-                Debug.WriteLine(string.Format(AppResources.ImageNotFound, image.Name), "warning");
-            }
             ImageFormatInfo formatInfo = (ImageFormatInfo)this.renderInfo.FormatInfo;
+            if (image.Source is ImageFileSource fileSource)
+            {
+                this.imageFilePath = image.GetFilePath(this.documentRenderer.WorkingDirectory);
+                //if (!File.Exists(this.imageFilePath))
+                if (!XImage.ExistsFile(this.imageFilePath))
+                {
+                    this.failure = ImageFailure.FileNotFound;
+
+                    Debug.WriteLine(string.Format(AppResources.ImageNotFound, fileSource.Path), "warning");
+                }
+                formatInfo.ImagePath = this.imageFilePath;
+            }
+            else
+            {
+                formatInfo.ImageSouce = image.Source;
+            }
             formatInfo.failure = this.failure;
-            formatInfo.ImagePath = this.imageFilePath;
             CalculateImageDimensions();
             base.Format(area, previousFormatInfo);
         }
@@ -104,21 +112,15 @@ namespace MigraDoc.Rendering
 
             if (formatInfo.failure == ImageFailure.None)
             {
-                XImage xImage = null;
                 try
                 {
                     XRect srcRect = new XRect(formatInfo.CropX, formatInfo.CropY, formatInfo.CropWidth, formatInfo.CropHeight);
-                    xImage = XImage.FromFile(formatInfo.ImagePath);
-                    this.gfx.DrawImage(xImage, destRect, srcRect, XGraphicsUnit.Point); //Pixel.
+                    using (var xImage = XImage.FromImage(formatInfo.ImageSouce.Image))
+                        this.gfx.DrawImage(xImage, destRect, srcRect, XGraphicsUnit.Point); //Pixel.
                 }
                 catch (Exception)
                 {
                     RenderFailureImage(destRect);
-                }
-                finally
-                {
-                    if (xImage != null)
-                        xImage.Dispose();
                 }
             }
             else
@@ -167,7 +169,7 @@ namespace MigraDoc.Rendering
                 XImage xImage = null;
                 try
                 {
-                    xImage = XImage.FromFile(this.imageFilePath);
+                    xImage = XImage.FromImage(formatInfo.ImageSouce.Image);
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -284,7 +286,7 @@ namespace MigraDoc.Rendering
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format(AppResources.ImageNotReadable, image.Name, ex.Message));
+                    Debug.WriteLine(string.Format(AppResources.ImageNotReadable, image.Source.ToString(), ex.Message));
                     formatInfo.failure = ImageFailure.NotRead;
                 }
                 finally

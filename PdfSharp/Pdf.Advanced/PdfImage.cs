@@ -255,125 +255,11 @@ namespace PdfSharp.Pdf.Advanced
         /// </summary>
         void InitializeJpeg()
         {
-            // PDF supports JPEG, so there's not much to be done.
-            MemoryStream memory = null;
-            // Close the MemoryStream if we create it.
-            bool ownMemory = false;
-
             byte[] imageBits = null;
-            int streamLength = 0;
 
-#if CORE || GDI || WPF
-            if (_image._importedImage != null)
+            using (MemoryStream memory = _image.AsJpeg())
             {
-                ImageDataDct idd = (ImageDataDct)_image._importedImage.ImageData;
-                imageBits = idd.Data;
-                streamLength = idd.Length;
-            }
-#endif
-
-#if CORE || GDI
-            if (_image._importedImage == null)
-            {
-                if (!_image._path.StartsWith("*"))
-                {
-                    // Image does not come from a stream, so we have the path to the file - just use the path.
-                    // If the image was modified in memory, those changes will be lost and the original image, as it was read from the file, will be added to the PDF.
-                    using (FileStream sourceFile = File.OpenRead(_image._path))
-                    {
-                        int count;
-                        byte[] buffer = new byte[8192];
-                        memory = new MemoryStream((int)sourceFile.Length);
-                        ownMemory = true;
-                        do
-                        {
-                            count = sourceFile.Read(buffer, 0, buffer.Length);
-                            // memory.Write(buffer, 0, buffer.Length);
-                            memory.Write(buffer, 0, count);
-                        } while (count > 0);
-                    }
-                }
-                else
-                {
-                    memory = new MemoryStream();
-                    ownMemory = true;
-                    // If we have a stream, copy data from the stream.
-                    if (_image._stream != null && _image._stream.CanSeek)
-                    {
-                        Stream stream = _image._stream;
-                        stream.Seek(0, SeekOrigin.Begin);
-                        byte[] buffer = new byte[32 * 1024]; // 32K buffer.
-                        int bytesRead;
-                        while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            memory.Write(buffer, 0, bytesRead);
-                        }
-                    }
-                    else
-                    {
-#if CORE_WITH_GDI
-                        // No stream, no filename, get image data.
-                        // Save the image to a memory stream.
-                        _image._gdiImage.Save(memory, ImageFormat.Jpeg);
-#endif
-                    }
-                }
-
-                if ((int)memory.Length == 0)
-                {
-                    Debug.Assert(false, "Internal error? JPEG image, but file not found!");
-                }
-            }
-#endif
-#if WPF
-            // AGHACK
-            //string filename = XImage.GetImageFilename(image._wpfImage);
-            //if (XImage.ReadJpegFile(filename, -1, ref imageBits))
-            //{
-            //  streamLength = imageBits.Length;
-            //}
-            //else
-            //  imageBits = null;
-#if !SILVERLIGHT
-            memory = _image.Memory;
-#else
-            memory = new MemoryStream();
-            ownMemory = true;
-#endif
-#endif
-#if NETFX_CORE
-            memory = new MemoryStream();
-            ownMemory = true;
-#endif
-#if __IOS__
-            memory = _image.AsJpeg();
-            ownMemory = true;
-#endif
-#if __ANDROID__
-            memory = _image.AsJpeg();
-            ownMemory = true;
-#endif
-
-            memory = _image.AsJpeg();
-            ownMemory = true;
-
-            // THHO4THHO Use ImageImporterJPEG here to avoid redundant code.
-
-            if (imageBits == null)
-            {
-                streamLength = (int)memory.Length;
-                imageBits = new byte[streamLength];
-                memory.Seek(0, SeekOrigin.Begin);
-                memory.Read(imageBits, 0, streamLength);
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                if (ownMemory)
-                {
-#if UWP || true
-                    memory.Dispose();
-#else
-                memory.Close();
-#endif
-                }
+                imageBits = memory.ToArray();
             }
 
             bool tryFlateDecode = _document.Options.UseFlateDecoderForJpegImages == PdfUseFlateDecoderForJpegImages.Automatic;
@@ -393,7 +279,7 @@ namespace PdfSharp.Pdf.Advanced
             else
             {
                 Stream = new PdfStream(imageBits, this);
-                Elements[PdfStream.Keys.Length] = new PdfInteger(streamLength);
+                Elements[PdfStream.Keys.Length] = new PdfInteger(imageBits.Length);
                 Elements[PdfStream.Keys.Filter] = new PdfName("/DCTDecode");
             }
             if (_image.Interpolate)
