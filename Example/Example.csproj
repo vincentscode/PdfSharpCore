@@ -4,6 +4,10 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.0</TargetFramework>
   </PropertyGroup>
+  
+  <PropertyGroup>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\Tinos-Bold.ttf" />
