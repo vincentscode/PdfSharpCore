@@ -1,8 +1,8 @@
-﻿using MigraDoc.DocumentObjectModel;
-using MigraDoc.Rendering;
-using PdfSharp.Drawing;
-using PdfSharp.Fonts;
-using PdfSharp.Pdf;
+﻿using MigraDocCore.DocumentObjectModel;
+using MigraDocCore.Rendering;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Fonts;
+using PdfSharpCore.Pdf;
 using System;
 using System.IO;
 using System.Linq;
