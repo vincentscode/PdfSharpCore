@@ -58,14 +58,13 @@ namespace PdfSharpCore.Pdf.Advanced
                 selector = new ImageSelector(image);
                 image._selector = selector;
             }
-            PdfImage pdfImage;
-            if (!_images.TryGetValue(selector, out pdfImage))
+            if (!_images.TryGetValue(selector, out PdfImage pdfImage))
             {
                 pdfImage = new PdfImage(Owner, image);
                 //pdfImage.Document = _document;
                 Debug.Assert(pdfImage.Owner == Owner);
                 _images[selector] = pdfImage;
- }
+            }
             return pdfImage;
         }
 

@@ -2,46 +2,53 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using ImageSharp;
 using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
-using static MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource;
-using ImageSharp.Formats;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Linq;
 
 namespace PdfSharpCore.ImageSharp
 {
-    public class ImageSharpImageSource : ImageSource
+    public class NetFrameworkImageSource : ImageSource
     {
         protected override IImageSource FromBinaryImpl(string name, Func<byte[]> imageSource, int? quality = 75)
         {
-            return new ImageSharpImageSourceImpl(name, () =>
+            return new NetFrameworkImageSourceImpl(name, () =>
             {
-                return new Image(imageSource.Invoke());
+                using (var ms = new MemoryStream(imageSource.Invoke()))
+                    return Image.FromStream(ms);
             }, (int)quality);
         }
 
         protected override IImageSource FromFileImpl(string path, int? quality = 75)
         {
-            return new ImageSharpImageSourceImpl(path, () =>
+            return new NetFrameworkImageSourceImpl(path, () =>
             {
-                return new Image(path);
+                return Image.FromFile(path);
             }, (int)quality);
         }
 
         protected override IImageSource FromStreamImpl(string name, Func<Stream> imageStream, int? quality = 75)
         {
-            return new ImageSharpImageSourceImpl(name, () =>
+            return new NetFrameworkImageSourceImpl(name, () =>
             {
                 using (var stream = imageStream.Invoke())
                 {
-                    return new Image(stream);
+                    return Image.FromStream(imageStream.Invoke());
                 }
             }, (int)quality);
         }
 
-        private class ImageSharpImageSourceImpl : IImageSource
+        private class NetFrameworkImageSourceImpl : IImageSource
         {
+            private Func<Image> _getImage;
+            public int Width => Image.Width;
+            public int Height => Image.Height;
+            public string Name { get; }
 
             private Image _image;
+            private readonly int? _quality;
+
             private Image Image
             {
                 get
@@ -53,14 +60,8 @@ namespace PdfSharpCore.ImageSharp
                     return _image;
                 }
             }
-            private Func<Image> _getImage;
-            private readonly int _quality;
 
-            public int Width => Image.Width;
-            public int Height => Image.Height;
-            public string Name { get; }
-
-            public ImageSharpImageSourceImpl(string name, Func<Image> getImage, int quality)
+            public NetFrameworkImageSourceImpl(string name, Func<Image> getImage, int quality)
             {
                 Name = name;
                 _getImage = getImage;
@@ -69,8 +70,12 @@ namespace PdfSharpCore.ImageSharp
 
             public void SaveAsJpeg(MemoryStream ms)
             {
-                Image.AutoOrient();
-                Image.SaveAsJpeg(ms, new JpegEncoderOptions() { Quality = _quality });
+
+                var paras = new EncoderParameters();
+                ImageCodecInfo jpgEncoder = ImageCodecInfo.GetImageDecoders().Where(x => x.FormatID == ImageFormat.Jpeg.Guid).First();
+                var param = new EncoderParameters().Param[0];
+                paras.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, (long)_quality);
+                Image.Save(ms, jpgEncoder, paras);
             }
 
             public void Dispose()

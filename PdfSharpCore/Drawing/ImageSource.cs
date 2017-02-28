@@ -10,7 +10,7 @@ namespace MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes
     {
         public static ImageSource ImageSourceImpl { get; set; }
 
-        public interface IImageSource : IDisposable
+        public interface IImageSource
         {
             int Width { get; }
             int Height { get; }
@@ -18,24 +18,24 @@ namespace MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes
             void SaveAsJpeg(MemoryStream ms);
         }
 
-        protected abstract IImageSource FromFileImpl(string path);
-        protected abstract IImageSource FromBinaryImpl(string name, Func<byte[]> imageSource);
-        protected abstract IImageSource FromStreamImpl(string name, Func<Stream> imageStream);
+        protected abstract IImageSource FromFileImpl(string path, int? quality = 75);
+        protected abstract IImageSource FromBinaryImpl(string name, Func<byte[]> imageSource, int? quality = 75);
+        protected abstract IImageSource FromStreamImpl(string name, Func<Stream> imageStream, int? quality = 75);
 
 
-        public static IImageSource FromFile(string path)
+        public static IImageSource FromFile(string path, int? quality = 75)
         {
-            return ImageSourceImpl.FromFileImpl(path);
+            return ImageSourceImpl.FromFileImpl(path, quality);
         }
 
-        public static IImageSource FromBinary(string name, Func<byte[]> imageSource)
+        public static IImageSource FromBinary(string name, Func<byte[]> imageSource, int? quality = 75)
         {
-            return ImageSourceImpl.FromBinaryImpl(name, imageSource);
+            return ImageSourceImpl.FromBinaryImpl(name, imageSource, quality);
         }
 
-        public static IImageSource FromStream(string name, Func<Stream> imageStream)
+        public static IImageSource FromStream(string name, Func<Stream> imageStream, int? quality = 75)
         {
-            return ImageSourceImpl.FromStreamImpl(name, imageStream);
+            return ImageSourceImpl.FromStreamImpl(name, imageStream, quality);
         }
     }
 }

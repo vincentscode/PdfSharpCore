@@ -188,7 +188,6 @@ namespace PdfSharpCore.Drawing
         {
             var ms = new MemoryStream();
             _source.SaveAsJpeg(ms);
-            _source.Dispose();
             ms.Position = 0;
             return ms;
         }

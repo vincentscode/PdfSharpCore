@@ -22,19 +22,19 @@ namespace PdfSharpCore.ImageSharp
             Rotate270 = 8
         }
 
-        protected override IImageSource FromBinaryImpl(string name, Func<byte[]> imageSource)
+        protected override IImageSource FromBinaryImpl(string name, Func<byte[]> imageSource, int? quality = 75)
         {
-            return new AndroidImageSourceImpl(name, () => { return new MemoryStream(imageSource.Invoke()); });
+            return new AndroidImageSourceImpl(name, () => { return new MemoryStream(imageSource.Invoke()); }, (int)quality);
         }
 
-        protected override IImageSource FromFileImpl(string path)
+        protected override IImageSource FromFileImpl(string path, int? quality = 75)
         {
-            return new AndroidImageSourceImpl(path, () => { return File.OpenRead(path); });
+            return new AndroidImageSourceImpl(path, () => { return File.OpenRead(path); }, (int)quality);
         }
 
-        protected override IImageSource FromStreamImpl(string name, Func<Stream> imageStream)
+        protected override IImageSource FromStreamImpl(string name, Func<Stream> imageStream, int? quality = 75)
         {
-            return new AndroidImageSourceImpl(name, imageStream);
+            return new AndroidImageSourceImpl(name, imageStream, (int)quality);
         }
 
         /*
@@ -42,123 +42,62 @@ namespace PdfSharpCore.ImageSharp
          */
         private class AndroidImageSourceImpl : IImageSource
         {
-            private Bitmap _bitmap;
-            private Bitmap Bitmap
-            {
-                get
-                {
-                    if (_bitmap == null)
-                    {
-                        if (_bitmapOptions == null)
-                        {
-                            _bitmapOptions = new Options { InJustDecodeBounds = false };
-                            Orientation = GetOrientation();
-                            Stream.Seek(0, SeekOrigin.Begin);
-                        }
-                        else
-                        {
-                            _bitmapOptions.InJustDecodeBounds = false;
-                        }
-                        _bitmap = DecodeStream(Stream, null, _bitmapOptions);
-                        //Once we've read the stream, we don't need it anymore
-                        _stream.Dispose();
-                        _stream = null;
-                    }
-                    return _bitmap;
-                }
-            }
-
-            private Orientation Orientation;
-            private Orientation GetOrientation()
-            {
-                return ImageMetadataReader.ReadMetadata(Stream)
-                    .OfType<ExifIfd0Directory>()
-                    .Where(x => x.HasTagName(ExifDirectoryBase.TagOrientation))
-                    .Select(x => (Orientation?)x.GetInt32(ExifDirectoryBase.TagOrientation))
-                    .FirstOrDefault() ?? Orientation.Normal;
-            }
-
-            private Options _bitmapOptions;
-            private Options BitmapOptions
-            {
-                get
-                {
-                    if (_bitmapOptions == null)
-                    {
-                        _bitmapOptions = new Options { InJustDecodeBounds = true };
-#pragma warning disable CS0642 // Possible mistaken empty statement
-                        using (DecodeStream(Stream, null, _bitmapOptions)) ;
-#pragma warning restore CS0642 // Possible mistaken empty statement
-                        Stream.Seek(0, SeekOrigin.Begin);
-                        Orientation = GetOrientation();
-                        Stream.Seek(0, SeekOrigin.Begin);
-                    }
-                    return _bitmapOptions;
-                }
-            }
+            private Orientation Orientation { get; }
+            private Options Options { get; }
 
             private readonly Func<Stream> _streamSource;
-            private Stream _stream;
-            private Stream Stream
-            {
-                get
-                {
-                    if (_stream == null)
-                    {
-                        _stream = _streamSource.Invoke();
-                    }
-                    return _stream;
-                }
-            }
+            private readonly int _quality;
 
-            public int Width => BitmapOptions.OutWidth;
-            public int Height => BitmapOptions.OutHeight;
+            public int Width => Options.OutHeight;
+            public int Height => Options.OutHeight;
             public string Name { get; }
 
-            public AndroidImageSourceImpl(string name, Func<Stream> streamSource)
+            public AndroidImageSourceImpl(string name, Func<Stream> streamSource, int quality)
             {
                 Name = name;
                 _streamSource = streamSource;
+                _quality = quality;
+                using (var stream = streamSource.Invoke())
+                {
+                    Orientation = ImageMetadataReader.ReadMetadata(stream)
+                        .OfType<ExifIfd0Directory>()
+                        .Where(x => x.HasTagName(ExifDirectoryBase.TagOrientation))
+                        .Select(x => (Orientation?)x.GetInt32(ExifDirectoryBase.TagOrientation))
+                        .FirstOrDefault() ?? Orientation.Normal;
+                    stream.Seek(0, SeekOrigin.Begin);
+                    Options = new Options { InJustDecodeBounds = true };
+#pragma warning disable CS0642 // Possible mistaken empty statement
+                    using (DecodeStream(stream, null, Options)) ;
+#pragma warning restore CS0642 // Possible mistaken empty statement
+                }
             }
 
             public void SaveAsJpeg(MemoryStream ms)
             {
                 Matrix mx = new Matrix();
-
-                switch (Orientation)
+                using (var bitmap = DecodeStream(ms))
                 {
-                    case Orientation.Rotate90:
-                        mx.PostRotate(90);
-                        break;
-                    case Orientation.Rotate180:
-                        mx.PostRotate(180);
+                    switch (Orientation)
+                    {                        
+                        case Orientation.Rotate90:
+                            mx.PostRotate(90);
+                            break;
+                        case Orientation.Rotate180:
+                            mx.PostRotate(180);
 
-                        break;
-                    case Orientation.Rotate270:
-                        mx.PostRotate(270);
-                        break;
-                    default:
-                        Bitmap.Compress(CompressFormat.Jpeg, 50, ms);
-                        //once we've created the jpeg, we don't need the bitmap anymore
-                        Bitmap.Dispose();
-                        _bitmap = null;
-                        return;
+                            break;
+                        case Orientation.Rotate270:
+                            mx.PostRotate(270);
+                            break;
+                        default:
+                            bitmap.Compress(CompressFormat.Jpeg, _quality, ms);
+                            return;
+                    }
+                    using (var flip = Bitmap.CreateBitmap(bitmap, 0, 0, Options.OutWidth, Options.OutHeight, mx, true))
+                    {
+                        flip.Compress(CompressFormat.Jpeg, _quality, ms);
+                    }
                 }
-                using (var flip = Bitmap.CreateBitmap(Bitmap, 0, 0, BitmapOptions.OutWidth, BitmapOptions.OutHeight, mx, true))
-                {
-                    //once we've created the jpeg, we don't need the bitmap anymore
-                    Bitmap.Dispose();
-                    _bitmap = null;
-                    flip.Compress(CompressFormat.Jpeg, 50, ms);
-                }
-            }
-
-            public void Dispose()
-            {
-                _bitmap?.Dispose();
-                _bitmap = null;
-                _stream?.Dispose();
-                _stream = null;
             }
         }
     }
