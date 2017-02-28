@@ -85,11 +85,6 @@ namespace PdfSharpCore.Uwp
                              { "ImageQuality", new BitmapTypedValue(Convert.ToSingle(_quality) / 100, PropertyType.Single) }
                         }).Await();
                     encoder.SetPixelData(decoder.BitmapPixelFormat, decoder.BitmapAlphaMode, decoder.OrientedPixelWidth, decoder.OrientedPixelHeight, decoder.DpiX, decoder.DpiY, decoder.GetPixelDataAsync().Await().DetachPixelData());
-                    var properties = decoder.BitmapProperties.GetPropertiesAsync(new List<string> { "System.Photo.Orientation" }).Await();
-                    if (properties.TryGetValue("System.Photo.Orientation", out BitmapTypedValue value))
-                    {
-                        //ApplyOrientation(encoder, value);
-                    }
                     encoder.FlushAsync().Await();
                 }
             }
