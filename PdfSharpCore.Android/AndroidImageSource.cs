@@ -43,13 +43,12 @@ namespace PdfSharpCore.ImageSharp
         private class AndroidImageSourceImpl : IImageSource
         {
             private Orientation Orientation { get; }
-            private Options Options { get; }
 
             private readonly Func<Stream> _streamSource;
             private readonly int _quality;
 
-            public int Width => Options.OutHeight;
-            public int Height => Options.OutHeight;
+            public int Width { get; }
+            public int Height { get; }
             public string Name { get; }
 
             public AndroidImageSourceImpl(string name, Func<Stream> streamSource, int quality)
@@ -65,26 +64,27 @@ namespace PdfSharpCore.ImageSharp
                         .Select(x => (Orientation?)x.GetInt32(ExifDirectoryBase.TagOrientation))
                         .FirstOrDefault() ?? Orientation.Normal;
                     stream.Seek(0, SeekOrigin.Begin);
-                    Options = new Options { InJustDecodeBounds = true };
+                    var options = new Options { InJustDecodeBounds = true };
 #pragma warning disable CS0642 // Possible mistaken empty statement
-                    using (DecodeStream(stream, null, Options)) ;
+                    using (DecodeStream(stream, null, options)) ;
 #pragma warning restore CS0642 // Possible mistaken empty statement
+                    Width = Orientation == Orientation.Normal || Orientation == Orientation.Rotate180 ? options.OutWidth : options.OutHeight;
+                    Height = Orientation == Orientation.Normal || Orientation == Orientation.Rotate180 ? options.OutHeight : options.OutWidth;
                 }
             }
 
             public void SaveAsJpeg(MemoryStream ms)
             {
                 Matrix mx = new Matrix();
-                using (var bitmap = DecodeStream(ms))
+                using (var bitmap = DecodeStream(_streamSource.Invoke()))
                 {
                     switch (Orientation)
-                    {                        
+                    {
                         case Orientation.Rotate90:
                             mx.PostRotate(90);
                             break;
                         case Orientation.Rotate180:
                             mx.PostRotate(180);
-
                             break;
                         case Orientation.Rotate270:
                             mx.PostRotate(270);
@@ -93,7 +93,7 @@ namespace PdfSharpCore.ImageSharp
                             bitmap.Compress(CompressFormat.Jpeg, _quality, ms);
                             return;
                     }
-                    using (var flip = Bitmap.CreateBitmap(bitmap, 0, 0, Options.OutWidth, Options.OutHeight, mx, true))
+                    using (var flip = Bitmap.CreateBitmap(bitmap, 0, 0, Width, Height, mx, true))
                     {
                         flip.Compress(CompressFormat.Jpeg, _quality, ms);
                     }
