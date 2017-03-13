@@ -39,7 +39,7 @@
       <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\netstandard1.0\JetBrains.Annotations.NetStandard.dll</HintPath>
     </Reference>
     <Reference Include="MetadataExtractor, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetadataExtractor.2.0.0-rc2\lib\netstandard1.3\MetadataExtractor.dll</HintPath>
+      <HintPath>..\..\CarrierMobile\packages\MetadataExtractor.2.0.0-rc2\lib\netstandard1.3\MetadataExtractor.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
