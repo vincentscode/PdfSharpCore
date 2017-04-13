@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Example\Example.csproj", "{A708DC7A-3D7A-4CD8-8735-709D7C8AA447}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfSharpCore.ImageSharp", "PdfSharpCore.ImageSharp\PdfSharpCore.ImageSharp.csproj", "{1BA1F5E2-D82F-4969-BADD-7387E6DAF435}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharpCore.Uwp", "PdfSharpCore.Uwp\PdfSharpCore.Uwp.csproj", "{2C340E5B-096F-496B-B975-3E5440F3DB8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharpCore.Test.Uwp", "PdfSharpCore.Test.Uwp\PdfSharpCore.Test.Uwp.csproj", "{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,6 +161,26 @@ Global
 		{2C340E5B-096F-496B-B975-3E5440F3DB8E}.Release|x64.Build.0 = Release|x64
 		{2C340E5B-096F-496B-B975-3E5440F3DB8E}.Release|x86.ActiveCfg = Release|x86
 		{2C340E5B-096F-496B-B975-3E5440F3DB8E}.Release|x86.Build.0 = Release|x86
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Debug|ARM.ActiveCfg = Debug|ARM
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Debug|ARM.Build.0 = Debug|ARM
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Debug|ARM.Deploy.0 = Debug|ARM
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Debug|x64.ActiveCfg = Debug|x64
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Debug|x64.Build.0 = Debug|x64
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Debug|x64.Deploy.0 = Debug|x64
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Debug|x86.ActiveCfg = Debug|x86
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Debug|x86.Build.0 = Debug|x86
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Debug|x86.Deploy.0 = Debug|x86
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Release|Any CPU.ActiveCfg = Release|x86
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Release|ARM.ActiveCfg = Release|ARM
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Release|ARM.Build.0 = Release|ARM
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Release|ARM.Deploy.0 = Release|ARM
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Release|x64.ActiveCfg = Release|x64
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Release|x64.Build.0 = Release|x64
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Release|x64.Deploy.0 = Release|x64
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Release|x86.ActiveCfg = Release|x86
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Release|x86.Build.0 = Release|x86
+		{814C41EE-EB53-4DB2-8C6F-E3E48808A1E3}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

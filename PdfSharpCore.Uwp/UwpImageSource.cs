@@ -10,6 +10,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.Storage.FileProperties;
 using Windows.Foundation;
+using System.IO.IsolatedStorage;
 
 namespace PdfSharpCore.Uwp
 {
@@ -29,11 +30,8 @@ namespace PdfSharpCore.Uwp
             return new UwpImageSourceImpl(Path.GetFileName(path),
                 () =>
                 {
-                    return Task.Run(async () =>
-                    {
-                        var file = await StorageFile.GetFileFromPathAsync(path);
-                        return await file.OpenReadAsync();
-                    }).Result;
+                    var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    return stream.AsRandomAccessStream();
                 }, (int)quality);
         }
 

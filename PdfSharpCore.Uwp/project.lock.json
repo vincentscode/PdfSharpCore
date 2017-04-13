@@ -25669,16 +25669,16 @@
   },
   "project": {
     "restore": {
-      "projectUniqueName": "E:\\Source\\PdfSharpCore\\PdfSharpCore.Uwp\\PdfSharpCore.Uwp.csproj",
+      "projectUniqueName": "C:\\Users\\haberl.FMMNET\\Source\\Repos\\PdfSharpCore3\\PdfSharpCore.Uwp\\PdfSharpCore.Uwp.csproj",
       "projectName": "PdfSharpCore.Uwp",
-      "projectPath": "E:\\Source\\PdfSharpCore\\PdfSharpCore.Uwp\\PdfSharpCore.Uwp.csproj",
-      "projectJsonPath": "E:\\Source\\PdfSharpCore\\PdfSharpCore.Uwp\\project.json",
+      "projectPath": "C:\\Users\\haberl.FMMNET\\Source\\Repos\\PdfSharpCore3\\PdfSharpCore.Uwp\\PdfSharpCore.Uwp.csproj",
+      "projectJsonPath": "C:\\Users\\haberl.FMMNET\\Source\\Repos\\PdfSharpCore3\\PdfSharpCore.Uwp\\project.json",
       "projectStyle": "ProjectJson",
       "frameworks": {
         "uap10.0": {
           "projectReferences": {
-            "E:\\Source\\PdfSharpCore\\PdfSharpCore\\PdfSharpCore.csproj": {
-              "projectPath": "E:\\Source\\PdfSharpCore\\PdfSharpCore\\PdfSharpCore.csproj"
+            "C:\\Users\\haberl.FMMNET\\Source\\Repos\\PdfSharpCore3\\PdfSharpCore\\PdfSharpCore.csproj": {
+              "projectPath": "C:\\Users\\haberl.FMMNET\\Source\\Repos\\PdfSharpCore3\\PdfSharpCore\\PdfSharpCore.csproj"
             }
           }
         }
