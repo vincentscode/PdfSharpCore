@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C6F8EE8D-3D17-46B2-9844-084E43AD48A4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MigraDocCore.Rendering</RootNamespace>
+    <AssemblyName>MigraDocCore.Rendering</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4; PORTABLE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MigraDocCore.DocumentObjectModel\MigraDocCore.DocumentObjectModel.vs2015.csproj">
+      <Project>{9a5c82c4-aeb5-453e-b721-f7663eaec7fa}</Project>
+      <Name>MigraDocCore.DocumentObjectModel.vs2015</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PdfSharpCore.Charting\PdfSharpCore.Charting.vs2015.csproj">
+      <Project>{7acdb1ad-8365-4c38-b28e-9b667b8d66eb}</Project>
+      <Name>PdfSharpCore.Charting.vs2015</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PdfSharpCore\PdfSharpCore.vs2015.csproj">
+      <Project>{f5d24a4a-cf1a-4610-ae5b-22fcac6a5d22}</Project>
+      <Name>PdfSharpCore.vs2015</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MigraDoc.Rendering.ChartMapper\AxisMapper.cs" />
+    <Compile Include="MigraDoc.Rendering.ChartMapper\ChartMapper.cs" />
+    <Compile Include="MigraDoc.Rendering.ChartMapper\DataLabelMapper.cs" />
+    <Compile Include="MigraDoc.Rendering.ChartMapper\FillFormatMapper.cs" />
+    <Compile Include="MigraDoc.Rendering.ChartMapper\FontMapper.cs" />
+    <Compile Include="MigraDoc.Rendering.ChartMapper\LegendMapper.cs" />
+    <Compile Include="MigraDoc.Rendering.ChartMapper\LineFormatMapper.cs" />
+    <Compile Include="MigraDoc.Rendering.ChartMapper\PlotAreaMapper.cs" />
+    <Compile Include="MigraDoc.Rendering.ChartMapper\SeriesCollectionMapper.cs" />
+    <Compile Include="MigraDoc.Rendering.ChartMapper\XValuesMapper.cs" />
+    <Compile Include="MigraDoc.Rendering.Resources\AppResources.Designer.cs" />
+    <Compile Include="MigraDoc.Rendering.UnitTest\TestLayout.cs" />
+    <Compile Include="MigraDoc.Rendering.UnitTest\TestParagraphIterator.cs" />
+    <Compile Include="MigraDoc.Rendering.UnitTest\TestParagraphRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering.UnitTest\TestTable.cs" />
+    <Compile Include="MigraDoc.Rendering.UnitTest\ValueDumper.cs" />
+    <Compile Include="MigraDoc.Rendering\Area.cs" />
+    <Compile Include="MigraDoc.Rendering\BordersRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\ChartFormatInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\ChartRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\ChartRenderInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\ColorHelper.cs" />
+    <Compile Include="MigraDoc.Rendering\DocumentRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\enums\ElementAlignment.cs" />
+    <Compile Include="MigraDoc.Rendering\enums\Floating.cs" />
+    <Compile Include="MigraDoc.Rendering\enums\HorizontalReference.cs" />
+    <Compile Include="MigraDoc.Rendering\enums\ImageFailure.cs" />
+    <Compile Include="MigraDoc.Rendering\enums\PageRenderOptions.cs" />
+    <Compile Include="MigraDoc.Rendering\enums\VerticalReference.cs" />
+    <Compile Include="MigraDoc.Rendering\FieldInfos.cs" />
+    <Compile Include="MigraDoc.Rendering\FillFormatRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\FontHandler.cs" />
+    <Compile Include="MigraDoc.Rendering\FormatInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\FormattedCell.cs" />
+    <Compile Include="MigraDoc.Rendering\FormattedDocument.cs" />
+    <Compile Include="MigraDoc.Rendering\FormattedHeaderFooter.cs" />
+    <Compile Include="MigraDoc.Rendering\FormattedTextArea.cs" />
+    <Compile Include="MigraDoc.Rendering\FormattedTextFrame.cs" />
+    <Compile Include="MigraDoc.Rendering\IAreaProvider.cs" />
+    <Compile Include="MigraDoc.Rendering\ImageFormatInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\ImageRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\ImageRenderInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\LayoutInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\LineFormatRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\NumberFormatter.cs" />
+    <Compile Include="MigraDoc.Rendering\PageBreakFormatInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\PageBreakRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\PageBreakRenderInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\PageInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\ParagraphFormatInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\ParagraphIterator.cs" />
+    <Compile Include="MigraDoc.Rendering\ParagraphRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\ParagraphRenderInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\PdfDocumentRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\Renderer.cs" />
+    <Compile Include="MigraDoc.Rendering\RenderInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\ShadingRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\ShapeFormatInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\ShapeRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\ShapeRenderInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\TableFormatInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\TableRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\TableRenderInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\TextFrameFormatInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\TextFrameRenderer.cs" />
+    <Compile Include="MigraDoc.Rendering\TextFrameRenderInfo.cs" />
+    <Compile Include="MigraDoc.Rendering\TopDownFormatter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MigraDoc.Rendering.Resources\AppResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
