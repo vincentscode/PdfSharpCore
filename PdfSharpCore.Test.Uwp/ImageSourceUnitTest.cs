@@ -92,7 +92,7 @@ namespace PdfSharpCore.Test.Uwp
             using (var ms = new MemoryStream())
             {
                 pdf.Save(ms);
-                Assert.AreEqual(6871, ms.Length);
+                Assert.AreEqual(5392, ms.Length);
             }
         }
     }

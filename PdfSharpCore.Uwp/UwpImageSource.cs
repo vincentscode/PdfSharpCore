@@ -78,31 +78,17 @@ namespace PdfSharpCore.Uwp
                 using (var ras = _getRas.Invoke())
                 {
                     var decoder = GetDecoder(ras);
-                    var encoder = BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, ms.AsRandomAccessStream(),
-                        new BitmapPropertySet() {
+                    Task.WaitAll(Task.Run(async () =>
+                    {
+                        var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, ms.AsRandomAccessStream(),
+                            new BitmapPropertySet() {
                              { "ImageQuality", new BitmapTypedValue(Convert.ToSingle(_quality) / 100, PropertyType.Single) }
-                        }).Await();
-                    encoder.SetPixelData(decoder.BitmapPixelFormat, decoder.BitmapAlphaMode, decoder.OrientedPixelWidth, decoder.OrientedPixelHeight, decoder.DpiX, decoder.DpiY, decoder.GetPixelDataAsync().Await().DetachPixelData());
-                    encoder.FlushAsync().Await();
+                            });
+                        encoder.SetPixelData(decoder.BitmapPixelFormat, decoder.BitmapAlphaMode, decoder.OrientedPixelWidth, decoder.OrientedPixelHeight, decoder.DpiX, decoder.DpiY, (await decoder.GetPixelDataAsync()).DetachPixelData());
+                        await encoder.FlushAsync();
+                    }));
                 }
             }
-        }
-    }
-
-    internal static class TaskHelper
-    {
-
-        internal static T Await<T>(this Task<T> task)
-        {
-            return Task.Run(async () => { return await task; }).Result;
-        }
-        internal static T Await<T>(this IAsyncOperation<T> task)
-        {
-            return Task.Run(async () => { return await task; }).Result;
-        }
-        internal static void Await(this IAsyncAction task)
-        {
-            var dummy = Task.Run(async () => { await task; return true; }).Result;
         }
     }
 }
