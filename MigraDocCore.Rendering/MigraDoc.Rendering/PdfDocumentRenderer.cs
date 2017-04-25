@@ -36,6 +36,7 @@ using MigraDocCore.DocumentObjectModel.Visitors;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Drawing;
 using MigraDocCore.Rendering.MigraDoc.Rendering.Resources;
+using System.Threading;
 
 namespace MigraDocCore.Rendering
 {
@@ -139,6 +140,14 @@ namespace MigraDocCore.Rendering
         /// </summary>
         public void RenderDocument()
         {
+            RenderDocument(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Renders the document into a PdfDocument containing all pages of the document.
+        /// </summary>
+        public void RenderDocument(CancellationToken ct)
+        {
 #if true
             PrepareRenderPages();
 #else
@@ -153,7 +162,7 @@ namespace MigraDocCore.Rendering
 
       WriteDocumentInformation();
 #endif
-            RenderPages(1, this.documentRenderer.FormattedDocument.PageCount);
+            RenderPages(1, this.documentRenderer.FormattedDocument.PageCount, ct);
         }
 
         /// <summary>
@@ -213,7 +222,7 @@ namespace MigraDocCore.Rendering
         /// </summary>
         /// <param name="startPage">The first page to print.</param>
         /// <param name="endPage">The last page to print</param>
-        public void RenderPages(int startPage, int endPage)
+        public void RenderPages(int startPage, int endPage, CancellationToken ct)
         {
             if (startPage < 1)
                 throw new ArgumentOutOfRangeException("startPage");
@@ -230,6 +239,7 @@ namespace MigraDocCore.Rendering
             this.documentRenderer.printDate = DateTime.Now;
             for (int pageNr = startPage; pageNr <= endPage; ++pageNr)
             {
+                ct.ThrowIfCancellationRequested();
                 PdfPage pdfPage = this.pdfDocument.AddPage();
                 PageInfo pageInfo = this.documentRenderer.FormattedDocument.GetPageInfo(pageNr);
                 pdfPage.Width = pageInfo.Width;
@@ -239,7 +249,7 @@ namespace MigraDocCore.Rendering
                 using (XGraphics gfx = XGraphics.FromPdfPage(pdfPage))
                 {
                     gfx.MUH = this.unicode ? PdfFontEncoding.Unicode : PdfFontEncoding.WinAnsi;
-                    this.documentRenderer.RenderPage(gfx, pageNr);
+                    this.documentRenderer.RenderPage(gfx, pageNr, ct);
                 }
             }
         }

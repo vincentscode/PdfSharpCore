@@ -29,6 +29,7 @@
 #endregion
 
 using System;
+using System.Threading;
 
 namespace PdfSharpCore.Drawing.BarCodes
 {
@@ -126,7 +127,7 @@ namespace PdfSharpCore.Drawing.BarCodes
         /// <summary>
         /// When implemented in a derived class renders the 2D code.
         /// </summary>
-        protected internal abstract void Render(XGraphics gfx, XBrush brush, XPoint center);
+        protected internal abstract void Render(XGraphics gfx, XBrush brush, XPoint center, CancellationToken ct);
 
         /// <summary>
         /// Determines whether the specified string can be used as Text for this matrix code type.

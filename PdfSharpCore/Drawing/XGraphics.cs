@@ -75,6 +75,7 @@ using PdfSharpCore.Pdf;
 using PdfSharpCore.Drawing.Pdf;
 using PdfSharpCore.Internal;
 using PdfSharpCore.Pdf.Advanced;
+using System.Threading;
 
 #pragma warning disable 1587
 // ReSharper disable UseNullPropagation
@@ -3505,152 +3506,6 @@ namespace PdfSharpCore.Drawing  // #??? aufräumen
             if (format == null)
                 format = XStringFormats.Default;
 
-            if (_drawGraphics)
-            {
-#if GDI
-                if (TargetContext == XGraphicTargetContext.GDI)
-                {
-                    // Was font created with font resolver?
-                    if (font.GdiFont == null)
-                        throw new InvalidOperationException("This font cannot be used by GDI+.");
-
-                    try
-                    {
-                        Lock.EnterGdiPlus();
-                        GdiRectF rect = layoutRectangle.ToRectangleF();
-                        if (format.LineAlignment == XLineAlignment.BaseLine)
-                        {
-                            double lineSpace = font.GetHeight(); //old: font.GetHeight(this);
-                            int cellSpace = font.FontFamily.GetLineSpacing(font.Style);
-                            int cellAscent = font.FontFamily.GetCellAscent(font.Style);
-                            int cellDescent = font.FontFamily.GetCellDescent(font.Style);
-                            double cyAscent = lineSpace * cellAscent / cellSpace;
-                            cyAscent = lineSpace * font.CellAscent / font.CellSpace;
-                            rect.Offset(0, (float)-cyAscent);
-                        }
-                        //_gfx.DrawString(text, font.Realize_GdiFont(), brush.RealizeGdiBrush(), rect,
-                        //    format != null ? format.RealizeGdiStringFormat() : null);
-                        _gfx.DrawString(text, font.GdiFont, brush.RealizeGdiBrush(), rect,
-                            format != null ? format.RealizeGdiStringFormat() : null);
-                    }
-                    finally { Lock.ExitGdiPlus(); }
-                }
-#endif
-#if WPF
-                if (TargetContext == XGraphicTargetContext.WPF)
-                {
-#if !SILVERLIGHT
-                    double x = layoutRectangle.X;
-                    double y = layoutRectangle.Y;
-
-                    double lineSpace = font.GetHeight(); // old: font.GetHeight(this);
-                    double cyAscent = lineSpace * font.CellAscent / font.CellSpace;
-                    double cyDescent = lineSpace * font.CellDescent / font.CellSpace;
-
-                    bool bold = (font.Style & XFontStyle.Bold) != 0;
-                    bool italic = (font.Style & XFontStyle.Italic) != 0;
-                    bool strikeout = (font.Style & XFontStyle.Strikeout) != 0;
-                    bool underline = (font.Style & XFontStyle.Underline) != 0;
-
-                    //GlyphRun glyphRun=new GlyphRun(font.GlyphTypeface , 0,);
-#if DEBUG_
-                    if (font.WpfTypeface.FontFamily.Source == "Segoe UI Light")
-                        GetType();
-#endif
-                    FormattedText formattedText = FontHelper.CreateFormattedText(text, font.WpfTypeface, font.Size, brush.RealizeWpfBrush());
-
-                    //formattedText.SetTextDecorations(TextDecorations.OverLine);
-                    switch (format.Alignment)
-                    {
-                        case XStringAlignment.Near:
-                            // nothing to do, this is the default
-                            //formattedText.TextAlignment = TextAlignment.Left;
-                            break;
-
-                        case XStringAlignment.Center:
-                            x += layoutRectangle.Width / 2;
-                            formattedText.TextAlignment = TextAlignment.Center;
-                            break;
-
-                        case XStringAlignment.Far:
-                            x += layoutRectangle.Width;
-                            formattedText.TextAlignment = TextAlignment.Right;
-                            break;
-                    }
-                    if (PageDirection == XPageDirection.Downwards)
-                    {
-                        switch (format.LineAlignment)
-                        {
-                            case XLineAlignment.Near:
-                                //y += cyAscent;
-                                break;
-
-                            case XLineAlignment.Center:
-                                // TODO use CapHeight. PDFlib also uses 3/4 of ascent
-                                y += -formattedText.Baseline + (cyAscent * 1 / 3) + layoutRectangle.Height / 2;
-                                //y += -formattedText.Baseline + (font.Size * font.Metrics.CapHeight / font.unitsPerEm / 2) + layoutRectangle.Height / 2;
-                                break;
-
-                            case XLineAlignment.Far:
-                                y += -formattedText.Baseline - cyDescent + layoutRectangle.Height;
-                                break;
-
-                            case XLineAlignment.BaseLine:
-                                y -= formattedText.Baseline;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        // TODOWPF: make unit test
-                        switch (format.LineAlignment)
-                        {
-                            case XLineAlignment.Near:
-                                //y += cyDescent;
-                                break;
-
-                            case XLineAlignment.Center:
-                                // TODO use CapHeight. PDFlib also uses 3/4 of ascent
-                                //y += -(cyAscent * 3 / 4) / 2 + rect.Height / 2;
-                                break;
-
-                            case XLineAlignment.Far:
-                                //y += -cyAscent + rect.Height;
-                                break;
-
-                            case XLineAlignment.BaseLine:
-                                // nothing to do
-                                break;
-                        }
-                    }
-
-                    // BoldSimulation and ItalicSimulation is done only in PDF, not in UI.
-
-                    if (underline)
-                    {
-                        formattedText.SetTextDecorations(TextDecorations.Underline);
-                        //double underlinePosition = lineSpace * realizedFont.FontDescriptor.descriptor.UnderlinePosition / font.cellSpace;
-                        //double underlineThickness = lineSpace * realizedFont.FontDescriptor.descriptor.UnderlineThickness / font.cellSpace;
-                        //DrawRectangle(null, brush, x, y - underlinePosition, width, underlineThickness);
-                    }
-
-                    if (strikeout)
-                    {
-                        formattedText.SetTextDecorations(TextDecorations.Strikethrough);
-                        //double strikeoutPosition = lineSpace * realizedFont.FontDescriptor.descriptor.StrikeoutPosition / font.cellSpace;
-                        //double strikeoutSize = lineSpace * realizedFont.FontDescriptor.descriptor.StrikeoutSize / font.cellSpace;
-                        //DrawRectangle(null, brush, x, y - strikeoutPosition - strikeoutSize, width, strikeoutSize);
-                    }
-
-                    //_dc.DrawText(formattedText, layoutRectangle.Location.ToPoint());
-                    _dc.DrawText(formattedText, new SysPoint(x, y));
-#else
-                    _dc.DrawString(this, text, font, brush, layoutRectangle, format);
-#endif
-                }
-#endif
-            }
-
             if (_renderer != null)
                 _renderer.DrawString(text, font, brush, layoutRectangle, format);
         }
@@ -3668,126 +3523,8 @@ namespace PdfSharpCore.Drawing  // #??? aufräumen
                 throw new ArgumentNullException("font");
             if (stringFormat == null)
                 throw new ArgumentNullException("stringFormat");
-
-#if GDI && !WPF
-            //XSize gdiSize;  // #MediumTrust
-            //if (_gfx != null)
-            //    gdiSize = XSize.FromSizeF(_gfx.MeasureString(text, font.Realize_GdiFont(), new GdiPointF(0, 0), stringFormat.RealizeGdiStringFormat()));
-            //else
-            //    gdiSize = FontHelper.MeasureString(text, font, XStringFormats.Default); // TODO 4STLA: Why is parameter stringFormat not used here?
-#if DEBUG_
-            XSize edfSize = FontHelper.MeasureString(text, font, XStringFormats.Default);
-            //Debug.Assert(gdiSize == edfSize, "Measure string failed.");
-            if (gdiSize != edfSize)
-            {
-                double dx = Math.Abs(gdiSize.Width - edfSize.Width);
-                double dy = Math.Abs(gdiSize.Height - edfSize.Height);
-                Debug.Assert(dx < .05 * gdiSize.Width, "MeasureString: width differs.");
-                Debug.Assert(dy < .05 * gdiSize.Height, "MeasureString: height differs.");
-            }
-#endif
-            return FontHelper.MeasureString(text, font, XStringFormats.Default);
-#endif
-#if WPF && !GDI
-#if !SILVERLIGHT
-#if DEBUG
-            FormattedText formattedText = FontHelper.CreateFormattedText(text, font.WpfTypeface, font.Size, WpfBrushes.Black);
-            XSize size1 = FontHelper.MeasureString(text, font, null);
-            XSize size2 = new XSize(formattedText.WidthIncludingTrailingWhitespace, formattedText.Height);
-            //Debug.Assert(Math.Abs((size1.Height - size2.Height) * 10) < 1.0);
-            return size1;
-#else
-            // Same as above, but without code needed for Debug.Assert.
-            XSize size1 = FontHelper.MeasureString(text, font, null);
-            return size1;
-#endif
-#else
-            return _dc.MeasureString(this, text, font, stringFormat);
-#endif
-
-#endif
-#if WPF && GDI
-#if true_
-            if (TargetContext == XGraphicTargetContext.GDI)
-            {
-                XSize gdiSize = XSize.FromSizeF(_gfx.MeasureString(text, font.Realize_GdiFont(), new GdiPointF(0, 0), stringFormat.RealizeGdiStringFormat()));
-#if DEBUG
-#if GDI
-                {
-                    //Debug.WriteLine(gdiSize);
-                    XSize edfSize = FontHelper14.MeasureStringGdi(_gfx, text, font, XStringFormats.Default);
-                    //Debug.WriteLine(edfSize);
-                    //Debug.Assert(gdiSize == edfSize, "Measure string failed.");
-                    if (gdiSize.Width != edfSize.Width)
-                    {
-                        Debug.WriteLine(String.Format("Width: {0}, {1} : {2}", gdiSize.Width, edfSize.Width, gdiSize.Width / edfSize.Width));
-                    }
-                    if (gdiSize.Height != edfSize.Height)
-                    {
-                        Debug.WriteLine(String.Format("Height: {0}, {1}", gdiSize.Height, edfSize.Height));
-                    }
-
-                    //double lineSpace = font.GetHeight(this);
-                    //int cellSpace = font.cellSpace; // font.FontFamily.GetLineSpacing(font.Style);
-                    //int cellAscent = font.cellAscent; // font.FontFamily.GetCellAscent(font.Style);
-                    //int cellDescent = font.cellDescent; // font.FontFamily.GetCellDescent(font.Style);
-                    //double cyAscent = lineSpace * cellAscent / cellSpace;
-                    //double cyDescent = lineSpace * cellDescent / cellSpace;
-                }
-#endif
-#if WPF
-                {
-                    //Debug.WriteLine(gdiSize);
-                    XSize edfSize = FontHelper14.MeasureStringWpf(text, font, XStringFormats.Default);
-                    //Debug.WriteLine(edfSize);
-                    //Debug.Assert(gdiSize == edfSize, "Measure string failed.");
-                    if (gdiSize.Width != edfSize.Width)
-                    {
-                        Debug.WriteLine(String.Format("Width: {0}, {1} : {2}", gdiSize.Width, edfSize.Width, gdiSize.Width / edfSize.Width));
-                    }
-                    if (gdiSize.Height != edfSize.Height)
-                    {
-                        Debug.WriteLine(String.Format("Height: {0}, {1}", gdiSize.Height, edfSize.Height));
-                    }
-
-                    //double lineSpace = font.GetHeight(this);
-                    //int cellSpace = font.cellSpace; // font.FontFamily.GetLineSpacing(font.Style);
-                    //int cellAscent = font.cellAscent; // font.FontFamily.GetCellAscent(font.Style);
-                    //int cellDescent = font.cellDescent; // font.FontFamily.GetCellDescent(font.Style);
-                    //double cyAscent = lineSpace * cellAscent / cellSpace;
-                    //double cyDescent = lineSpace * cellDescent / cellSpace;
-                }
-#endif
-#endif
-                return gdiSize;
-            }
-            if (TargetContext == XGraphicTargetContext.WPF)
-            {
-                //double h = font.Height;
-                //FormattedText formattedText = new FormattedText(text, new CultureInfo("en-us"),
-                //  FlowDirection.LeftToRight, font.typeface, font.Size, WpfBrushes.Black);
-                FormattedText formattedText = FontHelper.CreateFormattedText(text, font.Typeface, font.Size, WpfBrushes.Black);
-                XSize wpfSize = new XSize(formattedText.WidthIncludingTrailingWhitespace, formattedText.Height);
-#if DEBUG
-                Debug.WriteLine(wpfSize);
-#endif
-                return wpfSize;
-            }
-            Debug.Assert(false);
-            return XSize.Empty;
-#else
-            XSize size23 = FontHelper.MeasureString(text, font, XStringFormats.Default);
-            return size23;
-#endif
-#endif
-#if CORE || NETFX_CORE || UWP
             XSize size = FontHelper.MeasureString(text, font, XStringFormats.Default);
             return size;
-#endif
-#if __IOS__ || __ANDROID__ || PORTABLE
-            XSize size = FontHelper.MeasureString(text, font, XStringFormats.Default);
-            return size;
-#endif
         }
 
         /// <summary>
@@ -3800,48 +3537,18 @@ namespace PdfSharpCore.Drawing  // #??? aufräumen
 
         // ----- DrawImage ----------------------------------------------------------------------------
 
-#if GDI
         /// <summary>
         /// Draws the specified image.
         /// </summary>
-        public void DrawImage(XImage image, GdiPoint point)
+        public void DrawImage(XImage image, XPoint point, CancellationToken ct)
         {
-            DrawImage(image, point.X, point.Y);
-        }
-#endif
-
-#if WPF
-        /// <summary>
-        /// Draws the specified image.
-        /// </summary>
-        public void DrawImage(XImage image, SysPoint point)
-        {
-            DrawImage(image, point.X, point.Y);
-        }
-#endif
-
-#if GDI
-        /// <summary>
-        /// Draws the specified image.
-        /// </summary>
-        public void DrawImage(XImage image, GdiPointF point)
-        {
-            DrawImage(image, point.X, point.Y);
-        }
-#endif
-
-        /// <summary>
-        /// Draws the specified image.
-        /// </summary>
-        public void DrawImage(XImage image, XPoint point)
-        {
-            DrawImage(image, point.X, point.Y);
+            DrawImage(image, point.X, point.Y, ct);
         }
 
         /// <summary>
         /// Draws the specified image.
         /// </summary>
-        public void DrawImage(XImage image, double x, double y)
+        public void DrawImage(XImage image, double x, double y, CancellationToken ct)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -3851,331 +3558,56 @@ namespace PdfSharpCore.Drawing  // #??? aufräumen
             double width = image.PointWidth;
             double height = image.PointHeight;
 
-            if (_drawGraphics)
-            {
-#if GDI
-                if (TargetContext == XGraphicTargetContext.GDI)
-                {
-                    try
-                    {
-                        Lock.EnterGdiPlus();
-                        if (image._gdiImage != null)
-                        {
-                            InterpolationMode interpolationMode = InterpolationMode.Invalid;
-                            if (!image.Interpolate)
-                            {
-                                interpolationMode = _gfx.InterpolationMode;
-                                _gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
-                            }
-
-                            _gfx.DrawImage(image._gdiImage, (float)x, (float)y, (float)width, (float)height);
-
-                            if (!image.Interpolate)
-                                _gfx.InterpolationMode = interpolationMode;
-                        }
-                        else
-                        {
-                            DrawMissingImageRect(new XRect(x, y, width, height));
-                            //_gfx.DrawRectangle(Pens.Red, (float)x, (float)y, (float)width, (float)height);
-                            //_gfx.DrawLine(Pens.Red, (float)x, (float)y, (float)(x + width), (float)(y + height));
-                            //_gfx.DrawLine(Pens.Red, (float)(x + width), (float)y, (float)x, (float)(y + height));
-                        }
-                    }
-                    finally { Lock.ExitGdiPlus(); }
-                }
-#endif
-#if WPF
-                if (TargetContext == XGraphicTargetContext.WPF)
-                {
-                    if (image._wpfImage != null)
-                    {
-                        _dc.DrawImage(image._wpfImage, new Rect(x, y, image.PointWidth, image.PointHeight));
-                    }
-                    else
-                    {
-                        DrawMissingImageRect(new XRect(x, y, width, height));
-                    }
-                }
-#endif
-            }
-
             if (_renderer != null)
-                _renderer.DrawImage(image, x, y, image.PointWidth, image.PointHeight);
+                _renderer.DrawImage(image, x, y, image.PointWidth, image.PointHeight, ct);
             //image.Width * 72 / image.HorizontalResolution,
             //image.Height * 72 / image.HorizontalResolution);
         }
 
-#if GDI
         /// <summary>
         /// Draws the specified image.
         /// </summary>
-        public void DrawImage(XImage image, Rectangle rect)
+        public void DrawImage(XImage image, XRect rect, CancellationToken ct)
         {
-            // Because of overloading the cast is NOT redundant.
-            DrawImage(image, (double)rect.X, (double)rect.Y, (double)rect.Width, (double)rect.Height);
-        }
-#endif
-
-#if GDI
-        /// <summary>
-        /// Draws the specified image.
-        /// </summary>
-        public void DrawImage(XImage image, GdiRectF rect)
-        {
-            DrawImage(image, rect.X, rect.Y, rect.Width, rect.Height);
-        }
-#endif
-
-        /// <summary>
-        /// Draws the specified image.
-        /// </summary>
-        public void DrawImage(XImage image, XRect rect)
-        {
-            DrawImage(image, rect.X, rect.Y, rect.Width, rect.Height);
+            DrawImage(image, rect.X, rect.Y, rect.Width, rect.Height, ct);
         }
 
         /// <summary>
         /// Draws the specified image.
         /// </summary>
-        public void DrawImage(XImage image, double x, double y, double width, double height)
+        public void DrawImage(XImage image, double x, double y, double width, double height, CancellationToken ct)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
 
             CheckXPdfFormConsistence(image);
 
-            if (_drawGraphics)
-            {
-                // THHO4STLA: Platform-independent images cannot be drawn here, can they?    => They can. Lazy create platform-dependent image and draw that.
-#if GDI
-                if (TargetContext == XGraphicTargetContext.GDI)
-                {
-                    try
-                    {
-                        Lock.EnterGdiPlus();
-                        if (image._gdiImage != null)
-                        {
-                            InterpolationMode interpolationMode = InterpolationMode.Invalid;
-                            if (!image.Interpolate)
-                            {
-                                interpolationMode = _gfx.InterpolationMode;
-                                _gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
-                            }
-
-                            _gfx.DrawImage(image._gdiImage, (float)x, (float)y, (float)width, (float)height);
-
-                            if (!image.Interpolate)
-                                _gfx.InterpolationMode = interpolationMode;
-                        }
-                        else
-                        {
-                            XImage placeholder = null;
-                            XPdfForm pdfForm = image as XPdfForm;
-                            if (pdfForm != null)
-                            {
-                                //XPdfForm pf = pdfForm;
-                                if (pdfForm.PlaceHolder != null)
-                                    placeholder = pdfForm.PlaceHolder;
-                            }
-                            if (placeholder != null)
-                                _gfx.DrawImage(placeholder._gdiImage, (float)x, (float)y, (float)width,
-                                    (float)height);
-                            else
-                            {
-                                DrawMissingImageRect(new XRect(x, y, width, height));
-                            }
-                        }
-                    }
-                    finally { Lock.ExitGdiPlus(); }
-                }
-#endif
-#if WPF
-                if (TargetContext == XGraphicTargetContext.WPF)
-                {
-                    if (image._wpfImage != null)
-                    {
-                        //InterpolationMode interpolationMode = InterpolationMode.Invalid;
-                        //if (!image.Interpolate)
-                        //{
-                        //  interpolationMode = gfx.InterpolationMode;
-                        //  gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
-                        //}
-
-                        _dc.DrawImage(image._wpfImage, new Rect(x, y, width, height));
-
-                        //if (!image.Interpolate)
-                        //  gfx.InterpolationMode = interpolationMode;
-                    }
-                    else
-                    {
-                        XImage placeholder = null;
-                        if (image is XPdfForm)
-                        {
-                            XPdfForm pf = image as XPdfForm;
-                            if (pf.PlaceHolder != null)
-                                placeholder = pf.PlaceHolder;
-                        }
-                        if (placeholder != null)
-                            _dc.DrawImage(placeholder._wpfImage, new Rect(x, y, width, height));
-                        else
-                            DrawMissingImageRect(new XRect(x, y, width, height));
-                    }
-                }
-#endif
-            }
-
             if (_renderer != null)
-                _renderer.DrawImage(image, x, y, width, height);
+                _renderer.DrawImage(image, x, y, width, height, ct);
         }
 
         // TODO: calculate destination size
         //public void DrawImage(XImage image, double x, double y, GdiRectF srcRect, XGraphicsUnit srcUnit)
         //public void DrawImage(XImage image, double x, double y, XRect srcRect, XGraphicsUnit srcUnit)
 
-#if GDI
         /// <summary>
         /// Draws the specified image.
         /// </summary>
-        public void DrawImage(XImage image, Rectangle destRect, Rectangle srcRect, XGraphicsUnit srcUnit)
-        {
-            XRect destRectX = new XRect(destRect.X, destRect.Y, destRect.Width, destRect.Height);
-            XRect srcRectX = new XRect(srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height);
-            DrawImage(image, destRectX, srcRectX, srcUnit);
-        }
-#endif
-
-#if GDI
-        /// <summary>
-        /// Draws the specified image.
-        /// </summary>
-        public void DrawImage(XImage image, GdiRectF destRect, GdiRectF srcRect, XGraphicsUnit srcUnit)
-        {
-            XRect destRectX = new XRect(destRect.X, destRect.Y, destRect.Width, destRect.Height);
-            XRect srcRectX = new XRect(srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height);
-            DrawImage(image, destRectX, srcRectX, srcUnit);
-        }
-#endif
-
-        /// <summary>
-        /// Draws the specified image.
-        /// </summary>
-        public void DrawImage(XImage image, XRect destRect, XRect srcRect, XGraphicsUnit srcUnit)
+        public void DrawImage(XImage image, XRect destRect, XRect srcRect, XGraphicsUnit srcUnit, CancellationToken ct)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
 
             CheckXPdfFormConsistence(image);
 
-            if (_drawGraphics)
-            {
-#if GDI
-                if (TargetContext == XGraphicTargetContext.GDI)
-                {
-                    try
-                    {
-                        Lock.EnterGdiPlus();
-                        if (image._gdiImage != null)
-                        {
-                            InterpolationMode interpolationMode = InterpolationMode.Invalid;
-                            if (!image.Interpolate)
-                            {
-                                interpolationMode = _gfx.InterpolationMode;
-                                _gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
-                            }
-
-                            GdiRectF destRectF = new GdiRectF((float)destRect.X, (float)destRect.Y,
-                                (float)destRect.Width, (float)destRect.Height);
-                            GdiRectF srcRectF = new GdiRectF((float)srcRect.X, (float)srcRect.Y,
-                                (float)srcRect.Width, (float)srcRect.Height);
-                            _gfx.DrawImage(image._gdiImage, destRectF, srcRectF, GraphicsUnit.Pixel);
-
-                            if (!image.Interpolate)
-                                _gfx.InterpolationMode = interpolationMode;
-                        }
-                        else
-                        {
-                            DrawMissingImageRect(new XRect(destRect.X, destRect.Y, destRect.Width, destRect.Height));
-                        }
-                    }
-                    finally { Lock.ExitGdiPlus(); }
-                }
-#endif
-#if WPF
-                if (TargetContext == XGraphicTargetContext.WPF)
-                {
-                    if (image._wpfImage != null)
-                    {
-                        //InterpolationMode interpolationMode = InterpolationMode.Invalid;
-                        //if (!image.Interpolate)
-                        //{
-                        //  interpolationMode = gfx.InterpolationMode;
-                        //  //gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
-                        //}
-
-                        // HACK: srcRect is ignored
-                        //double x = destRect.X;
-                        //double y = destRect.Y;
-                        _dc.DrawImage(image._wpfImage, new SysRect(destRect.X, destRect.Y, destRect.Width, destRect.Height));
-
-                        //if (!image.Interpolate)
-                        //  gfx.InterpolationMode = interpolationMode;
-                    }
-                    else
-                    {
-                        DrawMissingImageRect(destRect);
-                    }
-                }
-#endif
-            }
-
             if (_renderer != null)
-                _renderer.DrawImage(image, destRect, srcRect, srcUnit);
+                _renderer.DrawImage(image, destRect, srcRect, srcUnit, ct);
         }
 
         //TODO?
         //public void DrawImage(XImage image, Rectangle destRect, double srcX, double srcY, double srcWidth, double srcHeight, GraphicsUnit srcUnit);
         //public void DrawImage(XImage image, Rectangle destRect, double srcX, double srcY, double srcWidth, double srcHeight, GraphicsUnit srcUnit);
-
-        void DrawMissingImageRect(XRect rect)
-        {
-#if GDI
-            if (TargetContext == XGraphicTargetContext.GDI)
-            {
-                try
-                {
-                    Lock.EnterGdiPlus();
-                    float x = (float)rect.X;
-                    float y = (float)rect.Y;
-                    float width = (float)rect.Width;
-                    float height = (float)rect.Height;
-                    _gfx.DrawRectangle(Pens.Red, x, y, width, height);
-                    _gfx.DrawLine(Pens.Red, x, y, x + width, y + height);
-                    _gfx.DrawLine(Pens.Red, x + width, y, x, y + height);
-                }
-                finally { Lock.ExitGdiPlus(); }
-            }
-#endif
-#if WPF
-            if (TargetContext == XGraphicTargetContext.WPF)
-            {
-                double x = rect.X;
-                double y = rect.Y;
-                double width = rect.Width;
-                double height = rect.Height;
-#if !SILVERLIGHT
-                WpfPen pen = new WpfPen(WpfBrushes.Red, 1);
-#else
-                WpfPen pen = new WpfPen();
-                pen.Brush = new SolidColorBrush(Colors.Red);
-                pen.Thickness = 1;
-#endif
-                _dc.DrawRectangle(null, pen, new Rect(x, y, width, height));
-                _dc.DrawLine(pen, new SysPoint(x, y), new SysPoint(x + width, y + height));
-                _dc.DrawLine(pen, new SysPoint(x + width, y), new SysPoint(x, y + height));
-            }
-#endif
-        }
-
+        
         /// <summary>
         /// Checks whether drawing is allowed and disposes the XGraphics object, if necessary.
         /// </summary>
@@ -4232,17 +3664,17 @@ namespace PdfSharpCore.Drawing  // #??? aufräumen
         /// <summary>
         /// Draws the specified data matrix code.
         /// </summary>
-        public void DrawMatrixCode(BarCodes.MatrixCode matrixcode, XPoint position)
+        public void DrawMatrixCode(BarCodes.MatrixCode matrixcode, XPoint position, CancellationToken ct)
         {
-            matrixcode.Render(this, XBrushes.Black, position);
+            matrixcode.Render(this, XBrushes.Black, position, ct);
         }
 
         /// <summary>
         /// Draws the specified data matrix code.
         /// </summary>
-        public void DrawMatrixCode(BarCodes.MatrixCode matrixcode, XBrush brush, XPoint position)
+        public void DrawMatrixCode(BarCodes.MatrixCode matrixcode, XBrush brush, XPoint position, CancellationToken ct)
         {
-            matrixcode.Render(this, brush, position);
+            matrixcode.Render(this, brush, position, ct);
         }
 
         #endregion

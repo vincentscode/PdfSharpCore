@@ -40,6 +40,7 @@ using MigraDocCore.DocumentObjectModel.Visitors;
 using MigraDocCore.DocumentObjectModel.Shapes;
 using MigraDocCore.DocumentObjectModel.Tables;
 using MigraDocCore.Rendering.MigraDoc.Rendering.Resources;
+using System.Threading;
 
 namespace MigraDocCore.Rendering
 {
@@ -131,15 +132,15 @@ namespace MigraDocCore.Rendering
         /// <summary>
         /// Renders a MigraDoc document to the specified graphics object.
         /// </summary>
-        public void RenderPage(XGraphics gfx, int page)
+        public void RenderPage(XGraphics gfx, int page, CancellationToken ct)
         {
-            RenderPage(gfx, page, PageRenderOptions.All);
+            RenderPage(gfx, page, PageRenderOptions.All, ct);
         }
 
         /// <summary>
         /// Renders a MigraDoc document to the specified graphics object.
         /// </summary>
-        public void RenderPage(XGraphics gfx, int page, PageRenderOptions options)
+        public void RenderPage(XGraphics gfx, int page, PageRenderOptions options, CancellationToken ct)
         {
             if (this.formattedDocument.IsEmptyPage(page))
                 return;
@@ -152,9 +153,9 @@ namespace MigraDocCore.Rendering
                 fieldInfos.date = DateTime.Now;
 
             if ((options & PageRenderOptions.RenderHeader) == PageRenderOptions.RenderHeader)
-                RenderHeader(gfx, page);
+                RenderHeader(gfx, page, ct);
             if ((options & PageRenderOptions.RenderFooter) == PageRenderOptions.RenderFooter)
-                RenderFooter(gfx, page);
+                RenderFooter(gfx, page, ct);
 
             if ((options & PageRenderOptions.RenderContent) == PageRenderOptions.RenderContent)
             {
@@ -163,9 +164,10 @@ namespace MigraDocCore.Rendering
                 int count = renderInfos.Length;
                 for (int idx = 0; idx < count; idx++)
                 {
+                    ct.ThrowIfCancellationRequested();
                     RenderInfo renderInfo = renderInfos[idx];
                     Renderer renderer = Renderer.Create(gfx, this, renderInfo, fieldInfos);
-                    renderer.Render();
+                    renderer.Render(ct);
                 }
             }
         }
@@ -192,7 +194,7 @@ namespace MigraDocCore.Rendering
         /// <param name="width">The width.</param>
         /// <param name="documentObject">The document object to render. Can be paragraph, table, or shape.</param>
         /// <remarks>This function is still in an experimental state.</remarks>
-        public void RenderObject(XGraphics graphics, XUnit xPosition, XUnit yPosition, XUnit width, DocumentObject documentObject)
+        public void RenderObject(XGraphics graphics, XUnit xPosition, XUnit yPosition, XUnit width, DocumentObject documentObject, CancellationToken ct)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
@@ -212,7 +214,7 @@ namespace MigraDocCore.Rendering
             renderInfo.LayoutInfo.ContentArea.Y = yPosition;
 
             renderer = Renderer.Create(graphics, this, renderer.RenderInfo, null);
-            renderer.Render();
+            renderer.Render(ct);
         }
 
         /// <summary>
@@ -225,7 +227,7 @@ namespace MigraDocCore.Rendering
         }
         string workingDirectory;
 
-        private void RenderHeader(XGraphics graphics, int page)
+        private void RenderHeader(XGraphics graphics, int page, CancellationToken ct)
         {
             FormattedHeaderFooter formattedHeader = this.formattedDocument.GetFormattedHeader(page);
             if (formattedHeader == null)
@@ -236,12 +238,13 @@ namespace MigraDocCore.Rendering
             FieldInfos fieldInfos = this.formattedDocument.GetFieldInfos(page);
             foreach (RenderInfo renderInfo in renderInfos)
             {
+                ct.ThrowIfCancellationRequested();
                 Renderer renderer = Renderer.Create(graphics, this, renderInfo, fieldInfos);
-                renderer.Render();
+                renderer.Render(ct);
             }
         }
 
-        private void RenderFooter(XGraphics graphics, int page)
+        private void RenderFooter(XGraphics graphics, int page, CancellationToken ct)
         {
             FormattedHeaderFooter formattedFooter = this.formattedDocument.GetFormattedFooter(page);
             if (formattedFooter == null)
@@ -254,10 +257,11 @@ namespace MigraDocCore.Rendering
             FieldInfos fieldInfos = this.formattedDocument.GetFieldInfos(page);
             foreach (RenderInfo renderInfo in renderInfos)
             {
+                ct.ThrowIfCancellationRequested();
                 Renderer renderer = Renderer.Create(graphics, this, renderInfo, fieldInfos);
                 XUnit savedY = renderer.RenderInfo.LayoutInfo.ContentArea.Y;
                 renderer.RenderInfo.LayoutInfo.ContentArea.Y = topY;
-                renderer.Render();
+                renderer.Render(ct);
                 renderer.RenderInfo.LayoutInfo.ContentArea.Y = savedY;
             }
         }

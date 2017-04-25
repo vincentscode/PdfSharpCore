@@ -54,6 +54,7 @@ using PdfSharpCore.Internal;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.Internal;
 using PdfSharpCore.Pdf.Advanced;
+using System.Threading;
 
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -643,11 +644,11 @@ namespace PdfSharpCore.Drawing.Pdf
         //public void DrawImage(Image image, Rectangle destRect, int srcX, int srcY, int srcWidth, int srcHeight, GraphicsUnit srcUnit, ImageAttributes imageAttrs, DrawImageAbort callback, IntPtr callbackData);
         //public void DrawImage(Image image, Rectangle destRect, float srcX, float srcY, float srcWidth, float srcHeight, GraphicsUnit srcUnit, ImageAttributes
 
-        public void DrawImage(XImage image, double x, double y, double width, double height)
+        public void DrawImage(XImage image, double x, double y, double width, double height, CancellationToken ct)
         {
             const string format = Config.SignificantFigures4;
 
-            string name = Realize(image);
+            string name = Realize(image, ct);
             if (!(image is XForm))
             {
                 if (_gfx.PageDirection == XPageDirection.Downwards)
@@ -701,7 +702,7 @@ namespace PdfSharpCore.Drawing.Pdf
         }
 
         // TODO: incomplete - srcRect not used
-        public void DrawImage(XImage image, XRect destRect, XRect srcRect, XGraphicsUnit srcUnit)
+        public void DrawImage(XImage image, XRect destRect, XRect srcRect, XGraphicsUnit srcUnit, CancellationToken ct)
         {
             const string format = Config.SignificantFigures4;
 
@@ -710,7 +711,7 @@ namespace PdfSharpCore.Drawing.Pdf
             double width = destRect.Width;
             double height = destRect.Height;
 
-            string name = Realize(image);
+            string name = Realize(image, ct);
             if (!(image is XForm))
             {
                 if (_gfx.PageDirection == XPageDirection.Downwards)
@@ -1843,7 +1844,7 @@ namespace PdfSharpCore.Drawing.Pdf
         /// <summary>
         /// Makes the specified image to the current graphics object.
         /// </summary>
-        string Realize(XImage image)
+        string Realize(XImage image, CancellationToken ct)
         {
             BeginPage();
             BeginGraphicMode();
@@ -1853,7 +1854,7 @@ namespace PdfSharpCore.Drawing.Pdf
             _gfxState.RealizeNonStrokeTransparency(1, _colorMode);
 
             XForm form = image as XForm;
-            return form != null ? GetFormName(form) : GetImageName(image);
+            return form != null ? GetFormName(form) : GetImageName(image, ct);
         }
 
         /// <summary>
@@ -1998,11 +1999,11 @@ namespace PdfSharpCore.Drawing.Pdf
         /// <summary>
         /// Gets the resource name of the specified image within this page or form.
         /// </summary>
-        internal string GetImageName(XImage image)
+        internal string GetImageName(XImage image, CancellationToken ct)
         {
             if (_page != null)
-                return _page.GetImageName(image);
-            return _form.GetImageName(image);
+                return _page.GetImageName(image, ct);
+            return _form.GetImageName(image, ct);
         }
 
         /// <summary>

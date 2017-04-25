@@ -29,6 +29,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading;
 #if GDI
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -291,7 +292,7 @@ namespace PdfSharpCore.Pdf.Advanced
             return GetFontName(idName, fontData, out pdfFont);
         }
 
-        string IContentStream.GetImageName(XImage image)
+        string IContentStream.GetImageName(XImage image, CancellationToken ct)
         {
             throw new NotImplementedException();
         }

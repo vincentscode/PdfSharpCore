@@ -29,6 +29,7 @@
 #endregion
 
 using System;
+using System.Threading;
 #if GDI
 using System.Drawing;
 #endif
@@ -158,7 +159,7 @@ namespace PdfSharpCore.Drawing.BarCodes
         /// <summary>
         /// Renders the matrix code.
         /// </summary>
-        protected internal override void Render(XGraphics gfx, XBrush brush, XPoint position)
+        protected internal override void Render(XGraphics gfx, XBrush brush, XPoint position, CancellationToken ct)
         {
             XGraphicsState state = gfx.Save();
 
@@ -193,10 +194,10 @@ namespace PdfSharpCore.Drawing.BarCodes
                 posWithZone.Y += Size.Height / (Rows + 2 * QuietZone) * QuietZone;
 
                 gfx.DrawRectangle(XBrushes.White, pos.X, pos.Y, Size.Width, Size.Height);
-                gfx.DrawImage(MatrixImage, posWithZone.X, posWithZone.Y, sizeWithZone.Width, sizeWithZone.Height);
+                gfx.DrawImage(MatrixImage, posWithZone.X, posWithZone.Y, sizeWithZone.Width, sizeWithZone.Height, ct);
             }
             else
-                gfx.DrawImage(MatrixImage, pos.X, pos.Y, Size.Width, Size.Height);
+                gfx.DrawImage(MatrixImage, pos.X, pos.Y, Size.Width, Size.Height, ct);
 
             gfx.Restore(state);
         }

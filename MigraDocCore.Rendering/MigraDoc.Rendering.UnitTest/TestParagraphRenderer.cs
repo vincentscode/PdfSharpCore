@@ -2,6 +2,7 @@ using System;
 using MigraDocCore.DocumentObjectModel;
 using PdfSharpCore.Drawing;
 using MigraDocCore.DocumentObjectModel.IO;
+using System.Threading;
 
 namespace MigraDocCore.Rendering.UnitTest
 {
@@ -28,7 +29,7 @@ namespace MigraDocCore.Rendering.UnitTest
             {
                 Document = document
             };
-            printer.RenderDocument();
+            printer.RenderDocument(CancellationToken.None);
             printer.PdfDocument.Save(pdfOutputFile);
         }
 
@@ -42,7 +43,7 @@ namespace MigraDocCore.Rendering.UnitTest
             {
                 Document = document
             };
-            printer.RenderDocument();
+            printer.RenderDocument(CancellationToken.None);
             printer.PdfDocument.Save(pdfOutputFile);
         }
 
@@ -102,7 +103,7 @@ namespace MigraDocCore.Rendering.UnitTest
             {
                 Document = document
             };
-            printer.RenderDocument();
+            printer.RenderDocument(CancellationToken.None);
             printer.PdfDocument.Save(pdfOutputFile);
         }
 
@@ -121,7 +122,7 @@ namespace MigraDocCore.Rendering.UnitTest
             {
                 Document = document
             };
-            printer.RenderDocument();
+            printer.RenderDocument(CancellationToken.None);
             printer.PdfDocument.Save(pdfOutputFile);
         }
 
@@ -161,7 +162,7 @@ namespace MigraDocCore.Rendering.UnitTest
             {
                 Document = document
             };
-            printer.RenderDocument();
+            printer.RenderDocument(CancellationToken.None);
             printer.PdfDocument.Save(outputFile);
         }
 
@@ -201,7 +202,7 @@ namespace MigraDocCore.Rendering.UnitTest
             {
                 Document = document
             };
-            printer.RenderDocument();
+            printer.RenderDocument(CancellationToken.None);
             printer.PdfDocument.Save(outputFile);
         }
     }

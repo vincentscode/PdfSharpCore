@@ -30,6 +30,7 @@
 
 
 using PdfSharpCore.Drawing;
+using System.Threading;
 
 namespace PdfSharpCore.Pdf.Advanced
 {
@@ -41,7 +42,7 @@ namespace PdfSharpCore.Pdf.Advanced
 
         string GetFontName(string idName, byte[] fontData, out PdfFont pdfFont);
 
-        string GetImageName(XImage image);
+        string GetImageName(XImage image, CancellationToken ct);
 
         string GetFormName(XForm form);
     }

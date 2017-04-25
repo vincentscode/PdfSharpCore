@@ -35,6 +35,8 @@ using System.Drawing.Drawing2D;
 using System.Windows.Media;
 #endif
 
+using System.Threading;
+
 namespace PdfSharpCore.Drawing
 {
     /// <summary>
@@ -124,8 +126,8 @@ namespace PdfSharpCore.Drawing
         /// <summary>
         /// Draws an image.
         /// </summary>
-        void DrawImage(XImage image, double x, double y, double width, double height);
-        void DrawImage(XImage image, XRect destRect, XRect srcRect, XGraphicsUnit srcUnit);
+        void DrawImage(XImage image, double x, double y, double width, double height, CancellationToken ct);
+        void DrawImage(XImage image, XRect destRect, XRect srcRect, XGraphicsUnit srcUnit, CancellationToken ct);
 
         #endregion
 

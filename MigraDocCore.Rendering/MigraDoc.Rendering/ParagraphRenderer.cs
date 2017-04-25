@@ -41,6 +41,7 @@ using MigraDocCore.DocumentObjectModel.Fields;
 using MigraDocCore.DocumentObjectModel.Shapes;
 using MigraDocCore.Rendering.MigraDoc.Rendering.Resources;
 using PdfSharpCore.Fonts;
+using System.Threading;
 
 namespace MigraDocCore.Rendering
 {
@@ -130,7 +131,7 @@ namespace MigraDocCore.Rendering
         /// <summary>
         /// Renders the paragraph.
         /// </summary>
-        internal override void Render()
+        internal override void Render(CancellationToken ct)
         {
             InitRendering();
             if ((int)this.paragraph.Format.OutlineLevel >= 1 && this.gfx.PdfPage != null) // Don't call GetOutlineTitle() in vain
@@ -142,6 +143,7 @@ namespace MigraDocCore.Rendering
             ParagraphFormatInfo parFormatInfo = (ParagraphFormatInfo)this.renderInfo.FormatInfo;
             for (int idx = 0; idx < parFormatInfo.LineCount; ++idx)
             {
+                ct.ThrowIfCancellationRequested();
                 LineInfo lineInfo = parFormatInfo.GetLineInfo(idx);
                 this.isLastLine = (idx == parFormatInfo.LineCount - 1);
 
@@ -149,7 +151,7 @@ namespace MigraDocCore.Rendering
                 if (lineInfo.reMeasureLine)
                     ReMeasureLine(ref lineInfo);
 
-                RenderLine(lineInfo);
+                RenderLine(lineInfo, ct);
             }
         }
 
@@ -693,7 +695,7 @@ namespace MigraDocCore.Rendering
         /// Renders a single line.
         /// </summary>
         /// <param name="lineInfo"></param>
-        void RenderLine(LineInfo lineInfo)
+        void RenderLine(LineInfo lineInfo, CancellationToken ct)
         {
             this.currentVerticalInfo = lineInfo.vertical;
             this.currentLeaf = lineInfo.startIter;
@@ -720,7 +722,7 @@ namespace MigraDocCore.Rendering
 
                 if (this.currentLeaf.Current == lineInfo.lastTab)
                     this.lastTabPassed = true;
-                RenderElement(this.currentLeaf.Current);
+                RenderElement(this.currentLeaf.Current, ct);
                 this.currentLeaf = this.currentLeaf.GetNextLeaf();
             }
             this.currentYPosition += lineInfo.vertical.height;
@@ -802,7 +804,7 @@ namespace MigraDocCore.Rendering
             }
         }
 
-        void RenderElement(DocumentObject docObj)
+        void RenderElement(DocumentObject docObj, CancellationToken ct)
         {
             string typeName = docObj.GetType().Name;
             switch (typeName)
@@ -853,20 +855,20 @@ namespace MigraDocCore.Rendering
                     break;
 
                 case "Image":
-                    RenderImage((Image)docObj);
+                    RenderImage((Image)docObj, ct);
                     break;
                     //        default:
                     //          throw new NotImplementedException(typeName + " is coming soon...");
             }
         }
 
-        void RenderImage(Image image)
+        void RenderImage(Image image, CancellationToken ct)
         {
             RenderInfo renderInfo = this.CurrentImageRenderInfo;
             XUnit top = CurrentBaselinePosition;
             Area contentArea = renderInfo.LayoutInfo.ContentArea;
             top -= contentArea.Height;
-            RenderByInfos(this.currentXPosition, top, new RenderInfo[] { renderInfo });
+            RenderByInfos(this.currentXPosition, top, new RenderInfo[] { renderInfo }, ct);
 
             RenderUnderline(contentArea.Width, true);
             RealizeHyperlink(contentArea.Width);

@@ -43,6 +43,7 @@ using System.Windows.Media.Imaging;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Drawing.Internal;
 using PdfSharpCore.Pdf.Filters;
+using System.Threading;
 
 namespace PdfSharpCore.Pdf.Advanced
 {
@@ -54,7 +55,7 @@ namespace PdfSharpCore.Pdf.Advanced
         /// <summary>
         /// Initializes a new instance of PdfImage from an XImage.
         /// </summary>
-        public PdfImage(PdfDocument document, XImage image)
+        public PdfImage(PdfDocument document, XImage image, CancellationToken ct)
             : base(document)
         {
             Elements.SetName(Keys.Type, "/XObject");
@@ -70,7 +71,7 @@ namespace PdfSharpCore.Pdf.Advanced
             {
                 // Pdf supports Jpeg, therefore we can write what we've read:
                 case "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}":  //XImageFormat.Jpeg
-                    InitializeJpeg();
+                    InitializeJpeg(ct);
                     break;
 
                 // All other image formats are converted to PDF bitmaps:
@@ -253,11 +254,11 @@ namespace PdfSharpCore.Pdf.Advanced
         /// <summary>
         /// Creates the keys for a JPEG image.
         /// </summary>
-        void InitializeJpeg()
+        void InitializeJpeg(CancellationToken ct)
         {
             byte[] imageBits = null;
 
-            using (MemoryStream memory = _image.AsJpeg())
+            using (MemoryStream memory = _image.AsJpeg(ct))
             {
                 imageBits = memory.ToArray();
             }

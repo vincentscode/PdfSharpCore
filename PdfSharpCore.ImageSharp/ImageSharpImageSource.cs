@@ -6,6 +6,8 @@ using ImageSharp;
 using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
 using static MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource;
 using ImageSharp.Formats;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PdfSharpCore.ImageSharp
 {
@@ -67,10 +69,20 @@ namespace PdfSharpCore.ImageSharp
                 _quality = quality;
             }
 
-            public void SaveAsJpeg(MemoryStream ms)
+            public void SaveAsJpeg(MemoryStream ms, CancellationToken ct)
             {
-                Image.AutoOrient();
-                Image.SaveAsJpeg(ms, new JpegEncoderOptions() { Quality = _quality });
+                TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
+                ct.Register(() => {
+                    tcs.TrySetCanceled();
+                });
+                var task = Task.Run(() => {
+                    Image.AutoOrient();
+                    Image.SaveAsJpeg(ms, new JpegEncoderOptions() { Quality = _quality });
+                });
+                Task.WaitAny(task, tcs.Task);
+                tcs.TrySetCanceled();
+                ct.ThrowIfCancellationRequested();
+                if (task.IsFaulted) throw task.Exception;
             }
 
             public void Dispose()

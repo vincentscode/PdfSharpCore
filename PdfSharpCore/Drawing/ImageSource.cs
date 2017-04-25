@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes
 {
@@ -15,7 +16,7 @@ namespace MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes
             int Width { get; }
             int Height { get; }
             string Name { get; }
-            void SaveAsJpeg(MemoryStream ms);
+            void SaveAsJpeg(MemoryStream ms, CancellationToken ct);
         }
 
         protected abstract IImageSource FromFileImpl(string path, int? quality = 75);

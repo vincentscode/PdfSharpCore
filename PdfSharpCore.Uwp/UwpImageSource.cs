@@ -11,6 +11,7 @@ using Windows.Storage.Streams;
 using Windows.Storage.FileProperties;
 using Windows.Foundation;
 using System.IO.IsolatedStorage;
+using System.Threading;
 
 namespace PdfSharpCore.Uwp
 {
@@ -73,20 +74,32 @@ namespace PdfSharpCore.Uwp
                 return Task.Run(async () => { return await BitmapDecoder.CreateAsync(ras); }).Result;
             }
 
-            public void SaveAsJpeg(MemoryStream ms)
+            public void SaveAsJpeg(MemoryStream ms, CancellationToken ct)
             {
+                TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
+                ct.Register(() => {
+                    tcs.TrySetCanceled();
+                });
                 using (var ras = _getRas.Invoke())
                 {
                     var decoder = GetDecoder(ras);
-                    Task.WaitAll(Task.Run(async () =>
+                    var task = Task.Run(async () =>
                     {
+                        ct.ThrowIfCancellationRequested();
                         var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, ms.AsRandomAccessStream(),
                             new BitmapPropertySet() {
                              { "ImageQuality", new BitmapTypedValue(Convert.ToSingle(_quality) / 100, PropertyType.Single) }
                             });
+                        await Task.Delay(1000000000);
+                        ct.ThrowIfCancellationRequested();
                         encoder.SetPixelData(decoder.BitmapPixelFormat, decoder.BitmapAlphaMode, decoder.OrientedPixelWidth, decoder.OrientedPixelHeight, decoder.DpiX, decoder.DpiY, (await decoder.GetPixelDataAsync()).DetachPixelData());
+                        ct.ThrowIfCancellationRequested();
                         await encoder.FlushAsync();
-                    }));
+                    });
+                    Task.WaitAny(task, tcs.Task);
+                    tcs.TrySetCanceled();
+                    ct.ThrowIfCancellationRequested();
+                    if (task.IsFaulted) throw task.Exception;
                 }
             }
         }

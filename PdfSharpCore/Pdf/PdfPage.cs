@@ -35,6 +35,7 @@ using PdfSharpCore.Pdf.IO;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf.Advanced;
 using PdfSharpCore.Pdf.Annotations;
+using System.Threading;
 
 namespace PdfSharpCore.Pdf
 {
@@ -541,9 +542,9 @@ namespace PdfSharpCore.Pdf
         /// <summary>
         /// Gets the resource name of the specified image within this page.
         /// </summary>
-        internal string GetImageName(XImage image)
+        internal string GetImageName(XImage image, CancellationToken ct)
         {
-            PdfImage pdfImage = _document.ImageTable.GetImage(image);
+            PdfImage pdfImage = _document.ImageTable.GetImage(image, ct);
             Debug.Assert(pdfImage != null);
             string name = Resources.AddImage(pdfImage);
             return name;
@@ -552,9 +553,9 @@ namespace PdfSharpCore.Pdf
         /// <summary>
         /// Implements the interface because the primary function is internal.
         /// </summary>
-        string IContentStream.GetImageName(XImage image)
+        string IContentStream.GetImageName(XImage image, CancellationToken ct)
         {
-            return GetImageName(image);
+            return GetImageName(image, ct);
         }
 
         /// <summary>

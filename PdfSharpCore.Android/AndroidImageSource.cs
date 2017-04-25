@@ -9,6 +9,8 @@ using static Android.Graphics.Bitmap;
 using MetadataExtractor;
 using System.Linq;
 using MetadataExtractor.Formats.Exif;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PdfSharpCore.ImageSharp
 {
@@ -73,31 +75,46 @@ namespace PdfSharpCore.ImageSharp
                 }
             }
 
-            public void SaveAsJpeg(MemoryStream ms)
+            public void SaveAsJpeg(MemoryStream ms, CancellationToken ct)
             {
-                Matrix mx = new Matrix();
-                using (var bitmap = DecodeStream(_streamSource.Invoke()))
-                {
-                    switch (Orientation)
+                TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
+                ct.Register(() => {
+                    tcs.TrySetCanceled();
+                });
+                var task = Task.Run(() => {
+                    Matrix mx = new Matrix();
+                    ct.ThrowIfCancellationRequested();
+                    using (var bitmap = DecodeStream(_streamSource.Invoke()))
                     {
-                        case Orientation.Rotate90:
-                            mx.PostRotate(90);
-                            break;
-                        case Orientation.Rotate180:
-                            mx.PostRotate(180);
-                            break;
-                        case Orientation.Rotate270:
-                            mx.PostRotate(270);
-                            break;
-                        default:
-                            bitmap.Compress(CompressFormat.Jpeg, _quality, ms);
-                            return;
+                        switch (Orientation)
+                        {
+                            case Orientation.Rotate90:
+                                mx.PostRotate(90);
+                                break;
+                            case Orientation.Rotate180:
+                                mx.PostRotate(180);
+                                break;
+                            case Orientation.Rotate270:
+                                mx.PostRotate(270);
+                                break;
+                            default:
+                                ct.ThrowIfCancellationRequested();
+                                bitmap.Compress(CompressFormat.Jpeg, _quality, ms);
+                                ct.ThrowIfCancellationRequested();
+                                return;
+                        }
+                        ct.ThrowIfCancellationRequested();
+                        using (var flip = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, mx, true))
+                        {
+                            flip.Compress(CompressFormat.Jpeg, _quality, ms);
+                        }
+                        ct.ThrowIfCancellationRequested();
                     }
-                    using (var flip = Bitmap.CreateBitmap(bitmap, 0, 0, Width, Height, mx, true))
-                    {
-                        flip.Compress(CompressFormat.Jpeg, _quality, ms);
-                    }
-                }
+                });
+                Task.WaitAny(task, tcs.Task);
+                tcs.TrySetCanceled();
+                ct.ThrowIfCancellationRequested();
+                if (task.IsFaulted) throw task.Exception;
             }
         }
     }

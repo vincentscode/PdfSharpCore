@@ -42,6 +42,7 @@ using PdfSharpCore.Drawing.Pdf;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.Advanced;
 using PdfSharpCore.Pdf.Filters;
+using System.Threading;
 
 namespace PdfSharpCore.Drawing
 {
@@ -462,10 +463,10 @@ namespace PdfSharpCore.Drawing
         /// <summary>
         /// Gets the resource name of the specified image within this form.
         /// </summary>
-        internal string GetImageName(XImage image)
+        internal string GetImageName(XImage image, CancellationToken ct)
         {
             Debug.Assert(IsTemplate, "This function is for form templates only.");
-            PdfImage pdfImage = _document.ImageTable.GetImage(image);
+            PdfImage pdfImage = _document.ImageTable.GetImage(image, ct);
             Debug.Assert(pdfImage != null);
             string name = Resources.AddImage(pdfImage);
             return name;
@@ -474,9 +475,9 @@ namespace PdfSharpCore.Drawing
         /// <summary>
         /// Implements the interface because the primary function is internal.
         /// </summary>
-        string IContentStream.GetImageName(XImage image)
+        string IContentStream.GetImageName(XImage image, CancellationToken ct)
         {
-            return GetImageName(image);
+            return GetImageName(image, ct);
         }
 
         internal PdfFormXObject PdfForm

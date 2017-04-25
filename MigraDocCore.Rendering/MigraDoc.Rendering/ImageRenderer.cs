@@ -37,6 +37,8 @@ using MigraDocCore.DocumentObjectModel.Shapes;
 using MigraDocCore.Rendering.MigraDoc.Rendering.Resources;
 using PdfSharpCore.Fonts;
 using static MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MigraDocCore.Rendering
 {
@@ -87,7 +89,7 @@ namespace MigraDocCore.Rendering
             }
         }
 
-        internal override void Render()
+        internal override void Render(CancellationToken ct)
         {
             RenderFilling();
 
@@ -101,10 +103,11 @@ namespace MigraDocCore.Rendering
                 {
                     XRect srcRect = new XRect(formatInfo.CropX, formatInfo.CropY, formatInfo.CropWidth, formatInfo.CropHeight);
                     using (var xImage = XImage.FromImageSource(formatInfo.ImageSource))
-                        this.gfx.DrawImage(xImage, destRect, srcRect, XGraphicsUnit.Point); //Pixel.
+                        this.gfx.DrawImage(xImage, destRect, srcRect, XGraphicsUnit.Point, ct); //Pixel.
                 }
                 catch (Exception)
                 {
+                    ct.ThrowIfCancellationRequested();
                     RenderFailureImage(destRect);
                 }
             }

@@ -31,6 +31,7 @@
 using System;
 using MigraDocCore.DocumentObjectModel;
 using PdfSharpCore.Drawing;
+using System.Threading;
 
 namespace MigraDocCore.Rendering
 {
@@ -74,7 +75,7 @@ namespace MigraDocCore.Rendering
       pbRenderInfo.pageBreak = this.pageBreak;
     }
 
-    internal override void Render()
+    internal override void Render(CancellationToken ct)
     {
       //Nothing to do here.
     }

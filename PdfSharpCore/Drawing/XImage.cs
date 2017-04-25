@@ -34,6 +34,7 @@ using PdfSharpCore.Pdf.IO;
 using PdfSharpCore.Pdf.Advanced;
 using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
 using static MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource;
+using System.Threading;
 
 namespace PdfSharpCore.Drawing
 {
@@ -184,10 +185,10 @@ namespace PdfSharpCore.Drawing
         }
 #endif
 
-        public MemoryStream AsJpeg()
+        public MemoryStream AsJpeg(CancellationToken ct)
         {
             var ms = new MemoryStream();
-            _source.SaveAsJpeg(ms);
+            _source.SaveAsJpeg(ms, ct);
             ms.Position = 0;
             return ms;
         }

@@ -32,6 +32,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Globalization;
 using PdfSharpCore.Drawing;
+using System.Threading;
 
 namespace PdfSharpCore.Pdf.Advanced
 {
@@ -50,7 +51,7 @@ namespace PdfSharpCore.Pdf.Advanced
         /// <summary>
         /// Gets a PdfImage from an XImage. If no PdfImage already exists, a new one is created.
         /// </summary>
-        public PdfImage GetImage(XImage image)
+        public PdfImage GetImage(XImage image, CancellationToken ct)
         {
             ImageSelector selector = image._selector;
             if (selector == null)
@@ -60,7 +61,7 @@ namespace PdfSharpCore.Pdf.Advanced
             }
             if (!_images.TryGetValue(selector, out PdfImage pdfImage))
             {
-                pdfImage = new PdfImage(Owner, image);
+                pdfImage = new PdfImage(Owner, image, ct);
                 //pdfImage.Document = _document;
                 Debug.Assert(pdfImage.Owner == Owner);
                 _images[selector] = pdfImage;

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using PdfSharpCore.Drawing;
 using MigraDocCore.DocumentObjectModel;
+using System.Threading;
 
 namespace MigraDocCore.Rendering.UnitTest
 {
@@ -32,7 +33,7 @@ namespace MigraDocCore.Rendering.UnitTest
             {
                 Document = doc
             };
-            printer.RenderDocument();
+            printer.RenderDocument(CancellationToken.None);
             printer.PdfDocument.Save(outputFile);
 
 
@@ -57,7 +58,7 @@ namespace MigraDocCore.Rendering.UnitTest
             {
                 Document = doc
             };
-            printer.RenderDocument();
+            printer.RenderDocument(CancellationToken.None);
             printer.PdfDocument.Save(outputFile);
         }
 
