@@ -90,7 +90,6 @@ namespace PdfSharpCore.Uwp
                             new BitmapPropertySet() {
                              { "ImageQuality", new BitmapTypedValue(Convert.ToSingle(_quality) / 100, PropertyType.Single) }
                             });
-                        await Task.Delay(1000000000);
                         ct.ThrowIfCancellationRequested();
                         encoder.SetPixelData(decoder.BitmapPixelFormat, decoder.BitmapAlphaMode, decoder.OrientedPixelWidth, decoder.OrientedPixelHeight, decoder.DpiX, decoder.DpiY, (await decoder.GetPixelDataAsync()).DetachPixelData());
                         ct.ThrowIfCancellationRequested();
