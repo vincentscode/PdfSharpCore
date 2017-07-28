@@ -23,7 +23,7 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
@@ -1176,7 +1176,7 @@ namespace PdfSharpCore.Drawing.Pdf
                 pt2.X, pt2.Y);
         }
 
-#if CORE_ 
+#if CORE_
         /// <summary>
         /// Appends the content of a GraphicsPath object.
         /// </summary>
@@ -1216,8 +1216,8 @@ namespace PdfSharpCore.Drawing.Pdf
 
                     case PathPointTypeBezier:
                         Debug.Assert(idx + 2 < count);
-                        //PDF_curveto(pdf, points[idx].X, points[idx].Y, 
-                        //                 points[idx + 1].X, points[idx + 1].Y, 
+                        //PDF_curveto(pdf, points[idx].X, points[idx].Y,
+                        //                 points[idx + 1].X, points[idx + 1].Y,
                         //                 points[idx + 2].X, points[idx + 2].Y);
                         AppendFormat("{0:" + format + "} {1:" + format + "} {2:" + format + "} {3:" + format + "} {4:" + format + "} {5:" + format + "} c\n", points[idx].X, points[idx].Y,
                             points[++idx].X, points[idx].Y, points[++idx].X, points[idx].Y);
@@ -1229,7 +1229,7 @@ namespace PdfSharpCore.Drawing.Pdf
         }
 #endif
 
-#if CORE  || __IOS__ || __ANDROID__
+#if CORE  || __IOS__ || __ANDROID__ || PORTABLE
         /// <summary>
         /// Appends the content of a GraphicsPath object.
         /// </summary>
@@ -1271,8 +1271,8 @@ namespace PdfSharpCore.Drawing.Pdf
 
             //        case PathPointTypeBezier:
             //            Debug.Assert(idx + 2 < count);
-            //            //PDF_curveto(pdf, points[idx].X, points[idx].Y, 
-            //            //                 points[idx + 1].X, points[idx + 1].Y, 
+            //            //PDF_curveto(pdf, points[idx].X, points[idx].Y,
+            //            //                 points[idx + 1].X, points[idx + 1].Y,
             //            //                 points[idx + 2].X, points[idx + 2].Y);
             //            AppendFormat("{0:" + format + "} {1:" + format + "} {2:" + format + "} {3:" + format + "} {4:" + format + "} {5:" + format + "} c\n", points[idx].X, points[idx].Y,
             //                points[++idx].X, points[idx].Y, points[++idx].X, points[idx].Y);
@@ -1327,8 +1327,8 @@ namespace PdfSharpCore.Drawing.Pdf
 
                     case PathPointTypeBezier:
                         Debug.Assert(idx + 2 < count);
-                        //PDF_curveto(pdf, points[idx].X, points[idx].Y, 
-                        //                 points[idx + 1].X, points[idx + 1].Y, 
+                        //PDF_curveto(pdf, points[idx].X, points[idx].Y,
+                        //                 points[idx + 1].X, points[idx + 1].Y,
                         //                 points[idx + 2].X, points[idx + 2].Y);
                         AppendFormat("{0:" + format + "} {1:" + format + "} {2:" + format + "} {3:" + format + "} {4:" + format + "} {5:" + format + "} c\n", points[idx].X, points[idx].Y,
                             points[++idx].X, points[idx].Y, points[++idx].X, points[idx].Y);
@@ -1341,7 +1341,7 @@ namespace PdfSharpCore.Drawing.Pdf
         }
 #endif
 
-#if CORE || GDI || __IOS__ || __ANDROID__
+#if CORE || GDI || __IOS__ || __ANDROID__ || PORTABLE
         void AppendPath(XPoint[] points, Byte[] types)
         {
             const string format = Config.SignificantFigures4;
@@ -1379,8 +1379,8 @@ namespace PdfSharpCore.Drawing.Pdf
 
                     case PathPointTypeBezier:
                         Debug.Assert(idx + 2 < count);
-                        //PDF_curveto(pdf, points[idx].X, points[idx].Y, 
-                        //                 points[idx + 1].X, points[idx + 1].Y, 
+                        //PDF_curveto(pdf, points[idx].X, points[idx].Y,
+                        //                 points[idx + 1].X, points[idx + 1].Y,
                         //                 points[idx + 2].X, points[idx + 2].Y);
                         AppendFormat3Points("{0:" + format + "} {1:" + format + "} {2:" + format + "} {3:" + format + "} {4:" + format + "} {5:" + format + "} c\n", points[idx].X, points[idx].Y,
                             points[++idx].X, points[idx].Y, points[++idx].X, points[idx].Y);
