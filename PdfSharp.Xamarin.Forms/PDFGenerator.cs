@@ -44,6 +44,9 @@ namespace PdfSharp.Xamarin.Forms
 
         private void VisitView(View view, Point pageOffset)
         {
+            if (!PdfRenderer.ShouldRenderView(view))
+                return;
+
             Point newOffset = new Point(pageOffset.X + view.X * _scaleFactor, pageOffset.Y + view.Y * _scaleFactor);
 
             _viewsToDraw.Add(new ViewInfo { View = view, Offset = newOffset });
