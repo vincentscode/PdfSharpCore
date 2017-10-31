@@ -19,11 +19,17 @@ namespace PdfSharp.Xamarin.Forms.Renderers
         {
             XFont font = new XFont(GlobalFontSettings.FontResolver.DefaultFontName, 14 * scaleFactor);
 
+            Color textColor = datePicker.TextColor != default(Color) ? datePicker.TextColor : Color.Black;
             string format = datePicker.Format;
             if (string.IsNullOrEmpty(format))
                 format = "MM.DD.YYYY";
 
-            page.DrawString(datePicker.Date.ToString(format), font, datePicker.TextColor.ToXBrush(), bounds);
+            page.DrawRectangle(new XPen(Color.LightGray.ToXColor(),2*scaleFactor),bounds);
+
+            page.DrawString(datePicker.Date.ToString(format), font, textColor.ToXBrush(), bounds, new XStringFormat {
+                Alignment = XStringAlignment.Center,
+                LineAlignment = XLineAlignment.Center,
+            });
 
         }
     }
