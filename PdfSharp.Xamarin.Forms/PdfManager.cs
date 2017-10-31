@@ -11,6 +11,8 @@ using PdfSharpCore.Fonts;
 using PdfSharp.Xamarin.Forms.Utils;
 using PdfSharp.Xamarin.Forms.Contracts;
 
+using ImageSource = MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource;
+
 namespace PdfSharp.Xamarin.Forms
 {
     public class PDFManager
@@ -31,7 +33,11 @@ namespace PdfSharp.Xamarin.Forms
             if (Instance == null)
                 Instance = new PDFManager();
 
+            if (handler == null)
+                throw new ArgumentNullException("IPDFHandler");
+
             GlobalFontSettings.FontResolver = new FontProvider(customFontProvider);
+            ImageSource.ImageSourceImpl = handler?.GetImageSource();
 
             Instance.Handler = handler;
             Instance.Renderers = new Dictionary<Type, Type>();
@@ -72,7 +78,6 @@ namespace PdfSharp.Xamarin.Forms
             PdfGenerator generator = new PdfGenerator(view, orientaiton, size, resizeToFit);
             var pdf = generator.Generate();
 
-            //global::Xamarin.Forms.DependencyService.Get<IPDFSave>().SavePDF(pdf);
             return pdf;
         }
 
