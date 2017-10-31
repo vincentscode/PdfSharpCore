@@ -10,6 +10,7 @@
     <None Remove="DefaultFonts\OpenSans-BoldItalic.ttf" />
     <None Remove="DefaultFonts\OpenSans-Italic.ttf" />
     <None Remove="DefaultFonts\OpenSans-Regular.ttf" />
+    <None Remove="Icons\search.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +18,7 @@
     <EmbeddedResource Include="DefaultFonts\OpenSans-BoldItalic.ttf" />
     <EmbeddedResource Include="DefaultFonts\OpenSans-Italic.ttf" />
     <EmbeddedResource Include="DefaultFonts\OpenSans-Regular.ttf" />
+    <EmbeddedResource Include="Icons\search.png" />
   </ItemGroup>
 
   <ItemGroup>
