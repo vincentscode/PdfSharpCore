@@ -2339,7 +2339,7 @@
           }
         }
       },
-      "Xamarin.Forms/2.4.0.280": {
+      "Xamarin.Forms/2.4.0.282": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -2363,6 +2363,7 @@
         "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
+          "PdfSharpCore": "1.0.0",
           "Xamarin.Forms": "2.4.0.18342"
         }
       },
@@ -4775,7 +4776,7 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Xamarin.Forms/2.4.0.280": {
+      "Xamarin.Forms/2.4.0.282": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -4799,6 +4800,7 @@
         "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
+          "PdfSharpCore": "1.0.0",
           "Xamarin.Forms": "2.4.0.18342"
         }
       },
@@ -7247,7 +7249,7 @@
           "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Xamarin.Forms/2.4.0.280": {
+      "Xamarin.Forms/2.4.0.282": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -7271,6 +7273,7 @@
         "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
+          "PdfSharpCore": "1.0.0",
           "Xamarin.Forms": "2.4.0.18342"
         }
       },
@@ -9692,7 +9695,7 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Xamarin.Forms/2.4.0.280": {
+      "Xamarin.Forms/2.4.0.282": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -9716,6 +9719,7 @@
         "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
+          "PdfSharpCore": "1.0.0",
           "Xamarin.Forms": "2.4.0.18342"
         }
       },
@@ -12173,7 +12177,7 @@
           "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Xamarin.Forms/2.4.0.280": {
+      "Xamarin.Forms/2.4.0.282": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -12197,6 +12201,7 @@
         "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
+          "PdfSharpCore": "1.0.0",
           "Xamarin.Forms": "2.4.0.18342"
         }
       },
@@ -14618,7 +14623,7 @@
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Xamarin.Forms/2.4.0.280": {
+      "Xamarin.Forms/2.4.0.282": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -14642,6 +14647,7 @@
         "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
+          "PdfSharpCore": "1.0.0",
           "Xamarin.Forms": "2.4.0.18342"
         }
       },
@@ -17099,7 +17105,7 @@
           "runtimes/aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "Xamarin.Forms/2.4.0.280": {
+      "Xamarin.Forms/2.4.0.282": {
         "type": "package",
         "compile": {
           "lib/uap10.0/Xamarin.Forms.Core.dll": {},
@@ -17123,6 +17129,7 @@
         "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
+          "PdfSharpCore": "1.0.0",
           "Xamarin.Forms": "2.4.0.18342"
         }
       },
@@ -23656,10 +23663,10 @@
         "system.xml.xmlserializer.nuspec"
       ]
     },
-    "Xamarin.Forms/2.4.0.280": {
-      "sha512": "YzXTyRvhMv2kHgs6CGA89OVwUWrS05i7GW/OXl0vcn77OeJ4Zj08tErhc5bL6TAJYg4vWi+uMTWryO+J65U0yA==",
+    "Xamarin.Forms/2.4.0.282": {
+      "sha512": "XhgWe/d5wwWD2vZe0t0QfE+kJPqzjc01GSuSWjzbX37MNn0JunXO22js3FRSRuDMbXLE3FlwBngazxpFP0x5qA==",
       "type": "package",
-      "path": "xamarin.forms/2.4.0.280",
+      "path": "xamarin.forms/2.4.0.282",
       "files": [
         "build/netstandard1.0/Mono.Cecil.Mdb.dll",
         "build/netstandard1.0/Mono.Cecil.Pdb.dll",
@@ -23839,7 +23846,7 @@
         "lib/wpa81/Xamarin.Forms.Platform.dll",
         "lib/wpa81/Xamarin.Forms.Xaml.dll",
         "lib/wpa81/Xamarin.Forms.Xaml.xml",
-        "xamarin.forms.2.4.0.280.nupkg.sha512",
+        "xamarin.forms.2.4.0.282.nupkg.sha512",
         "xamarin.forms.nuspec"
       ]
     },
@@ -23862,7 +23869,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.2.2",
-      "Xamarin.Forms >= 2.4.0.280"
+      "Xamarin.Forms >= 2.4.0.282"
     ],
     "UAP,Version=v10.0.10240": []
   },
@@ -23891,6 +23898,12 @@
       "frameworks": {
         "uap10.0.10240": {
           "projectReferences": {
+            "C:\\Users\\e.akgul\\Documents\\Repositories\\PDFSharp.Xamarin.Forms\\PdfSharp.Xamarin.Forms\\PdfSharp.Xamarin.Forms.csproj": {
+              "projectPath": "C:\\Users\\e.akgul\\Documents\\Repositories\\PDFSharp.Xamarin.Forms\\PdfSharp.Xamarin.Forms\\PdfSharp.Xamarin.Forms.csproj"
+            },
+            "C:\\Users\\e.akgul\\Documents\\Repositories\\PDFSharp.Xamarin.Forms\\PdfSharpCore\\PdfSharpCore.csproj": {
+              "projectPath": "C:\\Users\\e.akgul\\Documents\\Repositories\\PDFSharp.Xamarin.Forms\\PdfSharpCore\\PdfSharpCore.csproj"
+            },
             "C:\\Users\\e.akgul\\Documents\\Repositories\\PDFSharp.Xamarin.Forms\\Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.csproj": {
               "projectPath": "C:\\Users\\e.akgul\\Documents\\Repositories\\PDFSharp.Xamarin.Forms\\Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.csproj"
             }
@@ -23900,7 +23913,7 @@
     },
     "dependencies": {
       "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
-      "Xamarin.Forms": "2.4.0.280"
+      "Xamarin.Forms": "2.4.0.282"
     },
     "frameworks": {
       "uap10.0.10240": {}
@@ -23931,7 +23944,7 @@
       "code": "NU1605",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Detected package downgrade: Xamarin.Forms from 2.4.0.18342 to 2.4.0.280. Reference the package directly from the project to select a different version. \r\n PdfSharp.Xamarin.Sample.UWP -> PdfSharp.Xamarin.Sample -> PdfSharp.Xamarin.Forms -> Xamarin.Forms (>= 2.4.0.18342) \r\n PdfSharp.Xamarin.Sample.UWP -> Xamarin.Forms (>= 2.4.0.280)",
+      "message": "Detected package downgrade: Xamarin.Forms from 2.4.0.18342 to 2.4.0.282. Reference the package directly from the project to select a different version. \r\n PdfSharp.Xamarin.Sample.UWP -> PdfSharp.Xamarin.Forms -> Xamarin.Forms (>= 2.4.0.18342) \r\n PdfSharp.Xamarin.Sample.UWP -> Xamarin.Forms (>= 2.4.0.282)",
       "libraryId": "Xamarin.Forms",
       "targetGraphs": [
         "UAP,Version=v10.0.10240",

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PdfSharp.Xamarin.Forms.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,8 @@ namespace PdfSharp.Xamarin.Sample
         public App()
         {
             InitializeComponent();
-
-            MainPage = new PdfSharp.Xamarin.Sample.MainPage();
+            PdfSharp.Xamarin.Forms.PDFManager.Init(DependencyService.Get<IPDFHandler>());
+            MainPage = new PdfSharp.Xamarin.Sample.SinglePage();
         }
 
         protected override void OnStart()

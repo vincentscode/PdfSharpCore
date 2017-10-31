@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pdf="clr-namespace:PdfSharp.Xamarin.Forms;assembly=PdfSharp.Xamarin.Forms"
+             x:Class="PdfSharp.Xamarin.Sample.SinglePage">
+    <ContentPage.Content>
+        <Grid x:Name="mainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Label Text="PdfSharp Sample" FontSize="Medium" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="this is Red label" TextColor="Red"/>
+                <Button Grid.Column="1" Text="This is Button" TextColor="LightBlue"/>
+                <Button Grid.Column="2" Text="Button  with Border" TextColor="LightBlue" BorderWidth="2" BorderColor="Black"/>
+
+                <Entry Grid.Row="1" Text="this is Entry" TextColor="DarkGray" />
+                <Image Grid.Row="1" Grid.Column="1" Source="test.jpg"/>
+                <ContentView Grid.Row="1" Grid.Column="2" BackgroundColor="Orange">
+                    <Label Text="Label in orange ContentView" TextColor="Black"/>
+                </ContentView>
+
+            </Grid>
+            <Button pdf:PdfRenderer.ShouldRender="False"  Grid.Row="2" Text="Generate PDF" HorizontalOptions="Center" VerticalOptions="Center" Clicked="Button_Clicked"   />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

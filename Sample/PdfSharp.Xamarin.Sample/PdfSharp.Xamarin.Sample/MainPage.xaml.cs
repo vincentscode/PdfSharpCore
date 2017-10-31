@@ -12,6 +12,7 @@ namespace PdfSharp.Xamarin.Sample
         public MainPage()
         {
             InitializeComponent();
+            PdfSharp.Xamarin.Forms.PDFManager.Init(null, null);
         }
     }
 }

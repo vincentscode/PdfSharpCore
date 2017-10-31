@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PdfSharp.Xamarin.Sample.ScrollPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout x:Name="mainLayout" Spacing="15">
+                <Label Text="Scroll Page Test" FontSize="Large" HorizontalOptions="Center"/>
+                <StackLayout x:Name="contentLayout" Margin="15,0"/>
+                <Button Text="CreatePDF" Clicked="Button_Clicked"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
