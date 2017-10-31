@@ -17,21 +17,19 @@ namespace PdfSharp.Xamarin.Forms.Renderers
     {
         public override void CreatePDFLayout(XGraphics page, Label label, XRect bounds, double scaleFactor)
         {
+            XFont font = new XFont(label.FontFamily ?? GlobalFontSettings.FontResolver.DefaultFontName, label.FontSize * scaleFactor);
+            Color textColor = label.TextColor != default(Color) ? label.TextColor : Color.Black;
+
             if (label.BackgroundColor != default(Color))
                 page.DrawRectangle(label.BackgroundColor.ToXBrush(), bounds);
 
-            XFont font = new XFont(label.FontFamily ?? GlobalFontSettings.FontResolver.DefaultFontName, label.FontSize * scaleFactor);
-            Color textColor = label.TextColor;
-
-            if (textColor == default(Color))
-                textColor = Color.Black;
-
-            page.DrawString(label.Text, font, textColor.ToXBrush(), bounds,
-                new XStringFormat()
-                {
-                    Alignment = label.HorizontalOptions.ToXStringAlignment(),
-                    LineAlignment = (XLineAlignment)label.HorizontalTextAlignment
-                });
+            if (!string.IsNullOrEmpty(label.Text))
+                page.DrawString(label.Text, font, textColor.ToXBrush(), bounds,
+                    new XStringFormat()
+                    {
+                        Alignment = label.HorizontalOptions.ToXStringAlignment(),
+                        LineAlignment = (XLineAlignment)label.HorizontalTextAlignment
+                    });
         }
     }
 }

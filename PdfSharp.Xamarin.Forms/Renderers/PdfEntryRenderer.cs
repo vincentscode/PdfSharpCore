@@ -14,28 +14,27 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 {
     [PdfRenderer(ViewType = typeof(Entry))]
     public class PdfEntryRenderer : PdfRendererBase<Entry>
-	{
-		public override void CreatePDFLayout(XGraphics page, Entry entry, XRect bounds, double scaleFactor)
-		{
-			//Draw background Color
-			if (entry.BackgroundColor != default(Color))
-				page.DrawRectangle(entry.BackgroundColor.ToXBrush(), bounds);
+    {
+        public override void CreatePDFLayout(XGraphics page, Entry entry, XRect bounds, double scaleFactor)
+        {
+            Color textColor = entry.TextColor != default(Color) ? entry.TextColor : Color.Black;
+            XFont font = new XFont(entry.FontFamily ?? GlobalFontSettings.FontResolver.DefaultFontName, entry.FontSize * scaleFactor);
 
-			page.DrawRoundedRectangle(new XPen(Color.Gray.ToXColor(), 3 * scaleFactor), bounds, new XSize(3 * scaleFactor, 3 * scaleFactor));
+            if (entry.BackgroundColor != default(Color))
+                page.DrawRectangle(entry.BackgroundColor.ToXBrush(), bounds);
 
-			XFont font = new XFont(entry.FontFamily ?? GlobalFontSettings.FontResolver.DefaultFontName, entry.FontSize * scaleFactor);
+            // Border
+            page.DrawRectangle(new XPen(Color.LightGray.ToXColor(), 1.5 * scaleFactor), bounds);
 
-			Color textColor = entry.TextColor;
-			if (textColor == default(Color))
-				textColor = Color.Black;
-
-			page.DrawString(entry.Text ?? "", font, textColor.ToXBrush(), bounds,
-				new XStringFormat()
-				{
-					Alignment = entry.HorizontalOptions.ToXStringAlignment(),
-					LineAlignment = (XLineAlignment)entry.HorizontalTextAlignment
-				});
-
-		}
-	}
+            if (!string.IsNullOrEmpty(entry.Text))
+            {
+                page.DrawString(entry.Text, font, textColor.ToXBrush(), bounds.AddMargin(5 * scaleFactor),
+                    new XStringFormat()
+                    {
+                        Alignment = entry.HorizontalOptions.ToXStringAlignment(),
+                        LineAlignment = (XLineAlignment)entry.HorizontalTextAlignment
+                    });
+            }
+        }
+    }
 }
