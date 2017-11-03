@@ -62,7 +62,7 @@ namespace PdfSharp.Xamarin.Forms
             if (Instance == null)
                 throw new InvalidOperationException("You must Call Init firsts");
 
-            if (rendererType.GetTypeInfo().BaseType != typeof(Renderers.PdfRendererBase))
+            if (!rendererType.GetTypeInfo().IsSubclassOf(typeof(Renderers.PdfRendererBase)))
                 throw new ArgumentException("Renderertype Must inherit PdfRenderdererBase<View>");
 
             if (Instance.Renderers.ContainsKey(viewType))
