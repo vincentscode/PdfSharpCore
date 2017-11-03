@@ -11,18 +11,33 @@ namespace PdfSharp.Xamarin.Forms
 {
 	public static class LayoutOptionsExtension
 	{
-		public static XStringAlignment ToXStringAlignment(this LayoutOptions lOpt)
+		public static XStringAlignment ToXStringAlignment(this TextAlignment alignment)
 		{
-			switch (lOpt.Alignment)
+			switch (alignment)
 			{
-				case LayoutAlignment.Start:
+				case TextAlignment.Start:
 					return XStringAlignment.Near;
-				case LayoutAlignment.Center:
+				case TextAlignment.Center:
 					return XStringAlignment.Center;
-				case LayoutAlignment.End:
+				case TextAlignment.End:
 					return XStringAlignment.Far;
 				default:
 					return XStringAlignment.Near;
+			}
+		}
+
+		public static XLineAlignment ToXLineAlignment(this TextAlignment alignment)
+		{
+			switch (alignment)
+			{
+				case TextAlignment.Start:
+					return XLineAlignment.Near;
+				case TextAlignment.Center:
+					return XLineAlignment.Center;
+				case TextAlignment.End:
+					return XLineAlignment.Far;
+				default:
+					return XLineAlignment.BaseLine;
 			}
 		}
 	}
