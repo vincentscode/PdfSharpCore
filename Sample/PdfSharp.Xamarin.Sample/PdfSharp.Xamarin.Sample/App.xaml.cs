@@ -14,7 +14,7 @@ namespace PdfSharp.Xamarin.Sample
         {
             InitializeComponent();
             PdfSharp.Xamarin.Forms.PDFManager.Init(DependencyService.Get<IPDFHandler>());
-            MainPage = new PdfSharp.Xamarin.Sample.SinglePage();
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()

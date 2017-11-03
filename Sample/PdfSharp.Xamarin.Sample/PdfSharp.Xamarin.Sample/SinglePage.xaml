@@ -16,6 +16,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -24,8 +25,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Text="this is Red label" TextColor="Red"/>
-                <Button Grid.Column="1" Text="This is Button" TextColor="LightBlue"/>
-                <Button Grid.Column="2" Text="Button  with Border" TextColor="LightBlue" BorderWidth="2" BorderColor="Black"/>
+                <Button Grid.Column="1" Text="This is Button" TextColor="LightBlue" BackgroundColor="White"/>
+                <Button Grid.Column="2" Text="Button  with Border" TextColor="LightBlue" BackgroundColor="White" BorderWidth="2" BorderColor="Black"/>
 
                 <Entry Grid.Row="1" Text="this is Entry" TextColor="DarkGray" />
                 <Image Grid.Row="1" Grid.Column="1" Source="test.jpg"/>
@@ -33,8 +34,15 @@
                     <Label Text="Label in orange ContentView" TextColor="Black"/>
                 </ContentView>
 
+                <SearchBar Grid.Row="2" Grid.Column="0" Text="this is searchbar" VerticalOptions="Center"/>
+                <DatePicker Grid.Row="2" Grid.Column="1" VerticalOptions="Center"/>
+                <!--<ProgressBar Grid.Row="2" Grid.Column="2" VerticalOptions="Center" Progress="0.7"/>-->
+                <Label Grid.Row="2" Grid.Column="2" VerticalTextAlignment="Start" HorizontalTextAlignment="Start" Text="Text @ top left"/>
+                <Label Grid.Row="2" Grid.Column="2" VerticalTextAlignment="Start" HorizontalTextAlignment="End" Text="Text @ top right"/>
+                <Label Grid.Row="2" Grid.Column="2" VerticalTextAlignment="End" HorizontalTextAlignment="Start" Text="Text @ bottom left"/>
+                <Label Grid.Row="2" Grid.Column="2" VerticalTextAlignment="End" HorizontalTextAlignment="End" Text="Text @ bottom right"/>
             </Grid>
-            <Button pdf:PdfRenderer.ShouldRender="False"  Grid.Row="2" Text="Generate PDF" HorizontalOptions="Center" VerticalOptions="Center" Clicked="Button_Clicked"   />
+            <Button pdf:PdfRendererAttributes.ShouldRender="False"  Grid.Row="2" Text="Generate PDF" HorizontalOptions="Center" VerticalOptions="Center" Clicked="Button_Clicked"   />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

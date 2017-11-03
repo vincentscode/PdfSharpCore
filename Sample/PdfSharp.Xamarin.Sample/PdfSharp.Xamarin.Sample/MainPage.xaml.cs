@@ -12,7 +12,20 @@ namespace PdfSharp.Xamarin.Sample
         public MainPage()
         {
             InitializeComponent();
-            PdfSharp.Xamarin.Forms.PDFManager.Init(null, null);
+        }
+
+        private void SinglePageButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new SinglePage());
+        }
+
+        private void ScrollPageButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new ScrollPage());
+        }
+        private void ListViewPageButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new ListViewPage());
         }
     }
 }

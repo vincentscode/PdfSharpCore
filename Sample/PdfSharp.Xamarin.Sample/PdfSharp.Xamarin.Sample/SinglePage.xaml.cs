@@ -21,7 +21,7 @@ namespace PdfSharp.Xamarin.Sample
         {
             var pdf = PdfSharp.Xamarin.Forms.PDFManager.GeneratePDFFromView(mainGrid);
 
-            DependencyService.Get<IPdfSave>().Save(pdf, "SinglePage1.pdf");
+            DependencyService.Get<IPdfSave>().Save(pdf, "SinglePage.pdf");
         }
     }
 }

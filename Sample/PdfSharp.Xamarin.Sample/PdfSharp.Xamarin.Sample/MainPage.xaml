@@ -4,10 +4,23 @@
              xmlns:local="clr-namespace:PdfSharp.Xamarin.Sample"
              x:Class="PdfSharp.Xamarin.Sample.MainPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label FontSize="Large" Text="PdfSharp Xamarin.Forms Samples" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+            <Button Grid.Row="1" Text="Single Page Sample" HorizontalOptions="Center" VerticalOptions="Center" 
+                    Clicked="SinglePageButton_Clicked" />
+
+            <Button Grid.Row="2" Text="ScrollView Page Sample" HorizontalOptions="Center" VerticalOptions="Center"
+                    Clicked="ScrollPageButton_Clicked" />
+
+            <Button Grid.Row="3" Text="ListView Page Sample" HorizontalOptions="Center" VerticalOptions="Center"
+                    Clicked="ListViewPageButton_Clicked" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

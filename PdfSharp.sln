@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{3C2B4E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{BD8D06B2-73E2-49DF-8271-48F4E738C515}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XamarinLib", "XamarinLib", "{CBB5AAEE-1D86-464C-8799-AEDC640CFF0B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{CBB5AAEE-1D86-464C-8799-AEDC640CFF0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Xamarin.Forms", "PdfSharp.Xamarin.Forms\PdfSharp.Xamarin.Forms.csproj", "{86BC6014-AC2D-452B-A4C4-D8E90CD54596}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfSharp.Xamarin.Forms", "PdfSharp.Xamarin.Forms\PdfSharp.Xamarin.Forms.csproj", "{86BC6014-AC2D-452B-A4C4-D8E90CD54596}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Xamarin.Sample.Android", "Sample\PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample.Android\PdfSharp.Xamarin.Sample.Android.csproj", "{C23B926D-F3D4-4373-B7DB-0C839D9E4651}"
 EndProject
