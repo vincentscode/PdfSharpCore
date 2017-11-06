@@ -17,7 +17,6 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 	{
 		public override void CreatePDFLayout(XGraphics page, Entry entry, XRect bounds, double scaleFactor)
 		{
-			Color textColor = entry.TextColor != default(Color) ? entry.TextColor : Color.Black;
 			XFont font = new XFont(entry.FontFamily ?? GlobalFontSettings.FontResolver.DefaultFontName, entry.FontSize * scaleFactor);
 
 			if (entry.BackgroundColor != default(Color))
@@ -28,7 +27,18 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 
 			if (!string.IsNullOrEmpty(entry.Text))
 			{
+				Color textColor = entry.TextColor != default(Color) ? entry.TextColor : Color.Black;
 				page.DrawString(entry.Text, font, textColor.ToXBrush(), bounds.AddMargin(5 * scaleFactor),
+					new XStringFormat()
+					{
+						Alignment = entry.HorizontalTextAlignment.ToXStringAlignment(),
+						LineAlignment = entry.HorizontalTextAlignment.ToXLineAlignment()
+					});
+			}
+			else if (!string.IsNullOrEmpty(entry.Placeholder))
+			{
+				Color placeholderColor = entry.PlaceholderColor != default(Color) ? entry.PlaceholderColor : Color.Gray;
+				page.DrawString(entry.Placeholder, font, placeholderColor.ToXBrush(), bounds.AddMargin(5 * scaleFactor),
 					new XStringFormat()
 					{
 						Alignment = entry.HorizontalTextAlignment.ToXStringAlignment(),
