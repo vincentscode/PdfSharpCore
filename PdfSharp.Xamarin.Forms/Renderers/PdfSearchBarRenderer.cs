@@ -102,7 +102,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 			});
 
 			page.DrawRectangle(bgColor.ToXBrush(), bounds);
-			page.DrawRectangle(new XPen(Color.LightBlue.ToXColor(), 2 * scaleFactor), bounds);
+			page.DrawRectangle(new XPen(Color.Gray.ToXColor(), 2 * scaleFactor), bounds);
 
 			if (!string.IsNullOrEmpty(searchBar.Text))
 			{
