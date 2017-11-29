@@ -3,18 +3,21 @@ PdfSharp.Xamarin.Forms
 
 **PdfSharp.Xamarin.Forms** is a Xamarin.Forms library for **converting any Xamarin.Forms UI into PDF**. It uses [PdfSharp](http://www.pdfsharp.net/), which is a partial port of [PdfSharpCore](https://github.com/groege/PdfSharpCore).
 
-> ###Supported Platforms
+> ### Supported Platforms
 > - UWP
 > - Android
 > - iOS
 
-### Screenshots
+
+### Screenshots ([see all](https://github.com/akgulebubekir/PDFSharp.Xamarin.Forms/tree/master/Screenshots))
 ![App vs PDF](https://raw.githubusercontent.com/akgulebubekir/PDFSharp.Xamarin.Forms/master/Screenshots/table.PNG)
 
+
 ### Usage
-> Init : `PdfSharp.Xamarin.Forms.PDFManager.Init(DependencyService.Get<IPDFHandler>())`
-> Generate : `var pdf = PDFManager.GeneratePDFFromView(yourView)`
-> Save :  `DependencyService.Get<IPdfSave>().Save(pdf, "pdfName.pdf")`
+> - **Init** : `PdfSharp.Xamarin.Forms.PDFManager.Init(DependencyService.Get<IPDFHandler>())`
+> - **Generate** : `var pdf = PDFManager.GeneratePDFFromView(yourView)`
+> - **Save** :  `DependencyService.Get<IPdfSave>().Save(pdf, "pdfName.pdf")`
+
 
 ### Features
 > - Custom Fonts (You should provide Font Types and font files via `IPDFHandler`)
@@ -22,9 +25,11 @@ PdfSharp.Xamarin.Forms
 > - Custom renderer ( You can write your own renderer for your customView)
 > - Paper size & orientation support
 
+
 ### Limitations
 > - Images renders only Jpeg format (It converts PNG to JPEG automatically)
 > - ListView does not renders automatically. You should write a renderer.
+
 
 ### Custom PDF Renderer
 > Its possible to write your own renderer, it will use it while renderering your View.
