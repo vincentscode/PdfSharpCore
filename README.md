@@ -24,11 +24,43 @@ PdfSharp.Xamarin.Forms
 > - Image rendering
 > - Custom renderer ( You can write your own renderer for your customView)
 > - Paper size & orientation support
+> - Do not render option : by using `pdf:PdfRendererAttributes.ShouldRender="False"` you can ignore that view in PDF
 
 
 ### Limitations
 > - Images renders only Jpeg format (It converts PNG to JPEG automatically)
 > - ListView does not renders automatically. You should write a renderer.
+
+### ListView Rendering
+> - Due ListView Cell is not accesible from parent, you should implement a `PdfListViewRendererDelegate` for the `ListView`.
+
+```xml
+
+  <ContentPage  xmlns:pdf="clr-namespace:PdfSharp.Xamarin.Forms;assembly=PdfSharp.Xamarin.Forms">
+  	<ListView pdf:ListRendererDelegate="{StaticResource YourRendererDelegate}" .../>
+  </ContentPage>
+```
+
+<u>Renderer:</u>
+```cs
+	public class PDFSampleListRendererDelegate: PdfListViewRendererDelegate
+	{
+		public override void DrawCell(ListView listView, int section, int row, XGraphics page, XRect bounds, double scaleFactor)
+		{
+			base.DrawCell(listView, section, row, page, bounds, scaleFactor);
+		}
+
+		public override void DrawFooter(ListView listView, int section, XGraphics page, XRect bounds, double scaleFactor)
+		{
+			base.DrawFooter(listView, section, page, bounds, scaleFactor);
+		}
+
+		public override double GetFooterHeight(ListView listView, int section)
+		{
+			return base.GetFooterHeight(listView, section);
+		}
+	}
+```
 
 
 ### Custom PDF Renderer
