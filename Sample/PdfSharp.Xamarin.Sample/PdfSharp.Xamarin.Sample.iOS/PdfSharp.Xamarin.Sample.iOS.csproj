@@ -88,11 +88,17 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <AppExtensionDebugBundleId />
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="IosImageSource.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
+    <Compile Include="PdfHandler.cs" />
+    <Compile Include="PdfSave.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <ITunesArtwork Include="iTunesArtwork" />
     <ITunesArtwork Include="iTunesArtwork@2x" />
@@ -135,10 +141,21 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\PdfSharp.Xamarin.Forms\PdfSharp.Xamarin.Forms.csproj">
+      <Project>{86bc6014-ac2d-452b-a4c4-d8e90cd54596}</Project>
+      <Name>PdfSharp.Xamarin.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PdfSharpCore\PdfSharpCore.csproj">
+      <Project>{698e271b-97b3-4fd8-a81d-0b149033fb9a}</Project>
+      <Name>PdfSharpCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample.csproj">
       <Project>{fc44d6fa-dbe2-4e52-8677-942f2a50181b}</Project>
       <Name>PdfSharp.Xamarin.Sample</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\test.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
