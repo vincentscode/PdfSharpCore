@@ -60,7 +60,7 @@ namespace PdfSharp.Xamarin.Forms
         public static void RegisterRenderer(Type viewType, Type rendererType)
         {
             if (Instance == null)
-                throw new InvalidOperationException("You must Call Init firsts");
+                throw new InvalidOperationException("You must call Init firsts");
 
             if (!rendererType.GetTypeInfo().IsSubclassOf(typeof(Renderers.PdfRendererBase)))
                 throw new ArgumentException("Renderertype Must inherit PdfRenderdererBase<View>");
@@ -73,7 +73,7 @@ namespace PdfSharp.Xamarin.Forms
         public static PdfDocument GeneratePDFFromView(View view, PageOrientation orientaiton = PageOrientation.Portrait, PageSize size = PageSize.A4, bool resizeToFit = true)
         {
             if (Instance == null)
-                throw new InvalidOperationException("You must Call Init first");
+                throw new InvalidOperationException("You must call Init first");
 
             PdfGenerator generator = new PdfGenerator(view, orientaiton, size, resizeToFit);
             var pdf = generator.Generate();
