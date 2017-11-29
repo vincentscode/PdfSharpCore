@@ -156,11 +156,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PdfSharp.Xamarin.Forms\PdfSharp.Xamarin.Forms.csproj">
+    <ProjectReference Include="..\..\PdfSharp.Xamarin.Forms\PdfSharp.Xamarin.Forms.csproj">
       <Project>{86bc6014-ac2d-452b-a4c4-d8e90cd54596}</Project>
       <Name>PdfSharp.Xamarin.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\PdfSharpCore\PdfSharpCore.csproj">
+    <ProjectReference Include="..\..\PdfSharpCore\PdfSharpCore.csproj">
       <Project>{698e271b-97b3-4fd8-a81d-0b149033fb9a}</Project>
       <Name>PdfSharpCore</Name>
     </ProjectReference>

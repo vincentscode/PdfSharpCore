@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfSharpCore", "PdfSharpCore\PdfSharpCore.csproj", "{698E271B-97B3-4FD8-A81D-0B149033FB9A}"
 EndProject
@@ -15,13 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{CBB5AAEE-1D8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfSharp.Xamarin.Forms", "PdfSharp.Xamarin.Forms\PdfSharp.Xamarin.Forms.csproj", "{86BC6014-AC2D-452B-A4C4-D8E90CD54596}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Xamarin.Sample.Android", "Sample\PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample.Android\PdfSharp.Xamarin.Sample.Android.csproj", "{C23B926D-F3D4-4373-B7DB-0C839D9E4651}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Xamarin.Sample.Android", "PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample.Android\PdfSharp.Xamarin.Sample.Android.csproj", "{C23B926D-F3D4-4373-B7DB-0C839D9E4651}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Xamarin.Sample", "Sample\PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample.csproj", "{A5CCFD54-5154-4BF4-AA46-03937AD7326D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Xamarin.Sample", "PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample.csproj", "{A5CCFD54-5154-4BF4-AA46-03937AD7326D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Xamarin.Sample.UWP", "Sample\PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample.UWP\PdfSharp.Xamarin.Sample.UWP.csproj", "{7CF06189-81AF-4761-B2B7-F524F2FB9E38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Xamarin.Sample.UWP", "PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample.UWP\PdfSharp.Xamarin.Sample.UWP.csproj", "{7CF06189-81AF-4761-B2B7-F524F2FB9E38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Xamarin.Sample.iOS", "Sample\PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample.iOS\PdfSharp.Xamarin.Sample.iOS.csproj", "{77CA7CAE-B0C0-4B63-B583-1ECB3E7BDA82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Xamarin.Sample.iOS", "PdfSharp.Xamarin.Sample\PdfSharp.Xamarin.Sample.iOS\PdfSharp.Xamarin.Sample.iOS.csproj", "{77CA7CAE-B0C0-4B63-B583-1ECB3E7BDA82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

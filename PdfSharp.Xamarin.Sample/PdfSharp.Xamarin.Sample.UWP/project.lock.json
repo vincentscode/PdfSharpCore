@@ -23852,8 +23852,8 @@
     },
     "PdfSharp.Xamarin.Forms/1.0.0": {
       "type": "project",
-      "path": "../../../PdfSharp.Xamarin.Forms/PdfSharp.Xamarin.Forms.csproj",
-      "msbuildProject": "../../../PdfSharp.Xamarin.Forms/PdfSharp.Xamarin.Forms.csproj"
+      "path": "../../PdfSharp.Xamarin.Forms/PdfSharp.Xamarin.Forms.csproj",
+      "msbuildProject": "../../PdfSharp.Xamarin.Forms/PdfSharp.Xamarin.Forms.csproj"
     },
     "PdfSharp.Xamarin.Sample/1.0.0": {
       "type": "project",
@@ -23862,8 +23862,8 @@
     },
     "PdfSharpCore/1.0.0": {
       "type": "project",
-      "path": "../../../PdfSharpCore/PdfSharpCore.csproj",
-      "msbuildProject": "../../../PdfSharpCore/PdfSharpCore.csproj"
+      "path": "../../PdfSharpCore/PdfSharpCore.csproj",
+      "msbuildProject": "../../PdfSharpCore/PdfSharpCore.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -23878,12 +23878,12 @@
   },
   "project": {
     "restore": {
-      "projectUniqueName": "C:\\W\\Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.UWP\\PdfSharp.Xamarin.Sample.UWP.csproj",
+      "projectUniqueName": "C:\\W\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.UWP\\PdfSharp.Xamarin.Sample.UWP.csproj",
       "projectName": "PdfSharp.Xamarin.Sample.UWP",
-      "projectPath": "C:\\W\\Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.UWP\\PdfSharp.Xamarin.Sample.UWP.csproj",
-      "projectJsonPath": "C:\\W\\Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.UWP\\project.json",
+      "projectPath": "C:\\W\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.UWP\\PdfSharp.Xamarin.Sample.UWP.csproj",
+      "projectJsonPath": "C:\\W\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.UWP\\project.json",
       "packagesPath": "C:\\Users\\e.akgul\\.nuget\\packages\\",
-      "outputPath": "C:\\W\\Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.UWP\\obj\\",
+      "outputPath": "C:\\W\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.UWP\\obj\\",
       "projectStyle": "ProjectJson",
       "configFilePaths": [
         "C:\\Users\\e.akgul\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -23905,8 +23905,8 @@
             "C:\\W\\PdfSharpCore\\PdfSharpCore.csproj": {
               "projectPath": "C:\\W\\PdfSharpCore\\PdfSharpCore.csproj"
             },
-            "C:\\W\\Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.csproj": {
-              "projectPath": "C:\\W\\Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.csproj"
+            "C:\\W\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.csproj": {
+              "projectPath": "C:\\W\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample\\PdfSharp.Xamarin.Sample.csproj"
             }
           }
         }
