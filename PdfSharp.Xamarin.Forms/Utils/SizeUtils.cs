@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using PdfSharpCore.Drawing;
-using Xamarin.Forms;
 using PdfSharpCore;
+using PdfSharpCore.Drawing;
 
 namespace PdfSharp.Xamarin.Forms.Utils
 {

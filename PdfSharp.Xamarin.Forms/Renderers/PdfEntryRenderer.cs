@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
-
-using PdfSharpCore.Fonts;
+﻿using PdfSharp.Xamarin.Forms.Attributes;
 using PdfSharpCore.Drawing;
-using PdfSharp.Xamarin.Forms.Attributes;
+using PdfSharpCore.Fonts;
+using Xamarin.Forms;
 
 namespace PdfSharp.Xamarin.Forms.Renderers
 {
@@ -29,8 +22,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 			{
 				Color textColor = entry.TextColor != default(Color) ? entry.TextColor : Color.Black;
 				page.DrawString(entry.Text, font, textColor.ToXBrush(), bounds.AddMargin(5 * scaleFactor),
-					new XStringFormat()
-					{
+					new XStringFormat() {
 						Alignment = entry.HorizontalTextAlignment.ToXStringAlignment(),
 						LineAlignment = entry.HorizontalTextAlignment.ToXLineAlignment()
 					});
@@ -39,8 +31,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 			{
 				Color placeholderColor = entry.PlaceholderColor != default(Color) ? entry.PlaceholderColor : Color.Gray;
 				page.DrawString(entry.Placeholder, font, placeholderColor.ToXBrush(), bounds.AddMargin(5 * scaleFactor),
-					new XStringFormat()
-					{
+					new XStringFormat() {
 						Alignment = entry.HorizontalTextAlignment.ToXStringAlignment(),
 						LineAlignment = entry.HorizontalTextAlignment.ToXLineAlignment()
 					});

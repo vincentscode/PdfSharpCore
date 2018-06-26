@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
-
-using PdfSharpCore.Fonts;
+﻿using PdfSharp.Xamarin.Forms.Attributes;
 using PdfSharpCore.Drawing;
-using PdfSharp.Xamarin.Forms.Attributes;
+using PdfSharpCore.Fonts;
+using Xamarin.Forms;
 
 namespace PdfSharp.Xamarin.Forms.Renderers
 {
@@ -25,8 +18,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 
 			if (!string.IsNullOrEmpty(label.Text))
 				page.DrawString(label.Text, font, textColor.ToXBrush(), bounds,
-					new XStringFormat()
-					{
+					new XStringFormat() {
 						Alignment = label.HorizontalTextAlignment.ToXStringAlignment(),
 						LineAlignment = label.VerticalTextAlignment.ToXLineAlignment(),
 					});
