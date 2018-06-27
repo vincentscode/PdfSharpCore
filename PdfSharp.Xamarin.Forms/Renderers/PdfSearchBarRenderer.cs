@@ -1,14 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-
-using Xamarin.Forms;
-
+﻿using System.Reflection;
+using PdfSharp.Xamarin.Forms.Attributes;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Fonts;
-using PdfSharp.Xamarin.Forms.Attributes;
+using Xamarin.Forms;
 
 namespace PdfSharp.Xamarin.Forms.Renderers
 {
@@ -41,8 +35,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 			Color textColor = searchBar.TextColor != default(Color) ? searchBar.TextColor : Color.Gray;
 			XFont font = new XFont(searchBar.FontFamily ?? GlobalFontSettings.FontResolver.DefaultFontName, searchBar.FontSize * scaleFactor);
 
-			XImage searchIcon = XImage.FromStream(() =>
-			{
+			XImage searchIcon = XImage.FromStream(() => {
 				var assembly = typeof(PdfSearchBarRenderer).GetTypeInfo().Assembly;
 				return assembly.GetManifestResourceStream($"PdfSharp.Xamarin.Forms.Icons.search.png");
 			});
@@ -54,8 +47,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 
 			if (!string.IsNullOrEmpty(searchBar.Text))
 			{
-				page.DrawString(searchBar.Text, font, textColor.ToXBrush(), new XRect(bounds.X + iconSize + 12 * scaleFactor, bounds.Y, bounds.Width - iconSize, bounds.Height), new XStringFormat
-				{
+				page.DrawString(searchBar.Text, font, textColor.ToXBrush(), new XRect(bounds.X + iconSize + 12 * scaleFactor, bounds.Y, bounds.Width - iconSize, bounds.Height), new XStringFormat {
 					Alignment = XStringAlignment.Near,
 					LineAlignment = XLineAlignment.Center
 				});
@@ -68,8 +60,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 			Color textColor = searchBar.TextColor != default(Color) ? searchBar.TextColor : Color.Gray;
 			XFont font = new XFont(searchBar.FontFamily ?? GlobalFontSettings.FontResolver.DefaultFontName, searchBar.FontSize * scaleFactor);
 
-			XImage searchIcon = XImage.FromStream(() =>
-			{
+			XImage searchIcon = XImage.FromStream(() => {
 				var assembly = typeof(PdfSearchBarRenderer).GetTypeInfo().Assembly;
 				return assembly.GetManifestResourceStream($"PdfSharp.Xamarin.Forms.Icons.search.png");
 			});
@@ -84,8 +75,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 
 			if (!string.IsNullOrEmpty(searchBar.Text))
 			{
-				page.DrawString(searchBar.Text, font, textColor.ToXBrush(), new XRect(bounds.X + iconSize + 12 * scaleFactor, bounds.Y, bounds.Width - iconSize, bounds.Height), new XStringFormat
-				{
+				page.DrawString(searchBar.Text, font, textColor.ToXBrush(), new XRect(bounds.X + iconSize + 12 * scaleFactor, bounds.Y, bounds.Width - iconSize, bounds.Height), new XStringFormat {
 					Alignment = XStringAlignment.Near,
 					LineAlignment = XLineAlignment.Center
 				});
@@ -95,8 +85,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 		{
 			Color bgColor = searchBar.BackgroundColor != default(Color) ? searchBar.BackgroundColor : Color.White;
 			XFont font = new XFont(searchBar.FontFamily ?? GlobalFontSettings.FontResolver.DefaultFontName, searchBar.FontSize * scaleFactor);
-			XImage searchIcon = XImage.FromStream(() =>
-			{
+			XImage searchIcon = XImage.FromStream(() => {
 				var assembly = typeof(PdfSearchBarRenderer).GetTypeInfo().Assembly;
 				return assembly.GetManifestResourceStream($"PdfSharp.Xamarin.Forms.Icons.search.png");
 			});
@@ -107,8 +96,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 			if (!string.IsNullOrEmpty(searchBar.Text))
 			{
 				Color textColor = searchBar.TextColor != default(Color) ? searchBar.TextColor : Color.Black;
-				page.DrawString(searchBar.Text, font, textColor.ToXBrush(), new XRect(5 * scaleFactor + bounds.X, bounds.Y, bounds.Width, bounds.Height), new XStringFormat
-				{
+				page.DrawString(searchBar.Text, font, textColor.ToXBrush(), new XRect(5 * scaleFactor + bounds.X, bounds.Y, bounds.Width, bounds.Height), new XStringFormat {
 					Alignment = XStringAlignment.Near,
 					LineAlignment = XLineAlignment.Center
 				});
@@ -116,8 +104,7 @@ namespace PdfSharp.Xamarin.Forms.Renderers
 			else if (!string.IsNullOrEmpty(searchBar.Placeholder))
 			{
 				Color placeholderColor = searchBar.PlaceholderColor != default(Color) ? searchBar.PlaceholderColor : Color.Gray;
-				page.DrawString(searchBar.Placeholder, font, placeholderColor.ToXBrush(), new XRect(5 * scaleFactor + bounds.X, bounds.Y, bounds.Width, bounds.Height), new XStringFormat
-				{
+				page.DrawString(searchBar.Placeholder, font, placeholderColor.ToXBrush(), new XRect(5 * scaleFactor + bounds.X, bounds.Y, bounds.Width, bounds.Height), new XStringFormat {
 					Alignment = XStringAlignment.Near,
 					LineAlignment = XLineAlignment.Center
 				});

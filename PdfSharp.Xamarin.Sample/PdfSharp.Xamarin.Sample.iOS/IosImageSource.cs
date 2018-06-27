@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-
-using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
-using ImageIO;
 using Foundation;
+using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
 
 namespace PdfSharp.Xamarin.Sample.iOS
 {

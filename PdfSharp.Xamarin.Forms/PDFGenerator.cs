@@ -1,13 +1,12 @@
-﻿using PdfSharpCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using PdfSharp.Xamarin.Forms.Delegates;
+using PdfSharp.Xamarin.Forms.Utils;
+using PdfSharpCore;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
-using PdfSharp.Xamarin.Forms.Utils;
-using PdfSharp.Xamarin.Forms.Delegates;
 
 namespace PdfSharp.Xamarin.Forms
 {
@@ -70,8 +69,7 @@ namespace PdfSharp.Xamarin.Forms
 					if (listView.HeaderTemplate != null)
 					{
 						double headerHeight = listViewDelegate.GetHeaderHeight(listView, section) * _scaleFactor;
-						_viewsToDraw.Add(new ListViewInfo
-						{
+						_viewsToDraw.Add(new ListViewInfo {
 							ItemType = ListViewItemType.Header,
 							ListViewDelegate = listViewDelegate,
 							Section = section,
@@ -85,8 +83,7 @@ namespace PdfSharp.Xamarin.Forms
 					for (int row = 0; row < listViewDelegate.GetNumberOfRowsInSection(listView, section); row++)
 					{
 						double rowHeight = listViewDelegate.GetCellHeight(listView, section, row) * _scaleFactor;
-						_viewsToDraw.Add(new ListViewInfo
-						{
+						_viewsToDraw.Add(new ListViewInfo {
 							ItemType = ListViewItemType.Cell,
 							ListViewDelegate = listViewDelegate,
 							View = listView,
@@ -101,8 +98,7 @@ namespace PdfSharp.Xamarin.Forms
 					if (listView.FooterTemplate != null)
 					{
 						double footerHeight = listViewDelegate.GetFooterHeight(listView, section) * _scaleFactor;
-						_viewsToDraw.Add(new ListViewInfo
-						{
+						_viewsToDraw.Add(new ListViewInfo {
 							ItemType = ListViewItemType.Footer,
 							ListViewDelegate = listViewDelegate,
 							Section = section,

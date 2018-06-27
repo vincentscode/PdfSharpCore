@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PdfSharp.Xamarin.Sample.UWP;
 using PdfSharpCore.Pdf;
-
-using PdfSharp.Xamarin.Sample.UWP;
 
 [assembly: Xamarin.Forms.Dependency(typeof(PdfSave))]
 namespace PdfSharp.Xamarin.Sample.UWP
