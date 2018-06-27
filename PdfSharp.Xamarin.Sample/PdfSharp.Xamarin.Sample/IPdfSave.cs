@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace PdfSharp.Xamarin.Sample
 {
-    public interface IPdfSave
-    {
-        void Save(PdfDocument doc,string fileName);
-    }
+	public interface IPdfSave
+	{
+		void Save(PdfDocument doc, string fileName);
+	}
 }
