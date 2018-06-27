@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
-using static Android.Graphics.BitmapFactory;
-using Android.Graphics;
-using static Android.Graphics.Bitmap;
-//using MetadataExtractor;
 using System.Linq;
-//using MetadataExtractor.Formats.Exif;
 using System.Threading;
 using System.Threading.Tasks;
-using static MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource;
+using Android.Graphics;
 using Android.Graphics.Drawables;
+using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
+using static Android.Graphics.Bitmap;
+using static Android.Graphics.BitmapFactory;
 
 namespace PdfSharp.Xamarin.Sample.Droid
 {
@@ -88,7 +83,8 @@ namespace PdfSharp.Xamarin.Sample.Droid
 					stream.Seek(0, SeekOrigin.Begin);
 					var options = new Options { InJustDecodeBounds = true };
 #pragma warning disable CS0642 // Possible mistaken empty statement
-					using (DecodeStream(stream, null, options)) ;
+					using (DecodeStream(stream, null, options))
+						;
 #pragma warning restore CS0642 // Possible mistaken empty statement
 					Width = Orientation == Orientation.Normal || Orientation == Orientation.Rotate180 ? options.OutWidth : options.OutHeight;
 					Height = Orientation == Orientation.Normal || Orientation == Orientation.Rotate180 ? options.OutHeight : options.OutWidth;
@@ -98,12 +94,10 @@ namespace PdfSharp.Xamarin.Sample.Droid
 			public void SaveAsJpeg(MemoryStream ms, CancellationToken ct)
 			{
 				TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
-				ct.Register(() =>
-				{
+				ct.Register(() => {
 					tcs.TrySetCanceled();
 				});
-				var task = Task.Run(() =>
-				{
+				var task = Task.Run(() => {
 					Matrix mx = new Matrix();
 					ct.ThrowIfCancellationRequested();
 					//using (var bitmap = this.Bitmap; DecodeStream(_streamSource.Invoke()))
@@ -136,7 +130,8 @@ namespace PdfSharp.Xamarin.Sample.Droid
 				Task.WaitAny(task, tcs.Task);
 				tcs.TrySetCanceled();
 				ct.ThrowIfCancellationRequested();
-				if (task.IsFaulted) throw task.Exception;
+				if (task.IsFaulted)
+					throw task.Exception;
 			}
 		}
 	}
