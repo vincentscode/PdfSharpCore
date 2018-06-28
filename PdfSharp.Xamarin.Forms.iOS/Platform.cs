@@ -1,10 +1,12 @@
-﻿namespace PdfSharp.Xamarin.Forms.iOS
+﻿using PdfSharp.Xamarin.Forms.Contracts;
+
+namespace PdfSharp.Xamarin.Forms.iOS
 {
 	public class Platform
 	{
-		public static void Init()
+		public static void Init(ICustomFontProvider customFontProvider = null)
 		{
-			PDFManager.Init(new IosImageSource());
+			PDFManager.Init(new IosImageSource(), customFontProvider);
 		}
 	}
 }
