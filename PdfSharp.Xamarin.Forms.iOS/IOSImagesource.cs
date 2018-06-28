@@ -4,18 +4,10 @@ using System.Threading;
 using Foundation;
 using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
 
-namespace PdfSharp.Xamarin.Sample.iOS
+namespace PdfSharp.Xamarin.Forms.iOS
 {
 	public class IosImageSource : ImageSource
 	{
-		private enum Orientation
-		{
-			Normal = 1,
-			Rotate90 = 6,
-			Rotate180 = 3,
-			Rotate270 = 8
-		}
-
 		protected override IImageSource FromBinaryImpl(string name, Func<byte[]> imageSource, int? quality = 75)
 		{
 			return new IosImageSourceImpl(name, () => { return new MemoryStream(imageSource.Invoke()); }, (int)quality);

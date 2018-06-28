@@ -14,7 +14,7 @@ PdfSharp.Xamarin.Forms
 
 
 ### Usage
-> - **Init** : `PdfSharp.Xamarin.Forms.PDFManager.Init(DependencyService.Get<IPDFHandler>())`
+> - **Init** : For each platform you need to init seperately: `PdfSharp.Xamarin.Forms.{Platform}.Platform.Init()`
 > - **Generate** : `var pdf = PDFManager.GeneratePDFFromView(yourView)`
 > - **Save** :  `DependencyService.Get<IPdfSave>().Save(pdf, "pdfName.pdf")`
 
