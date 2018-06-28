@@ -130,9 +130,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AndroidImageSource.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="PdfHandler.cs" />
     <Compile Include="PdfSave.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -157,6 +155,10 @@
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\PdfSharp.Xamarin.Forms.Droid\PdfSharp.Xamarin.Forms.Droid.csproj">
+      <Project>{8c8eaa13-5824-462c-8149-d87db8afe587}</Project>
+      <Name>PdfSharp.Xamarin.Forms.Droid</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\PdfSharp.Xamarin.Forms\PdfSharp.Xamarin.Forms.csproj">
       <Project>{86bc6014-ac2d-452b-a4c4-d8e90cd54596}</Project>
       <Name>PdfSharp.Xamarin.Forms</Name>

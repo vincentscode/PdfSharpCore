@@ -1,6 +1,4 @@
-﻿using PdfSharp.Xamarin.Forms;
-using PdfSharp.Xamarin.Forms.Contracts;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace PdfSharp.Xamarin.Sample
 {
@@ -9,7 +7,6 @@ namespace PdfSharp.Xamarin.Sample
 		public App()
 		{
 			InitializeComponent();
-			PDFManager.Init(DependencyService.Get<IPDFHandler>());
 			MainPage = new NavigationPage(new MainPage());
 		}
 
@@ -27,7 +24,7 @@ namespace PdfSharp.Xamarin.Sample
 		protected override void OnResume()
 		{
 			// Handle when your app resumes
-		} 
+		}
 		#endregion
 	}
 }

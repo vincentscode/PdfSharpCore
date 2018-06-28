@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using PdfSharp.Xamarin.Forms.Contracts;
 using PdfSharp.Xamarin.Forms.Utils;
 using PdfSharpCore;
@@ -9,6 +10,9 @@ using PdfSharpCore.Pdf;
 using Xamarin.Forms;
 using ImageSource = MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource;
 
+[assembly: InternalsVisibleTo("PdfSharp.Xamarin.Forms.Droid")]
+[assembly: InternalsVisibleTo("PdfSharp.Xamarin.Forms.iOS")]
+[assembly: InternalsVisibleTo("PdfSharp.Xamarin.Forms.UWP")]
 namespace PdfSharp.Xamarin.Forms
 {
 	public class PDFManager
@@ -24,18 +28,14 @@ namespace PdfSharp.Xamarin.Forms
 
 		internal Dictionary<Type, Type> Renderers { get; set; }
 
-		public static void Init(IPDFHandler handler, ICustomFontProvider customFontProvider = null)
+		internal static void Init(ImageSource handler, ICustomFontProvider customFontProvider = null)
 		{
 			if (Instance == null)
 				Instance = new PDFManager();
 
-			if (handler == null)
-				throw new ArgumentNullException("IPDFHandler");
-
 			GlobalFontSettings.FontResolver = new FontProvider(customFontProvider);
-			ImageSource.ImageSourceImpl = handler?.GetImageSource();
+			ImageSource.ImageSourceImpl = handler;
 
-			Instance.Handler = handler;
 			Instance.Renderers = new Dictionary<Type, Type>();
 
 			//register all predefined renderers
