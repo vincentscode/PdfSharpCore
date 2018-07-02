@@ -10,7 +10,13 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>PDF generating library for Xamarin.Forms View</description>
     <dependencies>
+      <group targetFramework="netstandard1.0">
+        <dependency id="Xamarin.Forms" version="2.5.1.527436" />
+      </group>
       <group targetFramework="MonoAndroid10">
+        <dependency id="Xamarin.Forms" version="2.5.1.527436" />
+      </group>
+      <group targetFramework="Xamarin.iOS10">
         <dependency id="Xamarin.Forms" version="2.5.1.527436" />
       </group>
       <group targetFramework="uap10.0">
