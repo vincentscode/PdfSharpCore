@@ -1,80 +1,93 @@
-# PdfSharpCore
+PdfSharp.Xamarin.Forms
+======================
 
-**PdfSharpCore** is a partial port of [PdfSharp.Xamarin](https://github.com/roceh/PdfSharp.Xamarin/) for .NET Standard
-Additionally MigraDoc has been ported as well (from version 1.32).
-Images have been implemented with [ImageSharp](https://github.com/JimBobSquarePants/ImageSharp/), which is still in Alpha. They State on their readme that it is still in Alpha status and shouldn't be used in productive environments. Since I didn't find any good alternatives it's still used.
+**PdfSharp.Xamarin.Forms** is a Xamarin.Forms library for **converting any Xamarin.Forms UI into PDF**. It uses [PdfSharp](http://www.pdfsharp.net/), which is a partial port of [PdfSharpCore](https://github.com/groege/PdfSharpCore).
 
-ImageSharp beeing Alpha isn't a big issure either since this code isn't by far done yet. So please chime in ;)
+> ### Supported Platforms
+> - UWP
+> - Android
+> - iOS
 
-**PdfSharp.Xamarin** is a partial port of [PdfSharp](http://www.pdfsharp.net/) for iOS and Android using Xamarin, it allows for creation and modification of PDF files.
 
-## Example
+### Screenshots ([see all](https://github.com/akgulebubekir/PDFSharp.Xamarin.Forms/tree/master/Screenshots))
+![App vs PDF](https://raw.githubusercontent.com/akgulebubekir/PDFSharp.Xamarin.Forms/master/Screenshots/table.PNG)
 
-```cs
-//See the "Example" Project for a MigraDoc example
-static void Main(string[] args)
-{
-    GlobalFontSettings.FontResolver = new FontResolver();
-    
-    var document = new PdfDocument();
-    var page = document.AddPage();
-    var gfx = XGraphics.FromPdfPage(page);
-    var font = new XFont("OpenSans", 20, XFontStyle.Bold);
-            
-    gfx.DrawString("Hello World!", font, XBrushes.Black, new XRect(20, 20, page.Width, page.Height), XStringFormats.Center);
 
-    document.Save("test.pdf");
-}
+### Usage
+> - **Init** : For each platform you need to init seperately: `PdfSharp.Xamarin.Forms.{Platform}.Platform.Init()`
+> - **Generate** : `var pdf = PDFManager.GeneratePDFFromView(yourView)`
+> - **Save** :  `DependencyService.Get<IPdfSave>().Save(pdf, "pdfName.pdf")`
 
-//This implementation is obviously not very good --> Though it should be enough for everyone to implement their own.
-public class FontResolver : IFontResolver
-{
-    public byte[] GetFont(string faceName)
-    {
-        using(var ms = new MemoryStream())
-        {
-            using(var fs = File.Open(faceName, FileMode.Open))
-            {
-                fs.CopyTo(ms);
-                ms.Position = 0;
-                return ms.ToArray();
-                }
-            }
-        }
-        public FontResolverInfo ResolveTypeface(string familyName, bool isBold, bool isItalic)
-        {
-            if (familyName.Equals("OpenSans", StringComparison.CurrentCultureIgnoreCase))
-            {
-                if (isBold && isItalic)
-                {
-                    return new FontResolverInfo("OpenSans-BoldItalic.ttf");
-                }
-                else if (isBold)
-                {
-                    return new FontResolverInfo("OpenSans-Bold.ttf");
-                }
-                else if (isItalic)
-                {
-                    return new FontResolverInfo("OpenSans-Italic.ttf");
-                }
-                else
-                {
-                    return new FontResolverInfo("OpenSans-Regular.ttf");
-                }
-            }
-            return null;
-        }
-    }
-}
+
+### Features
+> - Custom Fonts (You should provide Font Types and font files via `IPDFHandler`)
+> - Image rendering
+> - Custom renderer ( You can write your own renderer for your customView)
+> - Paper size & orientation support
+> - Do not render option : by using `pdf:PdfRendererAttributes.ShouldRender="False"` you can ignore that view in PDF
+
+
+### Limitations
+> - Images renders only Jpeg format (It converts PNG to JPEG automatically)
+> - ListView does not renders automatically. You should write a renderer.
+
+### ListView Rendering
+> - Due ListView Cell is not accesible from parent, you should implement a `PdfListViewRendererDelegate` for the `ListView`.
+
+```xml
+
+  <ContentPage  xmlns:pdf="clr-namespace:PdfSharp.Xamarin.Forms;assembly=PdfSharp.Xamarin.Forms">
+  	<ListView pdf:ListRendererDelegate="{StaticResource YourRendererDelegate}" .../>
+  </ContentPage>
 ```
 
-## License
+<u>Renderer:</u>
+```cs
+	public class PDFSampleListRendererDelegate: PdfListViewRendererDelegate
+	{
+		public override void DrawCell(ListView listView, int section, int row, XGraphics page, XRect bounds, double scaleFactor)
+		{
+			base.DrawCell(listView, section, row, page, bounds, scaleFactor);
+		}
 
-Copyright (c) 2005-2007 empira Software GmbH, Cologne (Germany)  
-Modified work Copyright (c) 2016 David Dunscombe
+		public override void DrawFooter(ListView listView, int section, XGraphics page, XRect bounds, double scaleFactor)
+		{
+			base.DrawFooter(listView, section, page, bounds, scaleFactor);
+		}
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+		public override double GetFooterHeight(ListView listView, int section)
+		{
+			return base.GetFooterHeight(listView, section);
+		}
+	}
+```
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+### Custom PDF Renderer
+> Its possible to write your own renderer, it will use it while renderering your View.
+
+ <u>Register :</u> `PDFManager.RegisterRenderer(typeof(Label), typeof(PDFCustomLabelRenderer))`
+
+<u>Render:</u>
+
+```cs
+	public class PDFCustomLabelRenderer : PdfRendererBase<Label>
+	{
+		public override void CreatePDFLayout(XGraphics page, Label label, XRect bounds, double scaleFactor)
+		{
+			XFont font = new XFont(label.FontFamily ?? GlobalFontSettings.FontResolver.DefaultFontName, label.FontSize * scaleFactor);
+			Color textColor = label.TextColor != default(Color) ? label.TextColor : Color.Black;
+
+			if (label.BackgroundColor != default(Color))
+				page.DrawRectangle(label.BackgroundColor.ToXBrush(), bounds);
+
+			if (!string.IsNullOrEmpty(label.Text))
+				page.DrawString(label.Text, font, textColor.ToXBrush(), bounds,
+					new XStringFormat()
+					{
+						Alignment = label.HorizontalTextAlignment.ToXStringAlignment(),
+						LineAlignment = label.VerticalTextAlignment.ToXLineAlignment(),
+					});
+		}
+	}
+```

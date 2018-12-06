@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard1.4</TargetFramework>
+		<Authors>akgulebubekir</Authors>
+	</PropertyGroup>
+	<!--#region Project Config-->
+	<PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)'=='Release' ">
+		<DebugType>pdbonly</DebugType>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+	<!--#endregion-->
+
+	<ItemGroup>
+		<None Remove="DefaultFonts\OpenSans-Bold.ttf" />
+		<None Remove="DefaultFonts\OpenSans-BoldItalic.ttf" />
+		<None Remove="DefaultFonts\OpenSans-Italic.ttf" />
+		<None Remove="DefaultFonts\OpenSans-Regular.ttf" />
+		<None Remove="Icons\search.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="DefaultFonts\OpenSans-Bold.ttf" />
+		<EmbeddedResource Include="DefaultFonts\OpenSans-BoldItalic.ttf" />
+		<EmbeddedResource Include="DefaultFonts\OpenSans-Italic.ttf" />
+		<EmbeddedResource Include="DefaultFonts\OpenSans-Regular.ttf" />
+		<EmbeddedResource Include="Icons\search.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Xamarin.Forms" Version="2.5.1.527436" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\PdfSharpCore\PdfSharpCore.csproj" />
+	</ItemGroup>
+
+</Project>
