@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>PdfSharp.Xamarin.Forms</id>
-    <version>$version$</version>
+    <version>1.9</version>
     <authors>akgulebubekir</authors>
     <owners>akgulebubekir</owners>
     <tags>pdf pdfsharp xamarin forms xamarinforms xamarin.forms</tags>
     <projectUrl>https://github.com/akgulebubekir/PDFSharp.Xamarin.Forms</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>PDF generating library for Xamarin.Forms View</description>
+    <description>[modified by vincentscode] PDF generating library for Xamarin.Forms View</description>
     <dependencies>
       <group targetFramework="netstandard1.0">
         <dependency id="Xamarin.Forms" version="2.5.1.527436" />
@@ -54,12 +54,12 @@
     <file src="..\PdfSharp.Xamarin.Forms.iOS\bin\Release\PdfSharp.Xamarin.Forms.iOS.pdb" target="lib\Xamarin.iOS10" />
 
     <!--UWP-->
-    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\x86\Release\PdfSharpCore.dll" target="lib\uap10.0" />
-    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\x86\Release\PdfSharpCore.pdb" target="lib\uap10.0" />
-    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\x86\Release\PdfSharp.Xamarin.Forms.dll" target="lib\uap10.0" />
-    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\x86\Release\PdfSharp.Xamarin.Forms.pdb" target="lib\uap10.0" />
-    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\x86\Release\PdfSharp.Xamarin.Forms.UWP.dll" target="lib\uap10.0" />
-    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\x86\Release\PdfSharp.Xamarin.Forms.UWP.pdb" target="lib\uap10.0" />
+    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\Release\PdfSharpCore.dll" target="lib\uap10.0" />
+    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\Release\PdfSharpCore.pdb" target="lib\uap10.0" />
+    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\Release\PdfSharp.Xamarin.Forms.dll" target="lib\uap10.0" />
+    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\Release\PdfSharp.Xamarin.Forms.pdb" target="lib\uap10.0" />
+    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\Release\PdfSharp.Xamarin.Forms.UWP.dll" target="lib\uap10.0" />
+    <file src="..\PdfSharp.Xamarin.Forms.UWP\bin\Release\PdfSharp.Xamarin.Forms.UWP.pdb" target="lib\uap10.0" />
   </files>
 
 </package>
